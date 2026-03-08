@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  color: #1c1917;
+  background-color: #ffffff;
+}
+
+code, pre {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+.prose {
+  font-family: 'Noto Serif SC', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+
+/* make UI more minimal by stripping gradient backgrounds */
+[class*='bg-gradient-to'] {
+  background-image: none !important;
+  background-color: white !important;
+}
+
+/* tone down colored badges/buttons that used gradient stops */
+[class*='from-indigo'],
+[class*='from-green'],
+[class*='from-blue'],
+[class*='from-purple'],
+[class*='from-yellow'],
+[class*='to-indigo'],
+[class*='to-green'],
+[class*='to-blue'],
+[class*='to-purple'],
+[class*='to-yellow'] {
+  background: inherit !important;
+}
+
+/* neutralize strong solid backgrounds */
+.bg-indigo-600, .bg-indigo-500,
+.bg-green-500, .bg-green-600,
+.bg-blue-500, .bg-blue-600,
+.bg-purple-500, .bg-purple-600,
+.bg-yellow-500, .bg-yellow-600,
+.bg-red-500, .bg-red-600 {
+  background-color: #f3f4f6 !important;
+}
+
+/* adjust text colors for readability */
+.text-indigo-600, .text-indigo-500,
+.text-green-600, .text-blue-600,
+.text-purple-600, .text-yellow-600,
+.text-red-600 {
+  color: #374151 !important;
+}

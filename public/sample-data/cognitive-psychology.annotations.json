@@ -1,0 +1,211 @@
+{
+  "documentId": "doc_cognitive_psychology",
+  "documentName": "cognitive-psychology.md",
+  "documentType": "markdown",
+  "annotations": [
+    {
+      "id": "anno_001",
+      "documentId": "doc_cognitive_psychology",
+      "sourceText": "工作记忆（Working Memory）",
+      "position": {
+        "page": 1,
+        "x": 45,
+        "y": 28,
+        "sectionId": "1.2"
+      },
+      "content": "这是你之前做错过的核心概念！工作记忆就像电脑的内存(RAM)。当你阅读这段文字，文字信息就在你的\"内存\"处理。内存容量有限(7±2)，所以需要\"组块化\"——类似把零散文件打包成ZIP压缩包。",
+      "type": "bubble",
+      "severity": "high",
+      "category": "misunderstanding",
+      "pedagogicalType": "analogy",
+      "relatedKeywords": ["记忆", "认知处理", "信息容量"],
+      "createdAt": 1741081200000,
+      "updatedAt": 1741081200000,
+      "metadata": {
+        "frequency": "exam_high",
+        "mistakeRate": 0.65,
+        "estimatedTimeToUnderstand": 300
+      }
+    },
+    {
+      "id": "anno_002",
+      "documentId": "doc_cognitive_psychology",
+      "sourceText": "根据米勒的研究：人类的工作记忆容量是有限的，通常只能同时处理 7±2 个信息块",
+      "position": {
+        "page": 1,
+        "x": 52,
+        "y": 35,
+        "sectionId": "1.2"
+      },
+      "content": "费曼转化：想象你有一个购物篮，最多只能装7个物品(±2个)。如果你试图放进10个，其中一些就会掉出来。这就是你的大脑在处理新信息时的情况。",
+      "type": "bubble",
+      "severity": "high",
+      "category": "core_concept",
+      "pedagogicalType": "analogy",
+      "relatedKeywords": ["容量限制", "米勒定律"],
+      "createdAt": 1741081260000,
+      "updatedAt": 1741081260000,
+      "metadata": {
+        "frequency": "exam_high",
+        "correctRate": 0.35,
+        "estimatedTimeToUnderstand": 180
+      }
+    },
+    {
+      "id": "anno_003",
+      "documentId": "doc_cognitive_psychology",
+      "sourceText": "组块化（Chunking）策略。组块化指的是将零散的、无意义的信息整合为有意义的整体或\"块\"",
+      "position": {
+        "page": 1,
+        "x": 48,
+        "y": 42,
+        "sectionId": "1.3"
+      },
+      "content": "这是克服工作记忆限制的关键技巧！关联学习材料到你已知的知识框架，而不是孤立学习。例如：你知道\"DNA\"是什么，那\"FBICIADNA\"就变成了3块而不是9块。",
+      "type": "bubble",
+      "severity": "medium",
+      "category": "learning_strategy",
+      "pedagogicalType": "strategy",
+      "relatedKeywords": ["学习策略", "信息组织"],
+      "createdAt": 1741081320000,
+      "updatedAt": 1741081320000,
+      "metadata": {
+        "frequency": "exam_medium",
+        "concept_difficulty": 0.6,
+        "previous_performance": 0.55
+      }
+    },
+    {
+      "id": "anno_004",
+      "documentId": "doc_cognitive_psychology",
+      "sourceText": "深度加工（Deep Processing）理论",
+      "position": {
+        "page": 1,
+        "x": 50,
+        "y": 48,
+        "sectionId": "1.4"
+      },
+      "content": "深度加工 vs 浅层加工：\\n- 浅层：只看字体/声音 → 记不住\\n- 深层：理解意义，联系背景知识 → 牢记\\n\\n在你之前的考试中，这个概念出现了4次，建议你做一个对比表格来强化理解。",
+      "type": "bubble",
+      "severity": "high",
+      "category": "core_concept",
+      "pedagogicalType": "comparison",
+      "relatedKeywords": ["加工水平", "记忆编码", "学习深度"],
+      "createdAt": 1741081380000,
+      "updatedAt": 1741081380000,
+      "metadata": {
+        "frequency": "exam_highest",
+        "exam_count": 4,
+        "test_accuracy": 0.42
+      }
+    },
+    {
+      "id": "anno_005",
+      "documentId": "doc_cognitive_psychology",
+      "sourceText": "及时复述和复习可以显著减缓遗忘",
+      "position": {
+        "page": 1,
+        "x": 55,
+        "y": 55,
+        "sectionId": "1.5"
+      },
+      "content": "艾宾浩斯遗忘曲线的实际应用：\\n1. 第1天：学完立即复习（防止立即遗忘）\\n2. 第3天：再次复习（加强短期记忆）\\n3. 第7天：深度回忆练习\\n4. 第30天：最后一次加固(长期记忆转移)\\n\\n这是最被证实有效的学习策略之一。",
+      "type": "bubble",
+      "severity": "high",
+      "category": "learning_strategy",
+      "pedagogicalType": "procedure",
+      "relatedKeywords": ["复习计划", "遗忘曲线", "时间管理"],
+      "createdAt": 1741081440000,
+      "updatedAt": 1741081440000,
+      "metadata": {
+        "frequency": "exam_high",
+        "practical_importance": "critical",
+        "retention_impact": 0.85
+      }
+    },
+    {
+      "id": "anno_006",
+      "documentId": "doc_cognitive_psychology",
+      "sourceText": "主动回忆是指在没有提示的情况下，主动想起所学信息",
+      "position": {
+        "page": 1,
+        "x": 50,
+        "y": 62,
+        "sectionId": "1.6"
+      },
+      "content": "主动回忆 vs 被动阅读的效果对比（实验数据）：\\n- 被动阅读：长期记忆保持率 ~25%\\n- 主动回忆：长期记忆保持率 ~95%\\n\\n建议学习方式：\\n✗ 不要重复阅读\\n✓ 合上书，试着回忆内容\\n✓ 做题、讨论、教别人",
+      "type": "bubble",
+      "severity": "high",
+      "category": "learning_strategy",
+      "pedagogicalType": "evidence_based",
+      "relatedKeywords": ["学习效率", "记忆保持", "自测"],
+      "createdAt": 1741081500000,
+      "updatedAt": 1741081500000,
+      "metadata": {
+        "frequency": "exam_medium",
+        "effectiveness": 0.95,
+        "study_method_match": "student_behavior_mismatch"
+      }
+    },
+    {
+      "id": "anno_007",
+      "documentId": "doc_cognitive_psychology",
+      "sourceText": "间隔重复是指按照遗忘规律，在适当的时间间隔后重复学习相同的内容",
+      "position": {
+        "page": 1,
+        "x": 48,
+        "y": 68,
+        "sectionId": "1.6"
+      },
+      "content": "间隔重复 vs 集中学习（学习科学的共识）：\\n- 集中学习（\"突击\"）：遗忘快，长期记忆低\\n- 间隔重复（\"分散化\"）：遗忘慢，长期记忆率提高70%+\\n\\n现实案例：\\n集中：前一晚复习，考试后完全遗忘\\n间隔：分散学习，半年后仍记得70%\\n\\n这就是为什么SRS软件（Anki, Rembi）这么有效。",
+      "type": "bubble",
+      "severity": "high",
+      "category": "learning_strategy",
+      "pedagogicalType": "evidence_based",
+      "relatedKeywords": ["学习计划", "长期记忆", "学习科学"],
+      "createdAt": 1741081560000,
+      "updatedAt": 1741081560000,
+      "metadata": {
+        "frequency": "exam_high",
+        "evidence_strength": "strongest",
+        "student_awareness": 0.3
+      }
+    },
+    {
+      "id": "anno_008",
+      "documentId": "doc_cognitive_psychology",
+      "sourceText": "为什么米勒定律对学习设计有重要启示？",
+      "position": {
+        "page": 1,
+        "x": 52,
+        "y": 75,
+        "sectionId": "thinking"
+      },
+      "content": "🎯 思考题回答指引：\\n\\n米勒定律的启示（答题方向）：\\n1. **课程设计**：一次讲解不超过7个关键点\\n2. **课件设计**：幻灯片文字行数应≤7行\\n3. **章节设计**：分小章节，每部分内容控制在7±2个概念\\n4. **学习步骤**：分步骤教学，每步不超过容量限制\\n5. **练习题**：同一题目考查不超过5个知识点\\n\\n相关答题高频模板已为你保存。",
+      "type": "bubble",
+      "severity": "medium",
+      "category": "exam_preparation",
+      "pedagogicalType": "hint",
+      "relatedKeywords": ["米勒定律", "课程设计", "信息架构"],
+      "createdAt": 1741081620000,
+      "updatedAt": 1741081620000,
+      "metadata": {
+        "isExamQuestion": true,
+        "exam_frequency": 2,
+        "student_answer_quality": 0.4
+      }
+    }
+  ],
+  "metadata": {
+    "createdAt": 1741081200000,
+    "updatedAt": 1741081620000,
+    "totalAnnotations": 8,
+    "highSeverityCount": 6,
+    "mediumSeverityCount": 2,
+    "pedagogicalEngineVersion": "1.0.0",
+    "modelUsed": "gpt-4-fine-tuned-education",
+    "contentDifficulty": 0.65,
+    "recommendedStudyTime": 2400,
+    "estimatedLearningOutcome": 0.75
+  }
+}
