@@ -1,0 +1,43 @@
+# WayFare 内核运行时配置
+# 修改后需重启 sidecar 进程生效
+
+app:
+  name: wayfare-kernel
+  version: 1.0.0
+  env: dev          # dev | prod
+
+fs:
+  watch_root: ./study_pool          # 监控目录，支持 ~/ 路径
+  supported_ext: [pdf, md, txt]     # 与 api-contract 保持一致
+
+db:
+  sqlite_path: ./wayfare.db
+  vector_store: qdrant              # qdrant | weaviate | milvus-lite
+  qdrant:
+    addr: localhost:6333
+    collection: wayfare_segments
+    vector_size: 768                # 与 embedding 模型输出维度一致
+
+embedding:
+  model_id: BAAI/bge-small-zh-v1.5
+  onnx_path: ./wayfare/models/bge-small-zh-v1.5.onnx
+  batch_size: 8
+  device: cpu                      # cpu | cuda
+
+llm:
+  provider: openai                  # local | openai
+  local:
+    # model_path: ./models/llama3-8b-q4_0.gguf
+    # ctx_len: 4096
+    # gpu_layers: 0
+  openai:
+    base_url: https://api.siliconflow.cn/v1
+    key: ${OPENAI_API_KEY}         # 从环境变量读取，禁止明文
+    model: deepseek-ai/DeepSeek-V3.2
+
+logging:
+  level: info
+  format: json
+  file: ./logs/kernel.log
+  max_size: 100                   # MB
+  max_backups: 3

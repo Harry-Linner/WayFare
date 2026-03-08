@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\json_repair\parse_string.py
+# hypothesis_version: 6.151.9
+
+['\x08', '"', '#', "'", ',', '/', ':', 'JSONParser', '[', '\\', ']', '`', 'b', 'f', 'n', 'r', 't', 'u', 'x', '{', '}', '“', '”']

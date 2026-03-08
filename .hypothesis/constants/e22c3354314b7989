@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\json_repair\utils\constants.py
+# hypothesis_version: 6.151.9
+
+['"', "'", '<MISSING_VALUE>', 'MissingValueType', '“', '”']

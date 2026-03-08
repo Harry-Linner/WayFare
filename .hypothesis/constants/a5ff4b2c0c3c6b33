@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\embedding.py
+# hypothesis_version: 6.151.9
+
+[1e-12, 512, 'CPUExecutionProvider', 'attention_mask', 'input_ids', 'np', 'text cannot be empty']

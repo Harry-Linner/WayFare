@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\loguru\_file_sink.py
+# hypothesis_version: 6.151.9
+
+['%Y-%m-%d_%H-%M-%S_%f', '*', '.', '.*', 'a', 'buffering', 'bz2', 'encoding', 'gz', 'lzma', 'mode', 'rb', 'tar', 'tar.bz2', 'tar.gz', 'tar.xz', 'time', 'utf8', 'w', 'w:', 'w:bz2', 'w:gz', 'w:xz', 'wb', 'xz', 'zip', '{}.{}.{}{}', '{}.{}{}', '{}{}']

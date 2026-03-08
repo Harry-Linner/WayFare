@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\litellm\types\proxy\guardrails\guardrail_hooks\block_code_execution.py
+# hypothesis_version: 6.151.9
+
+[0.0, 0.1, 0.5, 1.0, 'Block Code Execution', 'allow', 'bash', 'block', 'c', 'code_block', 'cpp', 'csharp', 'default_value', 'go', 'java', 'javascript', 'log_only', 'mask', 'max', 'min', 'multiselect', 'options', 'percentage', 'php', 'python', 'ruby', 'rust', 'sql', 'step', 'typescript', 'ui_type']

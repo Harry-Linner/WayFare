@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\onnxruntime\capi\onnxruntime_inference_collection.py
+# hypothesis_version: 6.151.9
+
+[1024, ', ', '1', 'CPUExecutionProvider', 'NvExecutionProvider', 'cann', 'cpu', 'cuda', 'disabled_optimizers', 'dml', 'enable_fallback', 'gpu', 'npu', 'optional', 'webgpu']

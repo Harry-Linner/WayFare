@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\context_builder.py
+# hypothesis_version: 6.151.9
+
+['content', 'explanation', 'question', 'role', 'summary', 'system', 'user', '{context}', '{selected_text}', '（无相关上下文）']

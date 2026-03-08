@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\llm_provider.py
+# hypothesis_version: 6.151.9
+
+[0.7, 1.0, 60.0, 4096, 'SILICONFLOW_API_KEY', 'content', 'deepseek-chat', 'error', 'role', 'siliconflow', 'system', 'user']

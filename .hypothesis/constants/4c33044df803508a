@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\json_repair\parse_number.py
+# hypothesis_version: 6.151.9
+
+[',', '-eE/,', '.', '0123456789-.eE/,_', 'E', 'JSONParser', '_', 'e']

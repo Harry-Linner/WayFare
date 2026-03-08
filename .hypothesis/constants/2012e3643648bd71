@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\json_repair\json_repair.py
+# hypothesis_version: 6.151.9
+
+['--ensure_ascii', '--indent', '--inline', '--output', '--schema', '--schema-model', '--schema-repair-mode', '--skip-json-loads', '--strict', '-i', '-o', '?', 'MODEL', 'SCHEMA', 'TARGET', '__main__', 'filename', 'salvage', 'standard', 'store_true', 'w']

@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\nanobot\providers\azure_openai_provider.py
+# hypothesis_version: 6.151.9
+
+[0.7, 60.0, 200, 4096, '/', '2024-10-21', 'Content-Type', 'api-key', 'application/json', 'arguments', 'auto', 'choices', 'completion_tokens', 'content', 'error', 'finish_reason', 'function', 'gpt-5', 'gpt-5.2-chat', 'id', 'message', 'messages', 'name', 'o1', 'o3', 'o4', 'prompt_tokens', 'reasoning_content', 'reasoning_effort', 'role', 'stop', 'temperature', 'tool_call_id', 'tool_calls', 'tool_choice', 'tools', 'total_tokens', 'usage', 'x-session-affinity']

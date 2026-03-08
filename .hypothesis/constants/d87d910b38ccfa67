@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\json_repair\schema_repair.py
+# hypothesis_version: 6.151.9
+
+['#/', '$', '$ref', ', ', '.', '/', '0', '1', ':', 'VERSION', '__version__', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'array', 'boolean', 'const', 'context', 'default', 'enum', 'false', 'integer', 'items', 'jsonschema', 'minItems', 'minProperties', 'model_fields', 'model_json_schema', 'n', 'no', 'null', 'number', 'object', 'off', 'on', 'oneOf', 'patternProperties', 'prefixItems', 'properties', 'pydantic', 'required', 'salvage', 'standard', 'string', 'text', 'true', 'type', 'y', 'yes', '~', '~0', '~1']

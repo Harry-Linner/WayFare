@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\nanobot\providers\base.py
+# hypothesis_version: 6.151.9
+
+[0.7, 4096, '(empty)', 'assistant', 'content', 'input_text', 'output_text', 'role', 'stop', 'text', 'tool_calls', 'type']

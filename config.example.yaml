@@ -1,0 +1,115 @@
+# WayFare MVP Backend 配置示例
+# 复制此文件为 .wayfare/config.yaml 并根据需要修改
+
+# ============================================
+# LLM 配置
+# ============================================
+
+# LLM模型名称（通过SiliconFlow API调用）
+llm_model: deepseek-chat
+
+# LLM API密钥（建议通过环境变量 WAYFARE_LLM_API_KEY 设置）
+# llm_api_key: your_siliconflow_api_key_here
+
+# LLM请求最大重试次数
+llm_max_retries: 3
+
+# LLM请求重试延迟（秒）
+llm_retry_delay: 1.0
+
+# LLM请求超时时间（秒）
+llm_timeout: 60.0
+
+# LLM生成最大token数
+llm_max_tokens: 4096
+
+# LLM采样温度（0.0-1.0，越高越随机）
+llm_temperature: 0.7
+
+# ============================================
+# Embedding 配置
+# ============================================
+
+# Embedding模型名称
+embedding_model: bge-small-zh-v1.5
+
+# ONNX模型路径（相对于工作区根目录）
+embedding_model_path: ./models/bge-small-zh-v1.5.onnx
+
+# ============================================
+# Qdrant 向量数据库配置
+# ============================================
+
+# Qdrant服务地址
+# 本地开发: http://localhost:6333
+# Docker: http://qdrant:6333
+qdrant_url: http://localhost:6333
+
+# Qdrant collection名称
+qdrant_collection: documents
+
+# ============================================
+# 检索配置
+# ============================================
+
+# 检索返回的top-k结果数
+retrieval_top_k: 5
+
+# 文档分块大小（字符数）
+# 建议范围: 200-500
+chunk_size: 300
+
+# 分块重叠大小（字符数）
+# 建议为chunk_size的10-20%
+chunk_overlap: 50
+
+# ============================================
+# 行为分析配置
+# ============================================
+
+# 主动干预阈值（秒）
+# 用户在同一页面停留超过此时间将触发主动干预
+intervention_threshold: 120
+
+# ============================================
+# 数据库配置
+# ============================================
+
+# SQLite数据库路径（相对于工作区根目录）
+db_path: .wayfare/wayfare.db
+
+# ============================================
+# 环境变量覆盖
+# ============================================
+# 所有配置项都可以通过环境变量覆盖，格式为: WAYFARE_<配置项名称>
+# 例如:
+#   export WAYFARE_LLM_API_KEY=your_api_key
+#   export WAYFARE_RETRIEVAL_TOP_K=10
+#   export WAYFARE_INTERVENTION_THRESHOLD=180
+#
+# 环境变量会自动覆盖配置文件中的值
+
+# ============================================
+# 使用场景示例
+# ============================================
+
+# 场景1: 快速响应模式（降低温度，减少token）
+# llm_temperature: 0.3
+# llm_max_tokens: 2048
+
+# 场景2: 创意模式（提高温度，增加token）
+# llm_temperature: 0.9
+# llm_max_tokens: 8192
+
+# 场景3: 精确检索模式（增加top-k，减小分块）
+# retrieval_top_k: 10
+# chunk_size: 200
+# chunk_overlap: 40
+
+# 场景4: 快速浏览模式（减少top-k，增大分块）
+# retrieval_top_k: 3
+# chunk_size: 500
+# chunk_overlap: 50
+
+# 场景5: 主动干预模式（降低阈值）
+# intervention_threshold: 60

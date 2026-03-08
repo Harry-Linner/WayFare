@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\main.py
+# hypothesis_version: 6.151.9
+
+[600, '\nShutdown by user', '--config', '--log-level', '--version', '--workspace', '.wayfare', '=', 'CRITICAL', 'DEBUG', 'ERROR', 'INFO', 'IPC server stopped', 'WARNING', '__main__', 'config.yaml', 'version', 'wayfare.log']

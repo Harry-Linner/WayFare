@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\filelock\asyncio.py
+# hypothesis_version: 6.151.9
+
+[0.05, 'AsyncSoftFileLock', 'AsyncUnixFileLock', 'AsyncWindowsFileLock', 'BaseAsyncFileLock', 'blocking', 'executor', 'filelock', 'lifetime', 'lock_file', 'loop', 'mode', 'poll_interval', 'run_in_executor', 'timeout']

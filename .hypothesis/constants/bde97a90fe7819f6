@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\filelock\_read_write.py
+# hypothesis_version: 6.151.9
+
+[1000, 2000000000, 'BEGIN TRANSACTION;', 'database is locked', 'downgrade', 'filelock', 'read', 'upgrade', 'write']

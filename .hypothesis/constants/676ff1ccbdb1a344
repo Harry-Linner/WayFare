@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\litellm\litellm_core_utils\realtime_streaming.py
+# hypothesis_version: 6.151.9
+
+['*', 'Connection closed', 'arguments', 'call_id', 'code', 'content', 'create_response', 'current_delta_chunks', 'current_delta_type', 'current_item_chunks', 'current_response_id', 'detail', 'end_session', 'error', 'function', 'function_call', 'guardrail_violation', 'id', 'images', 'input_text', 'instructions', 'item', 'item_id', 'message', 'messages', 'name', 'on_violation', 'output', 'realtime_tool_calls', 'realtime_tools', 'request', 'response', 'response.create', 'response.done', 'role', 'session', 'session.created', 'session.update', 'session.updated', 'status_code', 'system', 'text', 'texts', 'tools', 'transcript', 'turn_detection', 'type', 'user', 'user_api_key_dict', 'utf-8', '{}']

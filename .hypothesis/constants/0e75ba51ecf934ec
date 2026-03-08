@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\filelock\_api.py
+# hypothesis_version: 6.151.9
+
+[0.05, 420, 438, 'AcquireReturnProxy', 'BaseFileLock', '_UNSET_FILE_MODE', 'blocking', 'filelock', 'is_singleton', 'lifetime', 'lock_file', 'mode', 'poll_interval', 'thread_local', 'timeout', 'win32']

@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\loguru\_ctime_functions.py
+# hypothesis_version: 6.151.9
+
+[b'user.loguru_crtime', 'ascii', 'getxattr', 'nt', 'setxattr', 'st_birthtime']

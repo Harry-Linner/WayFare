@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\nanobot\config\schema.py
+# hypothesis_version: 6.151.9
+
+[0.1, 100, 500, 587, 993, 1000, 1024, 8192, 10000, 12000, 18790, 25000, 30000, 37377, 120000, '-', '/', '/slack/events', '/socket.io', '0.0.0.0', 'INBOX', 'NANOBOT_', 'Re: ', 'THUMBSUP', '_', '__', 'allowlist', 'auto', 'eyes', 'https://matrix.org', 'https://mochat.io', 'mention', 'non-mention', 'open', 'socket', 'sse', 'stdio', 'streamableHttp', 'ws://localhost:3001', '~/.nanobot/workspace']

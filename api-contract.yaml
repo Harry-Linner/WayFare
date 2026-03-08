@@ -1,0 +1,65 @@
+# WayFare 内核接口与协议规范 v1.1
+# 变更说明：
+# 1. 放宽命名规则以适配中文及复杂文件名 (针对第五条)
+# 2. 引入 versionHash 解决文档修改后的笔记偏移问题 (针对第三条)
+# 3. IPC 引入 seq 序列号确保操作顺序 (针对第四条)
+
+naming:
+  # 【修改】放宽正则：允许中文、空格、括号，只要后缀名对上即可
+  file_pattern: '^.+\.(pdf|md|txt|json)$'
+  # 【修改】目录也放宽限制，适配用户真实的本地路径
+  dir_pattern: '^.+$'
+  json_field_case: lowerCamelCase
+  time_format: '2006-01-02T15:04:05Z'
+  hash_algo: blake3 
+
+models:
+  Document:
+    type: object
+    required: [hash, path, status, updatedAt, versionHash]
+    properties:
+      hash:        { type: string, pattern: '^[0-9a-f]{64}$' }
+      path:        { type: string }
+      status:      { $ref: '#/models/DocStatus' }
+      updatedAt:   { type: string, format: date-time }
+      # 【新增】版本哈希：用于检测文档内容是否变动。
+      # 如果用户改了PDF内容但没改名，versionHash会变，以此提醒用户“标注可能位移”
+      versionHash: { type: string, description: '用于校验内容一致性' }
+
+  Segment:
+    type: object
+    required: [id, docHash, text, vector, page, bbox]
+    properties:
+      id:           { type: string, format: uuid }
+      docHash:      { type: string, pattern: '^[0-9a-f]{64}$' }
+      text:         { type: string }
+      # 【建议】SQLite 存储时建议将此数组转为二进制(BLOB)，JSON存向量在512维以上时性能极差
+      vector:       { type: array, items: { type: number }, description: 'AI向量数据' }
+      page:         { type: integer }
+      bbox:         { $ref: '#/models/BBox' }
+
+  Annotation:
+    type: object
+    required: [id, docHash, versionHash, type, content, bbox]
+    properties:
+      id:           { type: string, format: uuid }
+      docHash:      { type: string }
+      # 【新增】标注绑定版本：如果当前的 versionHash 与此不符，前端显示“过期”图标
+      versionHash:  { type: string }
+      type:         { $ref: '#/models/AnnotationType' }
+      content:      { type: string }
+      bbox:         { $ref: '#/models/BBox' }
+
+ipc:
+  tauri_invoke:
+    request:
+      id:     { type: string, format: uuid }
+      # 【新增】序列号：递增整数。后端必须按 seq 顺序写入数据库，防止“先发后到”的覆盖问题
+      seq:    { type: integer, description: '客户端指令序列号' }
+      method: { type: string, enum: [parse, annotate, query, config] }
+      params: { type: object }
+    response:
+      id:      { type: string, format: uuid, match: request.id }
+      seq:     { type: integer }
+      success: { type: boolean }
+      data:    { type: object }

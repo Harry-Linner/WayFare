@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\config.py
+# hypothesis_version: 6.151.9
+
+[0.7, 1.0, 60.0, 120, 300, 4096, '.wayfare/config.yaml', '.wayfare/wayfare.db', '1', 'Embedding模型名称', 'LLM模型名称', 'LLM生成最大token数', 'LLM请求最大重试次数', 'LLM请求超时时间（秒）', 'LLM请求重试延迟（秒）', 'LLM采样温度', 'ONNX模型路径', 'Qdrant collection名称', 'Qdrant服务地址', 'SQLite数据库路径', 'WAYFARE_', 'bge-small-zh-v1.5', 'deepseek-chat', 'documents', 'r', 'true', 'utf-8', 'w', 'yes', '主动干预阈值（秒）', '分块重叠大小（字符数）', '文档分块大小（字符数）', '检索返回的top-k结果数']

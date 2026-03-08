@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\db.py
+# hypothesis_version: 6.151.9
+
+['.wayfare/wayfare.db', 'bbox_height', 'bbox_width', 'bbox_x', 'bbox_y', 'content', 'created_at', 'doc_hash', 'event_type', 'hash', 'id', 'metadata', 'page', 'path', 'status', 'text', 'timestamp', 'type', 'updated_at', 'version_hash']

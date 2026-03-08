@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\oauth_cli_kit\pkce.py
+# hypothesis_version: 6.151.9
+
+[b'=', '#', '.', '=', 'Invalid JWT token', 'access_token', 'code', 'code=', 'expires_in', 'refresh_token', 'state', 'utf-8']

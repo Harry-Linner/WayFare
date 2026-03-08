@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\document_parser.py
+# hypothesis_version: 6.151.9
+
+[100, 200, 300, 500, 800, 8192, '!', '.', '.markdown', '.md', '.pdf', '?', 'blocks', 'completed', 'dict', 'doc_hash', 'documents', 'failed', 'hash', 'heading_open', 'id', 'inline', 'lines', 'page', 'path', 'payload', 'processing', 'r', 'rb', 'spans', 'status', 'text', 'type', 'updated_at', 'utf-8', 'vector', 'version_hash', '。', '！', '？']

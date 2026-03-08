@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\loguru\_handler.py
+# hypothesis_version: 6.151.9
+
+['_lock', '_lock_acquired', '_owner_process', '_queue_lock', '_sink', '_thread', 'acquired', 'close', 'elapsed', 'exception', 'extra', 'file', 'function', 'icon', 'id', 'level', 'line', 'loguru-writer-%d', 'message', 'module', 'name', 'no', 'path', 'process', 'record', 'repr', 'seconds', 'text', 'thread', 'time', 'timestamp', 'traceback', 'type', 'value']

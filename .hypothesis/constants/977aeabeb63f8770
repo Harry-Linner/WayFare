@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\ipc.py
+# hypothesis_version: 6.151.9
+
+['annotate', 'annotationId', 'bbox', 'behavior', 'completed', 'config', 'content', 'context', 'data', 'docHash', 'error', 'eventId', 'eventType', 'explanation', 'failed', 'height', 'id', 'message', 'metadata', 'method', 'notification', 'page', 'page_view', 'params', 'parse', 'parse_completed', 'parse_failed', 'path', 'processing', 'query', 'question', 'queued', 'recorded', 'results', 'score', 'scroll', 'segmentCount', 'segmentId', 'seq', 'status', 'success', 'summary', 'text', 'text_select', 'topK', 'type', 'updated', 'versionHash', 'width', 'x', 'y']

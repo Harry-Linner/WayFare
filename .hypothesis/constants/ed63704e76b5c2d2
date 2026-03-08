@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\loguru\_recattrs.py
+# hypothesis_version: 6.151.9
+
+['(id=%r, name=%r)', '(name=%r, path=%r)', 'RecordException', 'icon', 'id', 'name', 'no', 'path', 'traceback', 'type', 'value']

@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\loguru\_logger.py
+# hypothesis_version: 6.151.9
+
+["'%s'", '.', '<unknown>', 'CRITICAL', 'DEBUG', 'ERROR', 'INFO', 'Level', 'Level %d', 'SUCCESS', 'TRACE', 'WARNING', '__call__', '__name__', 'ascii', 'color', 'elapsed', 'encoding', 'exception', 'extra', 'file', 'function', 'icon', 'inf', 'level', 'line', 'lock', 'loguru_context', 'loop', 'message', 'module', 'name', 'no', 'process', 'read', 'record', 'thread', 'thread_locals', 'time', 'utf8', 'write', '{exception}']

@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\nanobot\providers\litellm_provider.py
+# hypothesis_version: 6.151.9
+
+[0.7, 4096, '-', '/', '_', 'anthropic', 'anthropic/', 'api_base', 'api_key', 'auto', 'cache_control', 'claude', 'completion_tokens', 'content', 'drop_params', 'ephemeral', 'error', 'extra_headers', 'id', 'max_tokens', 'messages', 'model', 'name', 'prompt_tokens', 'reasoning_content', 'reasoning_effort', 'role', 'stop', 'system', 'temperature', 'text', 'thinking_blocks', 'tool_call_id', 'tool_calls', 'tool_choice', 'tools', 'total_tokens', 'type', 'usage', '{api_base}', '{api_key}']

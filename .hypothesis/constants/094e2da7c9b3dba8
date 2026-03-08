@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\litellm\llms\vertex_ai\realtime\transformation.py
+# hypothesis_version: 6.151.9
+
+[800, '/', 'AUDIO', 'Authorization', 'audio/pcm;rate=16000', 'audio/pcma', 'audio/pcmu', 'disabled', 'g711_alaw', 'g711_ulaw', 'generationConfig', 'global', 'http://', 'https://', 'model', 'pcm16', 'realtimeInputConfig', 'responseModalities', 'session.update', 'setup', 'silenceDurationMs', 'type', 'ws://', 'wss://', 'x-goog-user-project']

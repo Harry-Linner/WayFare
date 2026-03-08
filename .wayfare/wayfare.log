@@ -1,0 +1,25 @@
+2026-03-08 12:23:11,202 - wayfare - INFO - Logging initialized: file=.wayfare\wayfare.log, level=DEBUG
+2026-03-08 12:23:11,202 - wayfare - DEBUG - 这是调试信息（只写入文件）
+2026-03-08 12:23:11,203 - wayfare - INFO - 这是普通信息（只写入文件）
+2026-03-08 12:23:11,203 - wayfare - WARNING - 这是警告信息（文件和控制台）
+2026-03-08 12:23:11,203 - wayfare - ERROR - 这是错误信息（文件和控制台）
+2026-03-08 12:23:11,203 - wayfare - CRITICAL - 这是严重错误（文件和控制台）
+2026-03-08 12:23:11,204 - wayfare - INFO - IPC Request: method=parse, id=req-123, seq=1, params={'path': '/documents/test.pdf'}
+2026-03-08 12:23:11,204 - wayfare - INFO - IPC Response: id=req-123, seq=1, success=True, data={'doc_hash': 'abc123', 'status': 'completed'}
+2026-03-08 12:23:11,256 - wayfare - INFO - Operation: name=parse_document, duration=1234.56ms, success=True, details={'doc_hash': 'abc123', 'segments': 42}
+2026-03-08 12:23:11,257 - wayfare - ERROR - Error: type=DocumentParseError, message=Invalid PDF format, details={'path': '/documents/corrupted.pdf'}
+2026-03-08 12:23:11,257 - wayfare - INFO - Metric: name=parse_duration, value=1234.56ms, details={'doc_type': 'pdf'}
+2026-03-08 12:23:11,258 - wayfare - INFO - Starting: parse_document
+2026-03-08 12:23:11,369 - wayfare - INFO - Completed: parse_document (110.93ms)
+2026-03-08 12:23:11,369 - wayfare - INFO - Starting: generate_annotation
+2026-03-08 12:23:11,433 - wayfare - ERROR - Failed: generate_annotation (63.95ms) - LLMGenerationError: API timeout
+2026-03-08 12:23:11,434 - wayfare - ERROR - 文档解析失败: Failed to parse document /test/doc.pdf: Invalid PDF format
+2026-03-08 12:23:11,435 - wayfare - ERROR - 向量检索失败: Qdrant connection failed
+2026-03-08 12:23:11,435 - wayfare - WARNING - LLM生成失败，使用降级策略: API rate limit exceeded
+2026-03-08 12:23:11,437 - wayfare.errors.monitor - CRITICAL - Alert: DocumentParseError occurred 3 times in the last 60 seconds (threshold: 3)
+2026-03-08 12:23:11,437 - wayfare - INFO - Starting: parse_document: /docs/normal.pdf
+2026-03-08 12:23:11,550 - wayfare - INFO - 文档解析成功: /docs/normal.pdf
+2026-03-08 12:23:11,550 - wayfare - INFO - Completed: parse_document: /docs/normal.pdf (112.77ms)
+2026-03-08 12:23:11,550 - wayfare - INFO - Starting: parse_document: /docs/corrupted.pdf
+2026-03-08 12:23:11,551 - wayfare - ERROR - 文档解析失败: Failed to parse document /docs/corrupted.pdf: Invalid PDF format
+2026-03-08 12:23:11,551 - wayfare - INFO - Completed: parse_document: /docs/corrupted.pdf (0.41ms)

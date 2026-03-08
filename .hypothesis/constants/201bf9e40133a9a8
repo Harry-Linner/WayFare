@@ -1,0 +1,4 @@
+# file: C:\Users\666\AppData\Roaming\Python\Python313\site-packages\oauth_cli_kit\server.py
+# hypothesis_version: 6.151.9
+
+[b'Internal error', b'Missing code', b'Not found', b'State mismatch', 200, 400, 404, 500, 1455, '/auth/callback', 'Connection', 'Content-Length', 'Content-Type', 'HTTP/1.1', 'OAuthCliKit/1.0', 'close', 'code', 'localhost', 'on_code', 'state', 'utf-8']

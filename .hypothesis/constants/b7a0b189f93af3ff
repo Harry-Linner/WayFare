@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\logging.py
+# hypothesis_version: 6.151.9
+
+[1000, 1024, '.wayfare', 'console', 'file', 'utf-8', 'wayfare', 'wayfare.log']

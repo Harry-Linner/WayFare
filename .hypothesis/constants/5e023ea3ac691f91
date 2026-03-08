@@ -1,0 +1,4 @@
+# file: D:\Desktop\Meta AI\WayFare\wayfare\behavior_analyzer.py
+# hypothesis_version: 6.151.9
+
+[0.0, 120, 'avgDuration', 'docHash', 'intervention', 'message', 'page', 'page_view', 'scroll', 'statistics', 'text_select', 'totalScrolls', 'totalSelects', 'totalViews', 'type']
