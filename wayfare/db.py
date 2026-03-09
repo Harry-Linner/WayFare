@@ -579,3 +579,252 @@ class SQLiteDB:
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute("DELETE FROM behaviors WHERE doc_hash = ?", (doc_hash,))
             await db.commit()
+
+
+    # ============= 通知系统方法 =============
+
+    async def save_notification(self, notification: Dict[str, Any]):
+        """保存通知到数据库"""
+        import json
+        async with aiosqlite.connect(self.db_path) as db:
+            await db.execute("""
+                INSERT INTO notifications
+                (id, user_id, type, title, message, priority, icon,
+                 action_url, action_label, action_type, action_payload,
+                 metadata, created_at, scheduled_at, expires_at,
+                 is_read, is_dismissed)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                notification['id'],
+                notification['user_id'],
+                notification['type'],
+                notification['title'],
+                notification['message'],
+                notification['priority'],
+                notification.get('icon'),
+                notification.get('action_url'),
+                notification.get('action_label'),
+                notification.get('action_type'),
+                json.dumps(notification.get('action_payload')) if notification.get('action_payload') else None,
+                json.dumps(notification.get('metadata')) if notification.get('metadata') else None,
+                notification['created_at'],
+                notification.get('scheduled_at'),
+                notification.get('expires_at'),
+                notification.get('is_read', False),
+                notification.get('is_dismissed', False)
+            ))
+            await db.commit()
+
+    async def get_notification(self, notification_id: str) -> Optional[Dict[str, Any]]:
+        """获取单个通知"""
+        import json
+        async with aiosqlite.connect(self.db_path) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute(
+                "SELECT * FROM notifications WHERE id = ?",
+                (notification_id,)
+            ) as cursor:
+                row = await cursor.fetchone()
+                if row:
+                    notif = dict(row)
+                    if notif.get('action_payload'):
+                        notif['action_payload'] = json.loads(notif['action_payload'])
+                    if notif.get('metadata'):
+                        notif['metadata'] = json.loads(notif['metadata'])
+                    return notif
+                return None
+
+    async def query_notifications(
+        self,
+        filters: Dict[str, Any],
+        limit: int = 20,
+        offset: int = 0,
+        sort_by: str = 'recent'
+    ) -> List[Dict[str, Any]]:
+        """查询通知列表"""
+        import json
+
+        # 构建 WHERE 子句
+        where_clauses = []
+        params = []
+
+        if 'user_id' in filters:
+            where_clauses.append("user_id = ?")
+            params.append(filters['user_id'])
+
+        if 'project_id' in filters:
+            where_clauses.append("json_extract(metadata, '$.projectId') = ?")
+            params.append(filters['project_id'])
+
+        if 'types' in filters and filters['types']:
+            placeholders = ','.join('?' * len(filters['types']))
+            where_clauses.append(f"type IN ({placeholders})")
+            params.extend(filters['types'])
+
+        if 'is_read' in filters:
+            where_clauses.append("is_read = ?")
+            params.append(filters['is_read'])
+
+        if 'expires_at_gt' in filters:
+            where_clauses.append("(expires_at IS NULL OR expires_at > ?)")
+            params.append(filters['expires_at_gt'])
+
+        # 默认不返回已关闭的通知
+        where_clauses.append("is_dismissed = 0")
+
+        where_sql = " AND ".join(where_clauses) if where_clauses else "1=1"
+
+        # 排序
+        order_by = "created_at DESC" if sort_by == 'recent' else "priority DESC, created_at DESC"
+
+        query = f"""
+            SELECT * FROM notifications
+            WHERE {where_sql}
+            ORDER BY {order_by}
+            LIMIT ? OFFSET ?
+        """
+        params.extend([limit, offset])
+
+        async with aiosqlite.connect(self.db_path) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute(query, params) as cursor:
+                rows = await cursor.fetchall()
+                notifications = []
+                for row in rows:
+                    notif = dict(row)
+                    if notif.get('action_payload'):
+                        notif['action_payload'] = json.loads(notif['action_payload'])
+                    if notif.get('metadata'):
+                        notif['metadata'] = json.loads(notif['metadata'])
+                    notifications.append(notif)
+                return notifications
+
+    async def count_notifications(self, filters: Dict[str, Any]) -> int:
+        """统计通知数量"""
+        where_clauses = []
+        params = []
+
+        if 'user_id' in filters:
+            where_clauses.append("user_id = ?")
+            params.append(filters['user_id'])
+
+        if 'is_read' in filters:
+            where_clauses.append("is_read = ?")
+            params.append(filters['is_read'])
+
+        if 'expires_at_gt' in filters:
+            where_clauses.append("(expires_at IS NULL OR expires_at > ?)")
+            params.append(filters['expires_at_gt'])
+
+        where_clauses.append("is_dismissed = 0")
+
+        where_sql = " AND ".join(where_clauses) if where_clauses else "1=1"
+
+        async with aiosqlite.connect(self.db_path) as db:
+            async with db.execute(
+                f"SELECT COUNT(*) FROM notifications WHERE {where_sql}",
+                params
+            ) as cursor:
+                row = await cursor.fetchone()
+                return row[0] if row else 0
+
+    async def update_notification(
+        self,
+        notification_id: str,
+        updates: Dict[str, Any]
+    ):
+        """更新通知"""
+        set_clauses = []
+        params = []
+
+        for key, value in updates.items():
+            set_clauses.append(f"{key} = ?")
+            params.append(value)
+
+        params.append(notification_id)
+
+        set_sql = ", ".join(set_clauses)
+
+        async with aiosqlite.connect(self.db_path) as db:
+            await db.execute(
+                f"UPDATE notifications SET {set_sql} WHERE id = ?",
+                params
+            )
+            await db.commit()
+
+    async def batch_update_notifications(
+        self,
+        notification_ids: List[str],
+        user_id: str,
+        updates: Dict[str, Any]
+    ):
+        """批量更新通知"""
+        set_clauses = []
+        params = []
+
+        for key, value in updates.items():
+            set_clauses.append(f"{key} = ?")
+            params.append(value)
+
+        placeholders = ','.join('?' * len(notification_ids))
+        params.extend(notification_ids)
+        params.append(user_id)
+
+        set_sql = ", ".join(set_clauses)
+
+        async with aiosqlite.connect(self.db_path) as db:
+            await db.execute(
+                f"""
+                UPDATE notifications
+                SET {set_sql}
+                WHERE id IN ({placeholders}) AND user_id = ?
+                """,
+                params
+            )
+            await db.commit()
+
+    async def get_notification_preferences(
+        self,
+        user_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """获取通知偏好设置"""
+        import json
+        async with aiosqlite.connect(self.db_path) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute(
+                "SELECT * FROM notification_preferences WHERE user_id = ?",
+                (user_id,)
+            ) as cursor:
+                row = await cursor.fetchone()
+                if row:
+                    prefs = dict(row)
+                    prefs['enabled_types'] = json.loads(prefs['enabled_types'])
+                    if prefs.get('quiet_hours'):
+                        prefs['quiet_hours'] = json.loads(prefs['quiet_hours'])
+                    return prefs
+                return None
+
+    async def save_notification_preferences(self, prefs: Dict[str, Any]):
+        """保存通知偏好设置"""
+        import json
+        async with aiosqlite.connect(self.db_path) as db:
+            await db.execute("""
+                INSERT OR REPLACE INTO notification_preferences
+                (user_id, enabled_types, enable_browser_notifications,
+                 enable_in_app_notifications, enable_email_notifications,
+                 min_priority_level, quiet_hours, max_notifications_per_hour,
+                 updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                prefs['user_id'],
+                json.dumps(prefs['enabled_types']),
+                prefs.get('enable_browser_notifications', True),
+                prefs.get('enable_in_app_notifications', True),
+                prefs.get('enable_email_notifications', False),
+                prefs.get('min_priority_level', 'normal'),
+                json.dumps(prefs['quiet_hours']) if prefs.get('quiet_hours') else None,
+                prefs.get('max_notifications_per_hour'),
+                prefs['updated_at']
+            ))
+            await db.commit()
+

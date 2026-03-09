@@ -12,6 +12,10 @@ openai>=2.8.0
 # Database
 aiosqlite>=0.20.0,<1.0.0
 
+# Web Framework (for notification API)
+flask>=3.0.0,<4.0.0
+flask-cors>=4.0.0,<5.0.0
+
 # Document Parsing
 PyMuPDF>=1.24.0,<2.0.0
 markdown-it-py>=3.0.0,<4.0.0

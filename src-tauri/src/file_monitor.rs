@@ -5,7 +5,7 @@
 /// - 自动触发内容解析和 AI 增强
 /// - 无需用户手动操作
 
-use tauri::AppHandle;
+use tauri::{AppHandle, Emitter};
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use std::collections::HashMap;
@@ -29,8 +29,8 @@ impl FileMonitor {
     pub fn add_watched_folder(&self, path: PathBuf) {
         let mut folders = self.watched_folders.lock().unwrap();
         if !folders.contains(&path) {
-            folders.push(path);
             println!("✅ 开始监控文件夹: {:?}", path);
+            folders.push(path);
         }
     }
     
@@ -134,7 +134,7 @@ impl FileMonitor {
         }
         
         // 发送通知给前端
-        let _ = self.app_handle.emit_all("file_added", serde_json::json!({
+        let _ = self.app_handle.emit("file_added", serde_json::json!({
             "file_path": file_path.to_string_lossy(),
             "file_name": file_name,
             "file_type": file_type,
@@ -144,7 +144,7 @@ impl FileMonitor {
         // 🔥 新增：自动触发后续任务
         // 1. 提交内容分析任务
         println!("  ➡️ 提交内容分析任务到 Agent 调度器");
-        let _ = self.app_handle.emit_all(
+        let _ = self.app_handle.emit(
             "trigger_content_analysis",
             serde_json::json!({
                 "file_path": file_path.to_string_lossy(),
@@ -155,7 +155,7 @@ impl FileMonitor {
         
         // 2. 提交补充资源获取任务
         println!("  ➡️ 提交补充资源获取任务");
-        let _ = self.app_handle.emit_all(
+        let _ = self.app_handle.emit(
             "trigger_resource_fetch",
             serde_json::json!({
                 "file_name": file_name,
@@ -192,7 +192,7 @@ impl FileMonitor {
         }
         
         // 发送通知给前端
-        let _ = self.app_handle.emit_all("file_modified", serde_json::json!({
+        let _ = self.app_handle.emit("file_modified", serde_json::json!({
             "file_path": file_path.to_string_lossy(),
             "file_name": file_name,
             "file_type": file_type,
@@ -202,7 +202,7 @@ impl FileMonitor {
         // 🔥 新增：自动触发内容重新分析
         // 1. 重新分析内容
         println!("  ➡️ 触发内容重新分析任务");
-        let _ = self.app_handle.emit_all(
+        let _ = self.app_handle.emit(
             "trigger_content_re_analysis",
             serde_json::json!({
                 "file_path": file_path.to_string_lossy(),
@@ -213,7 +213,7 @@ impl FileMonitor {
         
         // 2. 更新批注（删除已过时的，添加新的）
         println!("  ➡️ 触发批注更新任务");
-        let _ = self.app_handle.emit_all(
+        let _ = self.app_handle.emit(
             "trigger_annotation_update",
             serde_json::json!({
                 "file_path": file_path.to_string_lossy(),
@@ -227,7 +227,7 @@ impl FileMonitor {
         println!("🗑️ 检测到文件删除: {:?}", file_path);
         
         // 发送通知给前端
-        let _ = self.app_handle.emit_all("file_deleted", serde_json::json!({
+        let _ = self.app_handle.emit("file_deleted", serde_json::json!({
             "file_path": file_path.to_string_lossy(),
             "timestamp": chrono::Local::now().to_rfc3339(),
         }));

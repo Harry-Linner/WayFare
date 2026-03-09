@@ -9,6 +9,7 @@ interface FileUploadProps {
   onFolderSelected?: (files: File[]) => void;
   supportedFormats?: string[]; // e.g., ['.md', '.pdf', '.txt', '.doc', '.docx']
   maxFileSize?: number; // in MB
+  compact?: boolean; // 紧凑模式，用于向导等空间受限的场景
 }
 
 interface UploadedFile {
@@ -23,6 +24,7 @@ export function FileUpload({
   onFolderSelected,
   supportedFormats = ['.md', '.pdf', '.txt', '.doc', '.docx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg', '.gif', '.webp'],
   maxFileSize = 100, // MB
+  compact = false,
 }: FileUploadProps) {
   const [isDragActive, setIsDragActive] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
@@ -142,7 +144,9 @@ export function FileUpload({
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
-        className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+        className={`relative border-2 border-dashed rounded-lg text-center transition-colors ${
+          compact ? 'p-4' : 'p-8'
+        } ${
           isDragActive
             ? 'border-indigo-500 bg-indigo-50'
             : 'border-stone-300 bg-stone-50 hover:border-indigo-400'
@@ -152,19 +156,21 @@ export function FileUpload({
         {isDragActive && (
           <div className="absolute inset-0 flex items-center justify-center bg-indigo-500/10 rounded-lg">
             <div className="text-center">
-              <Upload className="w-12 h-12 text-indigo-600 mx-auto mb-2 animate-bounce" />
-              <p className="text-lg font-semibold text-indigo-600">释放以上传文件</p>
+              <Upload className={`${compact ? 'w-8 h-8' : 'w-12 h-12'} text-indigo-600 mx-auto mb-2 animate-bounce`} />
+              <p className={`${compact ? 'text-base' : 'text-lg'} font-semibold text-indigo-600`}>释放以上传文件</p>
             </div>
           </div>
         )}
 
         {!isDragActive && (
           <div>
-            <Upload className="w-12 h-12 text-stone-400 mx-auto mb-3" />
-            <p className="text-stone-800 font-semibold mb-2">拖拽文件到此，或点击选择</p>
-            <p className="text-sm text-stone-500 mb-4">
-              支持格式: {supportedFormats.join(', ')} (最大 {maxFileSize}MB)
-            </p>
+            <Upload className={`${compact ? 'w-8 h-8' : 'w-12 h-12'} text-stone-400 mx-auto ${compact ? 'mb-2' : 'mb-3'}`} />
+            <p className={`text-stone-800 font-semibold ${compact ? 'mb-1 text-sm' : 'mb-2'}`}>拖拽文件到此，或点击选择</p>
+            {!compact && (
+              <p className="text-sm text-stone-500 mb-4">
+                支持格式: {supportedFormats.join(', ')} (最大 {maxFileSize}MB)
+              </p>
+            )}
 
             <div className="flex gap-3 justify-center flex-wrap">
               <button
@@ -172,7 +178,7 @@ export function FileUpload({
                   console.log('📄 点击选择文件按钮，ref:', fileInputRef.current);
                   fileInputRef.current?.click();
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                className={`inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors ${compact ? 'text-xs' : 'text-sm'} font-medium`}
               >
                 <File size={16} />
                 选择文件
@@ -183,7 +189,7 @@ export function FileUpload({
                   console.log('📂 点击选择文件夹按钮');
                   folderInputRef.current?.click();
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-stone-200 text-stone-800 rounded-lg hover:bg-stone-300 transition-colors text-sm font-medium"
+                className={`inline-flex items-center gap-2 px-4 py-2 bg-stone-200 text-stone-800 rounded-lg hover:bg-stone-300 transition-colors ${compact ? 'text-xs' : 'text-sm'} font-medium`}
               >
                 <Folder size={16} />
                 选择文件夹
@@ -218,9 +224,9 @@ export function FileUpload({
       {uploadedFiles.length > 0 && (
         <div className="bg-white rounded-lg border border-stone-200 overflow-hidden">
           {/* 标题栏 */}
-          <div className="bg-stone-50 px-4 py-3 border-b border-stone-200 flex items-center justify-between">
+          <div className={`bg-stone-50 border-b border-stone-200 flex items-center justify-between ${compact ? 'px-3 py-2' : 'px-4 py-3'}`}>
             <div className="flex items-center gap-3">
-              <h3 className="font-semibold text-stone-800">上传列表</h3>
+              <h3 className={`font-semibold text-stone-800 ${compact ? 'text-sm' : ''}`}>上传列表</h3>
               <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
                 {uploadedFiles.length} 个文件
               </span>
@@ -244,28 +250,30 @@ export function FileUpload({
           </div>
 
           {/* 文件列表 */}
-          <div className="max-h-96 overflow-y-auto">
+          <div className={`overflow-y-auto ${compact ? 'max-h-32' : 'max-h-96'}`}>
             {uploadedFiles.map((uf, idx) => (
               <div
                 key={idx}
-                className="px-4 py-3 border-b border-stone-100 last:border-b-0 flex items-center justify-between hover:bg-stone-50 transition-colors group"
+                className={`border-b border-stone-100 last:border-b-0 flex items-center justify-between hover:bg-stone-50 transition-colors group ${compact ? 'px-3 py-2' : 'px-4 py-3'}`}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <File size={16} className="text-stone-400 flex-shrink-0" />
+                    <File size={compact ? 14 : 16} className="text-stone-400 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-stone-800 truncate">
+                      <p className={`font-medium text-stone-800 truncate ${compact ? 'text-xs' : 'text-sm'}`}>
                         {uf.file.name}
                       </p>
-                      <p className="text-xs text-stone-500">
-                        {(uf.file.size / 1024).toFixed(2)} KB
-                      </p>
+                      {!compact && (
+                        <p className="text-xs text-stone-500">
+                          {(uf.file.size / 1024).toFixed(2)} KB
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   {/* 错误信息 */}
                   {uf.error && (
-                    <div className="mt-1 ml-6 text-xs text-red-600 flex items-center gap-1">
+                    <div className={`mt-1 text-xs text-red-600 flex items-center gap-1 ${compact ? 'ml-4' : 'ml-6'}`}>
                       <AlertCircle size={12} />
                       {uf.error}
                     </div>
@@ -320,9 +328,11 @@ export function FileUpload({
       )}
 
       {/* 快速链接 */}
-      <div className="text-xs text-stone-500 text-center">
-        <p>💡 提示: 你可以选择整个文件夹来批量导入学习资料</p>
-      </div>
+      {!compact && (
+        <div className="text-xs text-stone-500 text-center">
+          <p>💡 提示: 你可以选择整个文件夹来批量导入学习资料</p>
+        </div>
+      )}
     </div>
   );
 }

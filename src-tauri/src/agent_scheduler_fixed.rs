@@ -141,11 +141,11 @@ impl AgentScheduler {
                 // ).await?;
                 //
                 // 然后发送事件给前端
-                // self.app_handle.emit_all("agent_proactive_message", backend_response).ok();
+                // self.app_handle.emit("agent_proactive_message", backend_response).ok();
 
                 // 为了演示，这里模拟发送推送
                 self.app_handle
-                    .emit_all(
+                    .emit(
                         "agent_proactive_message",
                         serde_json::json!({
                             "message_type": "confusion_detected",

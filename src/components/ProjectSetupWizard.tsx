@@ -3,10 +3,11 @@
  * 为每个学习项目收集特定的学习目标、偏好、资源
  */
 import { useState } from 'react';
-import { ChevronRight, Folder, Calendar, Target, Upload } from 'lucide-react';
+import { ChevronRight, Folder, Calendar, Target } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppStore } from '../store/appStore';
 import type { LearningProject } from '../types';
+import { FileUpload } from './FileUpload';
 
 interface ProjectSetupWizardProps {
   onComplete?: (project: LearningProject) => void;
@@ -86,9 +87,16 @@ export function ProjectSetupWizard({ onComplete, onCancel }: ProjectSetupWizardP
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        {/* Debug Info - 可以在开发时查看状态 */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="bg-yellow-100 px-4 py-2 text-xs text-yellow-800 border-b border-yellow-200">
+            步骤: {step}/3 | 项目名称: {projectData.name || '(未填写)'} | 文件夹: {projectData.folderPath || '(未选择)'}
+          </div>
+        )}
+        
         {/* Progress Bar */}
-        <div className="h-1 bg-stone-200">
+        <div className="h-1 bg-stone-200 flex-shrink-0">
           <motion.div
             className="h-full bg-gradient-to-r from-indigo-500 to-purple-500"
             initial={{ width: 0 }}
@@ -97,7 +105,9 @@ export function ProjectSetupWizard({ onComplete, onCancel }: ProjectSetupWizardP
           />
         </div>
 
-        <AnimatePresence mode="wait">
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto">
+          <AnimatePresence mode="wait">
           {/* Step 1: Project Basics */}
           {step === 1 && (
             <motion.div
@@ -151,15 +161,42 @@ export function ProjectSetupWizard({ onComplete, onCancel }: ProjectSetupWizardP
                 <div>
                   <label className="block text-sm font-medium text-stone-700 mb-2 flex items-center space-x-2">
                     <Folder size={16} />
-                    <span>学习资料文件夹</span>
+                    <span>学习资料文件夹（可选）</span>
                   </label>
-                  <div className="border-2 border-dashed border-stone-300 rounded-lg p-6 text-center hover:bg-stone-50 cursor-pointer transition-colors">
-                    <Upload size={32} className="mx-auto mb-2 text-stone-400" />
-                    <p className="text-stone-600 font-medium">选择文件夹</p>
-                    <p className="text-xs text-stone-500 mt-1">
-                      或者将文件夹拖到这里
-                    </p>
+                  <div className="max-h-60 overflow-y-auto">
+                    <FileUpload
+                      compact={true}
+                      onFolderSelected={(files) => {
+                        console.log('📁 文件夹已选择，共', files.length, '个文件');
+                        // 从第一个文件的路径中提取文件夹路径
+                        if (files.length > 0) {
+                          const firstFile = files[0];
+                          // @ts-expect-error - webkitRelativePath 用于获取相对路径
+                          const relativePath = firstFile.webkitRelativePath || firstFile.name;
+                          const folderName = relativePath.split('/')[0];
+                          setProjectData({ ...projectData, folderPath: folderName });
+                          console.log('✅ 文件夹路径已设置:', folderName);
+                        }
+                      }}
+                      onFilesSelected={(files) => {
+                        console.log('📄 文件已选择，共', files.length, '个文件');
+                        if (files.length > 0) {
+                          setProjectData({ ...projectData, folderPath: '已选择 ' + files.length + ' 个文件' });
+                        }
+                      }}
+                      supportedFormats={['.md', '.pdf', '.txt', '.doc', '.docx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg', '.gif', '.webp']}
+                      maxFileSize={100}
+                    />
                   </div>
+                  {projectData.folderPath && (
+                    <div className="mt-2 text-sm text-green-600 flex items-center space-x-2">
+                      <Folder size={14} />
+                      <span>{projectData.folderPath}</span>
+                    </div>
+                  )}
+                  <p className="mt-2 text-xs text-stone-500">
+                    💡 你也可以稍后在主界面中添加学习资料
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -498,30 +535,42 @@ export function ProjectSetupWizard({ onComplete, onCancel }: ProjectSetupWizardP
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
 
-        {/* Navigation */}
-        <div className="bg-stone-50 px-8 py-4 flex justify-between">
+        {/* Navigation - 固定在底部 */}
+        <div className="bg-gradient-to-r from-stone-100 to-stone-50 px-8 py-4 flex justify-between flex-shrink-0 border-t-2 border-indigo-200 relative z-10 shadow-lg">
           <button
-            onClick={() => setStep(Math.max(1, step - 1))}
+            onClick={() => {
+              console.log('点击了上一步按钮，当前步骤:', step);
+              setStep(Math.max(1, step - 1));
+            }}
             disabled={step === 1}
-            className="px-4 py-2 text-stone-700 font-medium rounded-lg hover:bg-stone-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-2 text-stone-700 font-medium rounded-lg hover:bg-stone-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-stone-300"
           >
             ← 上一步
           </button>
           <div className="flex items-center space-x-2">
             <button
-              onClick={onCancel}
-              className="px-4 py-2 text-stone-700 font-medium rounded-lg hover:bg-stone-200 transition-colors"
+              onClick={() => {
+                console.log('点击了取消按钮');
+                onCancel?.();
+              }}
+              className="px-4 py-2 text-stone-700 font-medium rounded-lg hover:bg-stone-200 transition-colors border border-stone-300"
             >
               取消
             </button>
             <button
-              onClick={handleNext}
-              disabled={!projectData.name}
-              className="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => {
+                console.log('点击了下一步按钮，当前步骤:', step, '项目名称:', projectData.name);
+                handleNext();
+              }}
+              disabled={step === 1 && !projectData.name}
+              className="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 font-bold rounded-lg hover:shadow-xl transition-all flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-purple-700"
+              style={{ color: 'white' }}
+              title={step === 1 && !projectData.name ? '请先填写项目名称' : ''}
             >
-              <span>{step === 3 ? '创建项目' : '下一步'}</span>
-              <ChevronRight size={18} />
+              <span style={{ color: 'white' }}>{step === 3 ? '创建项目' : '下一步'}</span>
+              <ChevronRight size={18} style={{ color: 'white' }} />
             </button>
           </div>
         </div>

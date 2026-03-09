@@ -183,8 +183,8 @@ fn extract_prerequisites(content: &str, analysis: &mut ContentAnalysis) {
 fn extract_frequency_words(content: &str) -> Vec<(String, i32)> {
     let mut word_freq: std::collections::HashMap<String, i32> = std::collections::HashMap::new();
     
-    let words: Vec<&str> = content
-        .to_lowercase()
+    let lowercase_content = content.to_lowercase();
+    let words: Vec<&str> = lowercase_content
         .split(|c: char| !c.is_alphanumeric() && c != '_')
         .filter(|w| w.len() > 3)        // 只取长度 > 3 的词
         .collect();

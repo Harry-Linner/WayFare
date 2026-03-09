@@ -79,6 +79,28 @@ intervention_threshold: 120
 db_path: .wayfare/wayfare.db
 
 # ============================================
+# 通知系统配置
+# ============================================
+
+# Python 后端服务器端口
+backend_port: 3001
+
+# Python 后端 URL（Tauri 使用）
+backend_url: http://localhost:3001
+
+# 启用测试通知功能（仅开发环境）
+enable_test_notifications: false
+
+# 通知过期时间（小时）
+notification_expiry_hours: 24
+
+# 通知查询最大返回数量
+notification_max_limit: 100
+
+# 自动清理已关闭通知的天数
+notification_cleanup_days: 30
+
+# ============================================
 # 环境变量覆盖
 # ============================================
 # 所有配置项都可以通过环境变量覆盖，格式为: WAYFARE_<配置项名称>

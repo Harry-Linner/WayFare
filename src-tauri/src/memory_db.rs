@@ -117,7 +117,7 @@ impl MemoryDatabase {
             
             // 添加常见错误
             if !concept_mem.common_mistakes.contains(&mistake) {
-                concept_mem.common_mistakes.push(mistake);
+                concept_mem.common_mistakes.push(mistake.clone());
             }
         }
         
@@ -152,7 +152,7 @@ impl MemoryDatabase {
             
             // 记录有效的解释方法
             if !concept_mem.effective_explanations.contains(&explanation_method) {
-                concept_mem.effective_explanations.push(explanation_method);
+                concept_mem.effective_explanations.push(explanation_method.clone());
             }
         }
         

@@ -62,6 +62,15 @@ export function AppLayout() {
               addProject(project);
               setCurrentProject(project.id);
             }}
+            onCancel={() => {
+              // 取消项目设置，返回到入驻流程或退出
+              console.log('用户取消了项目设置');
+              // 可以选择清除 learnerProfile 返回入驻流程
+              // 或者显示一个提示
+              if (confirm('确定要取消项目设置吗？这将返回到入驻流程。')) {
+                setLearnerProfile(null);
+              }
+            }}
           />
         </div>
       </div>

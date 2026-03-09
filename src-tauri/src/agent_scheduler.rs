@@ -1,4 +1,4 @@
-/// 主动式 Agent 调度系统
+﻿/// 主动式 Agent 调度系统
 /// 
 /// 这是 WayFare 的核心中枢，负责：
 /// 1. 监听前端的交互数据
@@ -7,13 +7,12 @@
 /// 4. 主动推送事件给前端
 /// 
 /// 数据流：
-/// 前端交互 → report_interactions → 分析 → 生成任务 → emit_all 推送
+/// 前端交互 → report_interactions → 分析 → 生成任务 → emit 推送
 
-use std::time::{SystemTime, UNIX_EPOCH, Duration};
+use std::time::{SystemTime, UNIX_EPOCH};
 use std::sync::{Arc, Mutex};
 use std::collections::HashMap;
-use tauri::AppHandle;
-use std::thread;
+use tauri::{AppHandle, Emitter};
 
 #[derive(Clone, Debug)]
 pub struct AgentTask {
@@ -132,7 +131,7 @@ impl AgentScheduler {
                 );
 
                 self.app_handle
-                    .emit_all(
+                    .emit(
                         "agent_proactive_message",
                         serde_json::json!({
                             "message_type": "confusion_detected",
@@ -151,7 +150,7 @@ impl AgentScheduler {
                 println!("🔄 执行任务: 浅尝学习提醒");
                 
                 self.app_handle
-                    .emit_all(
+                    .emit(
                         "agent_proactive_message",
                         serde_json::json!({
                             "message_type": "shallow_study_warning",
@@ -167,7 +166,7 @@ impl AgentScheduler {
                 println!("🔄 执行任务: 补充资源获取");
                 
                 self.app_handle
-                    .emit_all(
+                    .emit(
                         "supplementary_resources_available",
                         serde_json::json!({
                             "message_type": "resources_ready",
@@ -188,7 +187,7 @@ impl AgentScheduler {
                 println!("🔄 执行任务: 学习计划生成");
                 
                 self.app_handle
-                    .emit_all(
+                    .emit(
                         "learning_plan_ready",
                         serde_json::json!({
                             "plan_id": format!("plan_{}", current_timestamp()),
@@ -214,7 +213,7 @@ impl AgentScheduler {
                 println!("🔄 执行任务: 复习提醒安排");
                 
                 self.app_handle
-                    .emit_all(
+                    .emit(
                         "review_reminder",
                         serde_json::json!({
                             "concept": task.payload.get("concept"),
@@ -230,7 +229,7 @@ impl AgentScheduler {
                 println!("🔄 执行任务: 常见错误识别");
                 
                 self.app_handle
-                    .emit_all(
+                    .emit(
                         "common_mistake_alert",
                         serde_json::json!({
                             "content": task.payload.get("content"),
@@ -246,7 +245,7 @@ impl AgentScheduler {
                 println!("🔄 执行任务: 考试截止提醒");
                 
                 self.app_handle
-                    .emit_all(
+                    .emit(
                         "deadline_alert",
                         serde_json::json!({
                             "deadline": task.payload.get("target_date"),
@@ -266,7 +265,7 @@ impl AgentScheduler {
                 
                 if !is_in_scope {
                     self.app_handle
-                        .emit_all(
+                        .emit(
                             "content_out_of_scope",
                             serde_json::json!({
                                 "message": "提示：你正在学习的这部分内容不在考试范围内。建议专注于考试重点。",
@@ -298,7 +297,7 @@ impl AgentScheduler {
 
         // 取出所有待处理的任务
         let pending: Vec<AgentTask> = tasks
-            .iter_mut()
+            .iter()
             .filter(|t| t.status == "pending")
             .cloned()
             .collect();
@@ -384,22 +383,6 @@ fn current_timestamp() -> u64 {
 }
 
 // 为了使 AgentTask 可以 clone
-#[allow(dead_code)]
-impl Clone for AgentTask {
-    fn clone(&self) -> Self {
-        AgentTask {
-            id: self.id.clone(),
-            task_type: self.task_type.clone(),
-            document_id: self.document_id.clone(),
-            annotation_id: self.annotation_id.clone(),
-            scheduled_time: self.scheduled_time,
-            priority: self.priority,
-            status: self.status.clone(),
-            payload: self.payload.clone(),
-        }
-    }
-}
-
 impl AgentScheduler {
     /// 检测浅尝问题
     /// 如果学生快速滑过某个重点内容，提醒深入学习
@@ -428,7 +411,7 @@ impl AgentScheduler {
             
             self.add_task(task);
             
-            let _ = self.app_handle.emit_all("agent_proactive_message", serde_json::json!({
+            let _ = self.app_handle.emit("agent_proactive_message", serde_json::json!({
                 "message_type": "shallow_study_warning",
                 "document_id": document_id,
                 "suggestion": "这是很重要的内容哦，但你花费的时间可能有点短。不如我给你提几个思考题？"
@@ -493,7 +476,7 @@ impl AgentScheduler {
             "success_criteria": format!("在 {} 天内掌握 80% 的内容", days_remaining)
         });
         
-        let _ = self.app_handle.emit_all("learning_plan_suggested", plan);
+        let _ = self.app_handle.emit("learning_plan_suggested", plan);
     }
     
     /// 生成复习提醒
@@ -502,7 +485,7 @@ impl AgentScheduler {
         &self,
         user_id: String,
         concept: String,
-        first_learned_at: u64,
+        _first_learned_at: u64,
         review_count: u32,
     ) {
         println!("🔄 安排复习提醒: {} - {}", user_id, concept);
@@ -545,7 +528,7 @@ impl AgentScheduler {
         
         self.add_task(task);
         
-        let _ = self.app_handle.emit_all("review_scheduled", serde_json::json!({
+        let _ = self.app_handle.emit("review_scheduled", serde_json::json!({
             "user_id": user_id,
             "concept": concept,
             "review_count": review_count + 1,
@@ -582,7 +565,7 @@ impl AgentScheduler {
             
             self.add_task(task);
             
-            let _ = self.app_handle.emit_all("common_mistake_detected", serde_json::json!({
+            let _ = self.app_handle.emit("common_mistake_detected", serde_json::json!({
                 "content": content,
                 "mistake_count": mistake_count,
                 "suggestion": "这是一个常见的卡顿点。让我用不同的方式解释一下..."
@@ -618,21 +601,7 @@ impl AgentScheduler {
             done.extend(completed);
         }
     }
-    
-    /// 获取待处理任务数
-    pub fn get_pending_count(&self) -> usize {
-        self.pending_tasks.lock().unwrap().len()
-    }
 }
-
-/// 获取当前时间戳（秒）
-fn current_timestamp() -> u64 {
-    SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap()
-        .as_secs()
-}
-
 
 /// 启动主动式 Agent 调度系统
 pub fn start_agent_scheduler_impl(app_handle: AppHandle) {
