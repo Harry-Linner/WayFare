@@ -1,0 +1,71 @@
+---
+// 导入 Mock 数据进行初步渲染验证
+import { MOCK_CHAT } from '../constants/mockData';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-brand-cream h-screen overflow-hidden flex">
+    
+    <aside class="w-16 hover:w-64 transition-all duration-300 bg-brand-blue flex flex-col items-center py-4 z-20 shadow-lg">
+      <div class="flex-1 space-y-8">
+        <button class="p-2 hover:bg-white/20 rounded-lg text-white" title="管理文件夹">
+          <span class="block w-6 h-6 border-2 border-white rounded-sm"></span> </button>
+        <button class="p-2 hover:bg-white/20 rounded-lg text-white" title="修改配置">
+          <span class="block w-6 h-6 border-2 border-white rounded-full"></span>
+        </button>
+      </div>
+      <div class="pb-4">
+        <div class="w-8 h-8 bg-brand-sand rounded-full"></div> </div>
+    </aside>
+
+    <main class="flex-1 relative overflow-y-auto px-12 py-8 shadow-inner">
+      <header class="mb-8 border-b border-brand-blue/20 pb-4">
+        <h1 class="text-2xl font-bold text-gray-800">当前知识库文档</h1>
+      </header>
+      
+      <article class="prose prose-slate max-w-none relative">
+        <slot /> </article>
+    </main>
+
+    <section class="w-[380px] bg-brand-surface border-l border-brand-blue/20 flex flex-col">
+      <div class="p-4 border-b border-brand-blue/20 font-bold text-gray-700">
+        AI 学习助手
+      </div>
+      
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+        {MOCK_CHAT.map(msg => (
+          <div class={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div class={`max-w-[80%] p-3 rounded-2xl ${
+              msg.role === 'user' ? 'bg-brand-blue text-white' : 'bg-white shadow-sm'
+            }`}>
+              {msg.content}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="p-4 bg-white/50">
+        <div class="relative">
+          <input 
+            type="text" 
+            placeholder="点击气泡提问或输入内容..." 
+            class="w-full pl-4 pr-10 py-3 rounded-xl border-none focus:ring-2 focus:ring-brand-blue bg-white"
+          />
+          <button class="absolute right-3 top-3 text-brand-blue font-bold">↑</button>
+        </div>
+      </div>
+    </section>
+
+  </body>
+</html>

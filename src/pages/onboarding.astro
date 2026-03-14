@@ -1,0 +1,280 @@
+---
+// 确保引入了全局样式，这决定了 Tailwind 是否生效
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>定制你的学习画像</title>
+</head>
+<body class="bg-[#F7F7EA] h-screen flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 border border-[#A3D1CC]/20">
+    <!-- 进度条 -->
+    <div class="flex gap-2 mb-8" id="progress-bar">
+      <div class="h-1.5 flex-1 bg-[#A3D1CC] rounded-full progress-dot active" data-step="1"></div>
+      <div class="h-1.5 flex-1 bg-gray-200 rounded-full progress-dot" data-step="2"></div>
+      <div class="h-1.5 flex-1 bg-gray-200 rounded-full progress-dot" data-step="3"></div>
+    </div>
+
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">定制你的学习脑</h1>
+    <p class="text-gray-500 mb-8 text-sm">告诉 AI 你想要什么样的辅助，它将改变气泡生成的逻辑。</p>
+
+    <!-- 问题容器 -->
+    <div class="space-y-6">
+      <!-- 问题1：学习主目标 -->
+      <div class="question-step active" data-question="1">
+        <p class="font-medium text-sm text-gray-700 mb-4">你的学习主目标是？</p>
+        <div class="space-y-3">
+          <label class="flex items-center p-4 border-2 border-gray-100 rounded-2xl cursor-pointer hover:border-[#A3D1CC] transition-all goal-option">
+            <input type="radio" name="goal" value="exam" class="hidden peer">
+            <div class="flex-1">
+              <div class="font-bold text-gray-700">应试冲刺</div>
+              <div class="text-[10px] text-gray-500">重点生成考点、刷题气泡和复盘总结</div>
+            </div>
+            <div class="w-5 h-5 border-2 border-[#A3D1CC] rounded-full flex items-center justify-center peer-checked:bg-[#A3D1CC]">
+              <div class="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </label>
+
+          <label class="flex items-center p-4 border-2 border-gray-100 rounded-2xl cursor-pointer hover:border-[#A3D1CC] transition-all goal-option">
+            <input type="radio" name="goal" value="explore" class="hidden peer">
+            <div class="flex-1">
+              <div class="font-bold text-gray-700">系统构建</div>
+              <div class="text-[10px] text-gray-500">生成知识库地图，注重逻辑推导</div>
+            </div>
+            <div class="w-5 h-5 border-2 border-[#A3D1CC] rounded-full flex items-center justify-center peer-checked:bg-[#A3D1CC]">
+              <div class="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- 问题2：学习时长 -->
+      <div class="question-step hidden" data-question="2">
+        <p class="font-medium text-sm text-gray-700 mb-4">你每天的学习时长是？</p>
+        <div class="space-y-3">
+          <label class="flex items-center p-4 border-2 border-gray-100 rounded-2xl cursor-pointer hover:border-[#A3D1CC] transition-all">
+            <input type="radio" name="duration" value="short" class="hidden peer">
+            <div class="flex-1">
+              <div class="font-bold text-gray-700">1-2小时</div>
+              <div class="text-[10px] text-gray-500">碎片时间学习</div>
+            </div>
+            <div class="w-5 h-5 border-2 border-[#A3D1CC] rounded-full flex items-center justify-center peer-checked:bg-[#A3D1CC]">
+              <div class="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </label>
+
+          <label class="flex items-center p-4 border-2 border-gray-100 rounded-2xl cursor-pointer hover:border-[#A3D1CC] transition-all">
+            <input type="radio" name="duration" value="medium" class="hidden peer">
+            <div class="flex-1">
+              <div class="font-bold text-gray-700">3-4小时</div>
+              <div class="text-[10px] text-gray-500">专注学习</div>
+            </div>
+            <div class="w-5 h-5 border-2 border-[#A3D1CC] rounded-full flex items-center justify-center peer-checked:bg-[#A3D1CC]">
+              <div class="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </label>
+
+          <label class="flex items-center p-4 border-2 border-gray-100 rounded-2xl cursor-pointer hover:border-[#A3D1CC] transition-all">
+            <input type="radio" name="duration" value="long" class="hidden peer">
+            <div class="flex-1">
+              <div class="font-bold text-gray-700">5小时以上</div>
+              <div class="text-[10px] text-gray-500">深度学习</div>
+            </div>
+            <div class="w-5 h-5 border-2 border-[#A3D1CC] rounded-full flex items-center justify-center peer-checked:bg-[#A3D1CC]">
+              <div class="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- 问题3：学习偏好 -->
+      <div class="question-step hidden" data-question="3">
+        <p class="font-medium text-sm text-gray-700 mb-4">你偏好的学习方式？</p>
+        <div class="space-y-3">
+          <label class="flex items-center p-4 border-2 border-gray-100 rounded-2xl cursor-pointer hover:border-[#A3D1CC] transition-all">
+            <input type="radio" name="style" value="visual" class="hidden peer">
+            <div class="flex-1">
+              <div class="font-bold text-gray-700">视觉学习</div>
+              <div class="text-[10px] text-gray-500">图表、思维导图、可视化内容</div>
+            </div>
+            <div class="w-5 h-5 border-2 border-[#A3D1CC] rounded-full flex items-center justify-center peer-checked:bg-[#A3D1CC]">
+              <div class="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </label>
+
+          <label class="flex items-center p-4 border-2 border-gray-100 rounded-2xl cursor-pointer hover:border-[#A3D1CC] transition-all">
+            <input type="radio" name="style" value="text" class="hidden peer">
+            <div class="flex-1">
+              <div class="font-bold text-gray-700">文本学习</div>
+              <div class="text-[10px] text-gray-500">文字总结、要点整理</div>
+            </div>
+            <div class="w-5 h-5 border-2 border-[#A3D1CC] rounded-full flex items-center justify-center peer-checked:bg-[#A3D1CC]">
+              <div class="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </label>
+
+          <label class="flex items-center p-4 border-2 border-gray-100 rounded-2xl cursor-pointer hover:border-[#A3D1CC] transition-all">
+            <input type="radio" name="style" value="practice" class="hidden peer">
+            <div class="flex-1">
+              <div class="font-bold text-gray-700">实践学习</div>
+              <div class="text-[10px] text-gray-500">练习、项目、动手实践</div>
+            </div>
+            <div class="w-5 h-5 border-2 border-[#A3D1CC] rounded-full flex items-center justify-center peer-checked:bg-[#A3D1CC]">
+              <div class="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 导航按钮 -->
+    <div class="flex gap-4 mt-8">
+      <button id="prev-btn" class="flex-1 py-3 border-2 border-gray-200 text-gray-600 rounded-2xl font-bold hover:bg-gray-50 transition-all hidden">
+        上一步
+      </button>
+      <button id="next-btn" class="flex-1 py-3 bg-[#A3D1CC] text-white rounded-2xl font-bold shadow-lg shadow-[#A3D1CC]/30 hover:opacity-90 transition-all">
+        下一步
+      </button>
+    </div>
+
+    <!-- 开始学习按钮（仅在完成所有问题后显示） -->
+    <button id="start-btn" class="w-full py-4 bg-[#A3D1CC] text-white rounded-2xl font-bold shadow-lg shadow-[#A3D1CC]/30 hover:opacity-90 transition-all hidden mt-4">
+      开启学习之旅
+    </button>
+  </div>
+
+  <script>
+    // 多步骤问卷逻辑
+    let currentStep = 1;
+    const totalSteps = 3;
+    const answers = {};
+
+    const progressDots = document.querySelectorAll('.progress-dot');
+    const questionSteps = document.querySelectorAll('.question-step');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const startBtn = document.getElementById('start-btn');
+
+    // 更新进度条
+    function updateProgress() {
+      progressDots.forEach((dot, index) => {
+        if (index < currentStep) {
+          dot.classList.add('bg-[#A3D1CC]');
+          dot.classList.remove('bg-gray-200');
+        } else {
+          dot.classList.remove('bg-[#A3D1CC]');
+          dot.classList.add('bg-gray-200');
+        }
+      });
+    }
+
+    // 显示当前问题
+    function showCurrentQuestion() {
+      questionSteps.forEach((step, index) => {
+        if (index === currentStep - 1) {
+          step.classList.remove('hidden');
+          step.classList.add('active');
+        } else {
+          step.classList.add('hidden');
+          step.classList.remove('active');
+        }
+      });
+
+      // 更新按钮状态
+      prevBtn.classList.toggle('hidden', currentStep === 1);
+      nextBtn.classList.toggle('hidden', currentStep === totalSteps);
+      startBtn.classList.toggle('hidden', currentStep !== totalSteps);
+
+      // 检查当前问题是否已回答
+      checkCurrentAnswer();
+    }
+
+    // 检查当前问题是否已回答
+    function checkCurrentAnswer() {
+      const activeStep = document.querySelector('.question-step.active');
+      const radioInputs = activeStep.querySelectorAll('input[type="radio"]');
+      const hasAnswer = Array.from(radioInputs).some(input => input.checked);
+      
+      if (currentStep === totalSteps) {
+        startBtn.disabled = !hasAnswer;
+        startBtn.classList.toggle('opacity-50', !hasAnswer);
+      } else {
+        nextBtn.disabled = !hasAnswer;
+        nextBtn.classList.toggle('opacity-50', !hasAnswer);
+      }
+    }
+
+    // 保存答案
+    function saveAnswer() {
+      const activeStep = document.querySelector('.question-step.active');
+      const checkedInput = activeStep.querySelector('input[type="radio"]:checked');
+      if (checkedInput) {
+        answers[checkedInput.name] = checkedInput.value;
+      }
+    }
+
+    // 下一步
+    nextBtn.addEventListener('click', () => {
+      saveAnswer();
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateProgress();
+        showCurrentQuestion();
+      }
+    });
+
+    // 上一步
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateProgress();
+        showCurrentQuestion();
+      }
+    });
+
+    // 开始按钮点击事件
+    startBtn.addEventListener('click', () => {
+      saveAnswer();
+      
+      // 保存到本地存储
+      localStorage.setItem('learningProfile', JSON.stringify(answers));
+      console.log('学习画像已保存:', answers);
+      
+      // 跳转到知识库管理页面
+      window.location.href = '/dashboard';
+    });
+
+    // 监听单选按钮变化
+    document.addEventListener('change', (e) => {
+      if (e.target.type === 'radio') {
+        checkCurrentAnswer();
+      }
+    });
+
+    // 初始化
+    updateProgress();
+    showCurrentQuestion();
+    checkCurrentAnswer(); // 确保初始化时检查按钮状态
+
+    // 添加选择动画效果
+    document.querySelectorAll('label').forEach(label => {
+      label.addEventListener('click', function() {
+        // 移除同组其他选项的选中样式
+        const groupName = this.querySelector('input').name;
+        document.querySelectorAll(`input[name="${groupName}"]`).forEach(input => {
+          input.closest('label').classList.remove('border-[#A3D1CC]', 'bg-[#A3D1CC]/5');
+          input.closest('label').classList.add('border-gray-100');
+        });
+        
+        // 添加当前选项的选中样式
+        this.classList.remove('border-gray-100');
+        this.classList.add('border-[#A3D1CC]', 'bg-[#A3D1CC]/5');
+      });
+    });
+  </script>
+</body>
+</html>

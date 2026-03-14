@@ -1,0 +1,80 @@
+---
+import ThreePaneLayout from '../layouts/ThreePaneLayout.astro';
+import ReviewCard from '../components/dashboard/ReviewCard.astro';
+import '../styles/global.css';
+
+// 模拟复盘数据
+const recentActivities = [
+  { time: '2025-11-24', duration: '120min', focus: '数据结构', mastery: 85 },
+  { time: '2025-11-23', duration: '45min', focus: '操作系统', mastery: 40 },
+];
+---
+
+<ThreePaneLayout title="学习复盘中心">
+  <div class="max-w-4xl mx-auto space-y-8 py-4">
+    <header class="flex justify-between items-end">
+      <div>
+        <h1 class="text-3xl font-black text-gray-800">学习复盘</h1>
+        <p class="text-gray-500 mt-2 text-sm italic">“日拱一卒，功不唐捐。”</p>
+      </div>
+      <div class="text-right">
+        <span class="text-[10px] font-bold text-brand-blue uppercase bg-brand-blue/10 px-2 py-1 rounded">当前连续学习</span>
+        <div class="text-2xl font-black text-brand-blue">12 天</div>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ReviewCard />
+      <div class="bg-white p-6 rounded-3xl shadow-sm border border-brand-blue/5 flex flex-col justify-between">
+        <h4 class="text-xs font-bold text-gray-400 uppercase">高频错点回顾</h4>
+        <div class="space-y-3 mt-4">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 bg-priority-critical rounded-full"></span>
+            <span class="text-sm text-gray-700 flex-1">AVL 树的 RL 型双旋转</span>
+            <span class="text-[10px] bg-gray-100 px-2 py-1 rounded">回顾 4 次</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 bg-priority-important rounded-full"></span>
+            <span class="text-sm text-gray-700 flex-1">操作系统死锁的四个必要条件</span>
+            <span class="text-[10px] bg-gray-100 px-2 py-1 rounded">回顾 2 次</span>
+          </div>
+        </div>
+        <button class="w-full mt-6 py-2 border-2 border-brand-blue text-brand-blue text-xs font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all">
+          开始今日错题集演练
+        </button>
+      </div>
+    </div>
+
+    <section class="bg-white/50 backdrop-blur-sm rounded-3xl p-8 border border-brand-blue/10">
+      <h3 class="font-bold text-gray-800 mb-6">历史足迹</h3>
+      <div class="space-y-6">
+        {recentActivities.map(activity => (
+          <div class="relative pl-8 border-l-2 border-brand-blue/20 pb-2">
+            <div class="absolute -left-[9px] top-0 w-4 h-4 bg-brand-blue border-4 border-white rounded-full"></div>
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs text-gray-400 font-mono">{activity.time}</p>
+                <h5 class="font-bold text-gray-800">{activity.focus}</h5>
+              </div>
+              <div class="text-right">
+                <p class="text-sm font-bold text-brand-blue">{activity.duration}</p>
+                <p class="text-[10px] text-gray-400">掌握度: {activity.mastery}%</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</ThreePaneLayout>
+
+<style>
+  /* 页面入场动画 */
+  section, .grid > div {
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

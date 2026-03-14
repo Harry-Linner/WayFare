@@ -1,0 +1,91 @@
+---
+import type { Annotation } from '../../types/sharedtypes';
+
+interface Props {
+  annotation: Annotation;
+}
+
+const { annotation } = Astro.props;
+
+/**
+ * 根据优先级映射颜色类名
+ * critical: #E9A254 (Deep Orange)
+ * important: #EEBF79 (Orange)
+ * normal: #A3D1CC (Blue)
+ */
+const priorityColors = {
+  critical: 'bg-priority-critical shadow-[0_0_12px_rgba(233,162,84,0.6)]',
+  important: 'bg-priority-important',
+  normal: 'bg-brand-blue',
+  low: 'bg-gray-400',
+};
+
+// 根据 weight (0.0 - 1.0) 计算缩放比例
+const scale = 0.8 + (annotation.weight * 0.4); 
+---
+
+<div 
+  class={`group absolute cursor-pointer rounded-full flex items-center justify-center text-white font-bold transition-all hover:scale-110 z-20 ${priorityColors[annotation.priority]}`}
+  style={`
+    left: ${annotation.boundingBox.x}px; 
+    top: ${annotation.boundingBox.y}px; 
+    width: ${24 * scale}px; 
+    height: ${24 * scale}px;
+  `}
+  data-annotation-id={annotation.id}
+>
+  <span style="font-size: 10px;" class="pointer-events-none">
+    {annotation.priority === 'critical' ? '!' : ''}
+  </span>
+
+  <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 bg-white text-gray-800 p-4 rounded-xl shadow-2xl border border-brand-blue/20 z-50 pointer-events-auto cursor-default">
+    <div class="flex justify-between items-start mb-2">
+      <span class="text-[10px] px-2 py-0.5 bg-brand-surface text-brand-blue rounded-full font-bold uppercase">
+        {annotation.priority}
+      </span>
+      <span class="text-[10px] text-gray-400">考频: {annotation.frequency}</span>
+    </div>
+    
+    <h4 class="font-bold text-sm mb-1 text-gray-900">{annotation.knowledgePoint}</h4>
+    <p class="text-xs text-gray-500 line-clamp-3 mb-3 leading-relaxed">
+      {annotation.aiComment}
+    </p>
+    
+    <button 
+      class="w-full py-2 bg-brand-blue text-white text-xs rounded-lg hover:bg-brand-blue/90 transition-all font-bold shadow-sm active:scale-95"
+      data-ask-btn
+    >
+      向 AI 提问
+    </button>
+    
+    <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white"></div>
+  </div>
+</div>
+
+<style>
+  /* 呼吸灯效果：仅针对核心考点 (critical) */
+  .bg-priority-critical {
+    animation: pulse-glow 2.5s infinite;
+  }
+
+  @keyframes pulse-glow {
+    0% { transform: scale(1); box-shadow: 0 0 8px rgba(233,162,84,0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(233,162,84,0.7); }
+    100% { transform: scale(1); box-shadow: 0 0 8px rgba(233,162,84,0.4); }
+  }
+
+  /* 防止预览窗被容器遮挡 */
+  .group:hover {
+    z-index: 100;
+  }
+</style>
+
+<script>
+  // 局部脚本处理：防止点击“提问”按钮时事件冒泡
+  document.querySelectorAll('[data-ask-btn]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation(); // 阻止触发气泡本身的点击事件
+      // 逻辑已在 [kbId].astro 中统一处理
+    });
+  });
+</script>

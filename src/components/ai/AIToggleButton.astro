@@ -1,0 +1,136 @@
+---
+// src/components/ai/AIToggleButton.astro
+// AI助手唤起按钮组件
+export interface Props {
+  position?: 'left' | 'right';
+  bottom?: string;
+}
+
+const { position = 'right', bottom = '6rem' } = Astro.props;
+---
+
+<!-- AI助手唤起按钮 -->
+<button
+  id="ai-toggle-btn"
+  class={`fixed ${position}-4 z-50 bg-brand-blue text-white rounded-full shadow-lg shadow-brand-blue/30 hover:opacity-90 transition-all duration-300 hover:scale-110 active:scale-95`}
+  style={`bottom: ${bottom}`}
+  title="AI学习助手"
+>
+  <!-- AI图标 -->
+  <svg id="ai-icon" class="w-6 h-6 m-3" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+  </svg>
+  
+  <!-- 关闭图标（默认隐藏） -->
+  <svg id="close-icon" class="w-6 h-6 m-3 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+  </svg>
+  
+  <!-- 新消息提示点 -->
+  <div id="ai-notification" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full hidden"></div>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('ai-toggle-btn');
+  const aiIcon = document.getElementById('ai-icon');
+  const closeIcon = document.getElementById('close-icon');
+  const notification = document.getElementById('ai-notification');
+  
+  let isOpen = false;
+
+  // 切换AI助手状态
+  function toggleAIAssistant() {
+    isOpen = !isOpen;
+    
+    if (isOpen) {
+      // 显示关闭图标，隐藏AI图标
+      aiIcon?.classList.add('hidden');
+      closeIcon?.classList.remove('hidden');
+      toggleBtn?.classList.add('bg-gray-600');
+      toggleBtn?.classList.remove('bg-brand-blue');
+      
+      // 调用AI助手打开函数
+      if ((window as any).openAIAssistant) {
+        (window as any).openAIAssistant();
+      }
+    } else {
+      // 显示AI图标，隐藏关闭图标
+      aiIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+      toggleBtn?.classList.remove('bg-gray-600');
+      toggleBtn?.classList.add('bg-brand-blue');
+      
+      // 调用AI助手关闭函数
+      if ((window as any).closeAIAssistant) {
+        (window as any).closeAIAssistant();
+      }
+    }
+  }
+
+  // 监听按钮点击
+  toggleBtn?.addEventListener('click', toggleAIAssistant);
+
+  // 监听AI助手状态变化
+  window.addEventListener('ai-assistant-opened', () => {
+    isOpen = true;
+    aiIcon?.classList.add('hidden');
+    closeIcon?.classList.remove('hidden');
+    toggleBtn?.classList.add('bg-gray-600');
+    toggleBtn?.classList.remove('bg-brand-blue');
+    // 隐藏通知点
+    notification?.classList.add('hidden');
+  });
+
+  window.addEventListener('ai-assistant-closed', () => {
+    isOpen = false;
+    aiIcon?.classList.remove('hidden');
+    closeIcon?.classList.add('hidden');
+    toggleBtn?.classList.remove('bg-gray-600');
+    toggleBtn?.classList.add('bg-brand-blue');
+  });
+
+  // 模拟新消息通知（仅当AI助手关闭时显示）
+  setTimeout(() => {
+    if (!isOpen) {
+      notification?.classList.remove('hidden');
+    }
+  }, 5000);
+
+  // 点击通知后隐藏
+  notification?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notification?.classList.add('hidden');
+  });
+
+  // 暴露全局函数
+  (window as any).toggleAIAssistant = toggleAIAssistant;
+</script>
+
+<style>
+  /* 按钮悬停动画 */
+  #ai-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+  }
+  
+  /* 图标切换动画 */
+  #ai-icon, #close-icon {
+    transition: all 0.3s ease;
+  }
+  
+  /* 通知点闪烁动画 */
+  #ai-notification {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+</style>

@@ -1,0 +1,170 @@
+---
+import ThreePaneLayout from '../../layouts/ThreePaneLayout.astro';
+import FileUploadModal from '../../components/common/FileUploadModal.astro';
+
+// 默认知识库页面
+const kbId = 'default';
+---
+
+<ThreePaneLayout title={`知识库: ${kbId}`}>
+  <nav class="flex items-center justify-between mb-6 bg-white/50 p-3 rounded-xl border border-brand-blue/10">
+    <div class="flex items-center gap-2 text-sm text-gray-600">
+      <span class="opacity-50">项目:</span>
+      <span class="font-medium text-brand-blue">{kbId}</span>
+      <span class="mx-2 text-gray-300">/</span>
+      <span class="font-bold text-gray-800 underline decoration-brand-blue/30">欢迎使用学习空间</span>
+    </div>
+    <div class="flex gap-2">
+      <button class="text-xs px-3 py-1 bg-white border border-brand-blue/20 rounded-md hover:bg-brand-blue/5">上传文件</button>
+      <button class="text-xs px-3 py-1 bg-white border border-brand-blue/20 rounded-md hover:bg-brand-blue/5">新建项目</button>
+    </div>
+  </nav>
+
+  <div 
+    id="reader-container"
+    class="relative min-h-[600px] bg-white p-12 shadow-sm rounded-2xl border border-transparent transition-all duration-300 group flex items-center justify-center"
+  >
+    <div id="drop-overlay" class="hidden absolute inset-0 bg-brand-blue/10 border-2 border-dashed border-brand-blue rounded-2xl z-50 flex items-center justify-center pointer-events-none">
+      <div class="bg-white p-6 rounded-2xl shadow-xl text-center">
+        <p class="text-brand-blue font-bold text-lg">松开鼠标以上传文件</p>
+        <p class="text-gray-400 text-sm">文件将存入当前知识库目录</p>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <div class="mb-8">
+        <svg class="w-24 h-24 mx-auto text-brand-blue/30" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">欢迎来到学习空间</h2>
+      <p class="text-gray-600 mb-8">开始你的学习之旅，上传文档或创建新的学习项目</p>
+      
+      <div class="flex gap-4 justify-center">
+        <button 
+          id="upload-btn"
+          class="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold shadow-lg shadow-brand-blue/30 hover:opacity-90 transition-all"
+        >
+          上传学习材料
+        </button>
+        <button 
+          id="create-btn"
+          class="px-6 py-3 border-2 border-brand-blue text-brand-blue rounded-xl font-bold hover:bg-brand-blue/5 transition-all"
+        >
+          创建新项目
+        </button>
+      </div>
+
+      <div class="mt-12 text-left max-w-2xl mx-auto">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">快速开始指南</h3>
+        <div class="space-y-3 text-sm text-gray-600">
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 bg-brand-blue text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
+            <div>
+              <strong>上传文档：</strong>拖拽PDF、Word或图片文件到此处，AI会自动分析内容
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 bg-brand-blue text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
+            <div>
+              <strong>智能标注：</strong>系统会自动识别重点知识，生成学习气泡
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 bg-brand-blue text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
+            <div>
+              <strong>互动学习：</strong>点击气泡与AI对话，深入理解知识点
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <FileUploadModal />
+</ThreePaneLayout>
+
+<script>
+  // 文件拖拽上传交互
+  const container = document.getElementById('reader-container');
+  const overlay = document.getElementById('drop-overlay');
+  const modal = document.getElementById('upload-modal') as HTMLDialogElement;
+  const uploadBtn = document.getElementById('upload-btn');
+  const createBtn = document.getElementById('create-btn');
+
+  // 上传按钮点击事件
+  uploadBtn?.addEventListener('click', () => {
+    modal?.showModal();
+  });
+
+  // 创建按钮点击事件
+  createBtn?.addEventListener('click', () => {
+    alert('创建新项目功能开发中...');
+  });
+
+  // 文件拖拽处理
+  if (container && overlay) {
+    // 拖入激活
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      overlay.classList.remove('hidden');
+    });
+
+    // 拖离或取消
+    container.addEventListener('dragleave', (e) => {
+      if (e.relatedTarget === null || !(container.contains(e.relatedTarget as Node))) {
+        overlay.classList.add('hidden');
+      }
+    });
+
+    // 释放文件
+    container.addEventListener('drop', (e) => {
+      e.preventDefault();
+      overlay.classList.add('hidden');
+      
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        // 弹出对话框确认操作
+        modal?.showModal();
+        console.log(`[File] 检测到拖入: ${files[0].name}`);
+      }
+    });
+  }
+
+  // 处理对话框操作按钮
+  modal?.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const action = (e.currentTarget as HTMLButtonElement).dataset.action;
+      console.log(`[Action] 用户选择: ${action}`);
+      // 此处对接 Go 网关后端
+      modal.close();
+    });
+  });
+</script>
+
+<style>
+  /* 页面入场动画 */
+  .text-center > div {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from { 
+      opacity: 0; 
+      transform: translateY(30px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  /* 按钮悬停效果 */
+  button:hover {
+    transform: translateY(-2px);
+  }
+  
+  button:active {
+    transform: translateY(0);
+  }
+</style>

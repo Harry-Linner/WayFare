@@ -1,0 +1,195 @@
+---
+import AnnotationBubble from '../../components/reader/AnnotationBubble.astro';
+import FileUploadModal from '../../components/common/FileUploadModal.astro';
+import AIAssistant from '../../components/ai/AIAssistant.astro';
+import AIToggleButton from '../../components/ai/AIToggleButton.astro';
+import { MOCK_ANNOTATIONS } from '../../constants/mockData';
+
+// 设置此页面为服务器渲染模式，避免需要getStaticPaths
+export const prerender = false;
+
+// 获取路由参数，例如 /workspace/math-101
+const { kbId } = Astro.params;
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>知识库: {kbId}</title>
+  </head>
+  <body class="bg-brand-cream h-screen overflow-hidden flex">
+    
+    <!-- 左侧导航栏 -->
+    <aside class="w-16 hover:w-64 transition-all duration-300 bg-brand-blue flex flex-col items-center py-4 z-20 shadow-lg">
+      <div class="flex-1 space-y-8">
+        <button class="p-2 hover:bg-white/20 rounded-lg text-white" title="管理文件夹">
+          <span class="block w-6 h-6 border-2 border-white rounded-sm"></span>
+        </button>
+        <button class="p-2 hover:bg-white/20 rounded-lg text-white" title="修改配置">
+          <span class="block w-6 h-6 border-2 border-white rounded-full"></span>
+        </button>
+      </div>
+      <div class="pb-4">
+        <div class="w-8 h-8 bg-brand-sand rounded-full"></div>
+      </div>
+    </aside>
+
+    <!-- 主内容区域 -->
+    <main class="flex-1 relative overflow-y-auto px-12 py-8 shadow-inner">
+  <!-- 页面标题 -->
+  <header class="mb-8 border-b border-brand-blue/20 pb-4">
+    <h1 class="text-2xl font-bold text-gray-800">当前知识库文档</h1>
+  </header>
+
+  <!-- 文档导航栏 -->
+  <nav class="flex items-center justify-between mb-6 bg-white/50 p-3 rounded-xl border border-brand-blue/10">
+    <div class="flex items-center gap-2 text-sm text-gray-600">
+      <span class="opacity-50">项目:</span>
+      <span class="font-medium text-brand-blue">{kbId}</span>
+      <span class="mx-2 text-gray-300">/</span>
+      <span class="font-bold text-gray-800 underline decoration-brand-blue/30">数据结构_第三章_树.pdf</span>
+    </div>
+    <div class="flex gap-2">
+      <button class="text-xs px-3 py-1 bg-white border border-brand-blue/20 rounded-md hover:bg-brand-blue/5">导出笔记</button>
+      <button class="text-xs px-3 py-1 bg-white border border-brand-blue/20 rounded-md hover:bg-brand-blue/5">视图设置</button>
+    </div>
+  </nav>
+
+  <div 
+    id="reader-container"
+    class="relative min-h-[1200px] bg-white p-12 shadow-sm rounded-2xl border border-transparent transition-all duration-300 group"
+  >
+    <div id="drop-overlay" class="hidden absolute inset-0 bg-brand-blue/10 border-2 border-dashed border-brand-blue rounded-2xl z-50 flex items-center justify-center pointer-events-none">
+      <div class="bg-white p-6 rounded-2xl shadow-xl text-center">
+        <p class="text-brand-blue font-bold text-lg">松开鼠标以上传文件</p>
+        <p class="text-gray-400 text-sm">文件将存入当前知识库目录</p>
+      </div>
+    </div>
+
+    <article class="prose prose-slate max-w-none relative z-10 select-text">
+      <h1 class="text-3xl font-extrabold text-gray-900 mb-8">3.2 AVL 树的自平衡算法</h1>
+      
+      <p class="text-lg leading-relaxed text-gray-700 mb-6">
+        AVL 树是一种高度平衡的二叉搜索树。它的特点是任何节点的两个子树的高度最大差别为 1。这种平衡性保证了其搜索、插入和删除操作的时间复杂度严格控制在 O(log n)。
+      </p>
+
+      <div class="my-8 p-6 bg-brand-surface/30 border-l-4 border-brand-blue rounded-r-lg italic text-gray-600">
+        “平衡因子 (Balance Factor) 是左子树高度减去右子树高度的值。”
+      </div>
+
+      <p class="text-lg leading-relaxed text-gray-700 mb-6">
+        当在 AVL 树中插入或删除节点导致平衡因子超出 [-1, 1] 范围时，我们需要通过“旋转”操作来恢复平衡。旋转分为四种类型：LL 旋转、RR 旋转、LR 旋转和 RL 旋转。其中 LR 和 RL 属于双旋转。
+      </p>
+
+      <div id="annotation-layer" class="absolute inset-0 pointer-events-none">
+        {MOCK_ANNOTATIONS.map((ann) => (
+          <div class="pointer-events-auto">
+            <AnnotationBubble annotation={ann} />
+          </div>
+        ))}
+      </div>
+    </article>
+  </div>
+
+  <FileUploadModal />
+
+    </main>
+
+    <!-- AI学习助手组件 -->
+    <AIAssistant isOpen={false} />
+    
+    <!-- AI助手唤起按钮 -->
+    <AIToggleButton position="right" bottom="6rem" />
+    
+  </body>
+</html>
+
+<script>
+  import { setActiveAnnotation } from '../../store/learningStore';
+  import { MOCK_ANNOTATIONS } from '../../constants/mockData';
+
+  // --- A. 气泡点击联动逻辑 ---
+  const bubbles = document.querySelectorAll('[data-annotation-id]');
+  bubbles.forEach(bubble => {
+    bubble.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = (bubble as HTMLElement).dataset.annotationId;
+      const ann = MOCK_ANNOTATIONS.find(a => a.id === id);
+      if (ann) {
+        // 更新全局状态，通知右侧 Chat 栏
+        setActiveAnnotation(ann);
+        console.log(`[Store] 已激活知识点: ${ann.knowledgePoint}`);
+      }
+    });
+  });
+
+  // --- B. 文件拖拽上传交互 (功能 6) ---
+  const container = document.getElementById('reader-container');
+  const overlay = document.getElementById('drop-overlay');
+  const modal = document.getElementById('upload-modal') as HTMLDialogElement;
+
+  if (container && overlay) {
+    // 拖入激活
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      overlay.classList.remove('hidden');
+    });
+
+    // 拖离或取消
+    container.addEventListener('dragleave', (e) => {
+      if (e.relatedTarget === null || !(container.contains(e.relatedTarget as Node))) {
+        overlay.classList.add('hidden');
+      }
+    });
+
+    // 释放文件
+    container.addEventListener('drop', (e) => {
+      e.preventDefault();
+      overlay.classList.add('hidden');
+      
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        // 弹出对话框确认操作
+        modal.showModal();
+        console.log(`[File] 检测到拖入: ${files[0].name}`);
+      }
+    });
+  }
+
+  // --- C. 处理对话框操作按钮 ---
+  modal?.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const action = (e.currentTarget as HTMLButtonElement).dataset.action;
+      console.log(`[Action] 用户选择: ${action}`);
+      // 此处对接 Go 网关后端
+      modal.close();
+    });
+  });
+</script>
+
+<style>
+  /* 全局样式优化 */
+  :global(.prose h1) {
+    color: #1a202c;
+  }
+  :global(.prose p) {
+    line-height: 1.8;
+  }
+  /* 增加选中文本时的品牌色 */
+  ::selection {
+    background: #A3D1CC;
+    color: white;
+  }
+  
+  /* 确保AI助手不会遮挡主内容 */
+  main {
+    padding-right: 4rem;
+  }
+  
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    main {
+      padding-right: 1rem;
+    }
+  }
+</style>

@@ -22,3 +22,4 @@ wayfare_go_gateway/uploads/  # 忽略用户上传的测试 PDF 文件
 .vscode/
 .idea/
 .DS_Store
+node_modules

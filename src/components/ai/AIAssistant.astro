@@ -1,0 +1,251 @@
+---
+// src/components/ai/AIAssistant.astro
+// AI学习助手组件 - 可唤起/隐藏的侧边面板
+import { MOCK_CHAT, MOCK_CHAT_DASHBOARD } from '../../constants/mockData';
+
+export interface Props {
+  isOpen?: boolean;
+  pageType?: 'document' | 'dashboard';
+}
+
+const { isOpen = false, pageType = 'document' } = Astro.props;
+
+// 根据页面类型选择合适的聊天数据
+const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
+---
+
+<div 
+  id="ai-assistant"
+  class={`fixed right-0 top-0 h-full w-[380px] bg-brand-surface border-l border-brand-blue/20 flex flex-col transform transition-transform duration-300 ease-in-out z-40 ${
+    isOpen ? 'translate-x-0' : 'translate-x-full'
+  }`}
+>
+  <!-- 头部 -->
+  <div class="p-4 border-b border-brand-blue/20 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white text-sm font-bold">
+        AI
+      </div>
+      <div>
+        <h3 class="font-bold text-gray-800">AI 学习助手</h3>
+        <div class="flex items-center gap-1">
+          <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span class="text-xs text-gray-500">在线</span>
+        </div>
+      </div>
+    </div>
+    <button 
+      id="close-ai-assistant"
+      class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+      title="关闭助手"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- 聊天内容区域 -->
+  <div class="flex-1 overflow-y-auto p-4 space-y-4" id="ai-chat-messages">
+    {chatData.map((msg, index) => (
+      <div class={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+        <div class={`max-w-[80%] p-3 rounded-2xl ${
+          msg.role === 'user' 
+            ? 'bg-brand-blue text-white' 
+            : 'bg-white shadow-sm border border-gray-100'
+        }`}>
+          {msg.content}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- 输入区域 -->
+  <div class="p-4 bg-white/50 border-t border-brand-blue/10">
+    <div class="relative">
+      <textarea 
+        id="ai-input"
+        placeholder="输入你的问题..."
+        class="w-full pl-4 pr-12 py-3 rounded-xl border-none focus:ring-2 focus:ring-brand-blue bg-white resize-none"
+        rows="2"
+      ></textarea>
+      <button 
+        id="ai-send-btn"
+        class="absolute right-3 bottom-3 w-8 h-8 bg-brand-blue text-white rounded-full hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        title="发送消息"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        </svg>
+      </button>
+    </div>
+    
+    <!-- 快捷操作按钮 -->
+    <div class="flex gap-2 mt-3">
+      <button class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+        总结重点
+      </button>
+      <button class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+        生成练习
+      </button>
+      <button class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+        解释概念
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 遮罩层 -->
+<div 
+  id="ai-assistant-overlay"
+  class={`fixed inset-0 bg-black/20 transition-opacity duration-300 z-30 ${
+    isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+  }`}
+></div>
+
+<script>
+  // AI助手交互逻辑
+  const aiAssistant = document.getElementById('ai-assistant');
+  const overlay = document.getElementById('ai-assistant-overlay');
+  const closeBtn = document.getElementById('close-ai-assistant');
+  const sendBtn = document.getElementById('ai-send-btn');
+  const input = document.getElementById('ai-input') as HTMLTextAreaElement;
+  const messagesContainer = document.getElementById('ai-chat-messages');
+
+  // 关闭助手
+  function closeAIAssistant() {
+    aiAssistant?.classList.add('translate-x-full');
+    overlay?.classList.add('opacity-0', 'pointer-events-none');
+    // 通知父组件状态变化
+    window.dispatchEvent(new CustomEvent('ai-assistant-closed'));
+  }
+
+  // 打开助手
+  function openAIAssistant() {
+    aiAssistant?.classList.remove('translate-x-full');
+    overlay?.classList.remove('opacity-0', 'pointer-events-none');
+    input?.focus();
+    // 通知父组件状态变化
+    window.dispatchEvent(new CustomEvent('ai-assistant-opened'));
+  }
+
+  // 事件监听
+  closeBtn?.addEventListener('click', closeAIAssistant);
+  overlay?.addEventListener('click', closeAIAssistant);
+
+  // 发送消息
+  function sendMessage() {
+    const message = input?.value.trim();
+    if (!message || !messagesContainer) return;
+
+    // 添加用户消息
+    const userMsg = document.createElement('div');
+    userMsg.className = 'flex justify-end';
+    userMsg.innerHTML = `
+      <div class="max-w-[80%] p-3 rounded-2xl bg-brand-blue text-white">
+        ${message}
+      </div>
+    `;
+    messagesContainer.appendChild(userMsg);
+
+    // 模拟AI回复
+    setTimeout(() => {
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'flex justify-start';
+      
+      // 根据用户输入生成智能回复
+      let replyContent = '';
+      const lowerMessage = message.toLowerCase();
+      
+      if (lowerMessage.includes('总结') || lowerMessage.includes('重点')) {
+        replyContent = '好的，我来为你总结这一节的重点内容：<br>• AVL树的平衡因子定义<br>• 四种旋转操作的应用场景<br>• 时间复杂度分析<br>需要我详细解释哪个部分呢？';
+      } else if (lowerMessage.includes('练习') || lowerMessage.includes('题目')) {
+        replyContent = '我为你准备了一些练习题：<br>1. 给定一个序列，构建AVL树<br>2. 分析旋转操作的时间复杂度<br>3. 证明AVL树的高度性质<br>你想从哪道题开始？';
+      } else if (lowerMessage.includes('概念') || lowerMessage.includes('定义')) {
+        replyContent = 'AVL树是一种自平衡二叉搜索树，其核心概念包括：<br>• 平衡因子：左右子树高度差<br>• 旋转操作：LL、RR、LR、RL四种<br>• 高度平衡：任何节点的平衡因子绝对值不超过1';
+      } else if (lowerMessage.includes('旋转') || lowerMessage.includes('平衡')) {
+        replyContent = 'AVL树的旋转操作是关键：<br>• LL旋转：右单旋<br>• RR旋转：左单旋<br>• LR旋转：左右双旋<br>• RL旋转：右左双旋<br>需要我用具体的例子演示吗？';
+      } else {
+        replyContent = `我理解你的问题："${message.substring(0, 30)}..."<br>这是数据结构中的重要概念，让我来帮你详细分析一下。你有什么具体的疑问吗？`;
+      }
+      
+      aiMsg.innerHTML = `
+        <div class="max-w-[80%] p-3 rounded-2xl bg-white shadow-sm border border-gray-100">
+          ${replyContent}
+        </div>
+      `;
+      messagesContainer.appendChild(aiMsg);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }, 1000);
+
+    // 清空输入
+    input.value = '';
+    input.style.height = 'auto';
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  sendBtn?.addEventListener('click', sendMessage);
+  input?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // 自动调整输入框高度
+  input?.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = input.scrollHeight + 'px';
+  });
+
+  // 快捷操作按钮
+  document.querySelectorAll('#ai-assistant .bg-gray-100').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.textContent;
+      if (input) {
+        input.value = text + '：';
+        input.focus();
+      }
+    });
+  });
+
+  // 暴露全局函数供外部调用
+  (window as any).openAIAssistant = openAIAssistant;
+  (window as any).closeAIAssistant = closeAIAssistant;
+</script>
+
+<style>
+  /* 自定义滚动条 */
+  #ai-chat-messages::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  #ai-chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  #ai-chat-messages::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 3px;
+  }
+  
+  #ai-chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db;
+  }
+
+  /* 消息动画 */
+  #ai-chat-messages > div {
+    animation: messageSlideIn 0.3s ease-out;
+  }
+  
+  @keyframes messageSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

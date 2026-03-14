@@ -1,0 +1,26 @@
+
+---
+// 配色：背景 #E1FCF6, 按钮 #A3D1CC
+---
+<dialog id="upload-modal" class="backdrop:bg-black/50 p-0 rounded-2xl shadow-2xl border-none">
+  <div class="bg-brand-surface w-[400px] p-6 flex flex-col gap-4">
+    <h3 class="text-xl font-bold text-gray-800">检测到新文件</h3>
+    <p class="text-sm text-gray-600">你希望如何处理这个文件？</p>
+    
+    <div class="space-y-2">
+      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="annotate">
+        ✨ 自动添加 AI 批注
+      </button>
+      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="summary">
+        📝 生成学习笔记
+      </button>
+      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="nothing">
+        📂 仅复制文件，不做处理
+      </button>
+    </div>
+
+    <button onclick="this.closest('dialog').close()" class="mt-2 text-center text-gray-400 text-sm hover:underline">
+      取消
+    </button>
+  </div>
+</dialog>

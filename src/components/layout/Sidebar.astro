@@ -1,0 +1,428 @@
+---
+// src/components/layout/Sidebar.astro
+// 职责：管理窄边导航导轨 (Rail) 与弹出式抽屉 (Drawer)
+---
+
+<div class="relative flex h-full">
+  <nav class="w-16 bg-brand-blue flex flex-col items-center py-6 gap-8 z-30 shadow-xl">
+    <div class="text-white font-black text-2xl mb-4 tracking-tighter">L.</div>
+    
+    <button class="nav-icon-btn group relative" data-drawer="files" title="管理文件夹">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-all text-white active:scale-90">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+        </svg>
+      </div>
+      <div class="indicator absolute -right-1 top-1/2 -translate-y-1/2 w-1 h-4 bg-white rounded-l-full opacity-0 transition-opacity"></div>
+    </button>
+
+    <button class="nav-icon-btn group relative" data-drawer="config" title="修改配置">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-all text-white active:scale-90">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        </svg>
+      </div>
+      <div class="indicator absolute -right-1 top-1/2 -translate-y-1/2 w-1 h-4 bg-white rounded-l-full opacity-0 transition-opacity"></div>
+    </button>
+  </nav>
+
+  <aside id="side-drawer" class="absolute left-16 top-0 h-full w-0 overflow-hidden bg-brand-surface border-r border-brand-blue/10 transition-all duration-300 z-20 shadow-2xl">
+    <div class="w-64 p-5 h-full flex flex-col">
+      
+      <div id="drawer-content-files" class="drawer-section hidden h-full flex flex-col">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="font-bold text-gray-800">知识库</h3>
+          <button id="btn-new-project" class="p-1 hover:bg-brand-blue/10 rounded-full text-brand-blue" title="新建项目">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto space-y-4 custom-scrollbar">
+          <!-- 文件夹树形结构 -->
+          <div>
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-2">文件夹结构</p>
+            <div id="folder-tree" class="space-y-1 text-sm">
+              <!-- 根知识库 -->
+              <div class="folder-item" data-path="/">
+                <div class="folder-header flex items-center gap-2 p-2 hover:bg-white/40 rounded-xl cursor-pointer transition-colors">
+                  <svg class="folder-icon w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                  </svg>
+                  <span class="text-gray-700 font-medium">知识库根目录</span>
+                  <button class="add-folder-btn ml-auto p-1 hover:bg-white/60 rounded transition-colors" title="新建文件夹">
+                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="folder-children ml-4 space-y-1">
+                  <!-- 子文件夹和文件将在这里动态生成 -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 当前项目文件 -->
+          <div>
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-2">当前项目</p>
+            <ul class="space-y-1 text-sm" id="current-project-files">
+              <li class="file-item p-2 bg-white/60 rounded-xl cursor-pointer text-brand-blue font-bold flex items-center gap-2 shadow-sm border border-brand-blue/5" data-path="/数据结构/第三章.pdf">
+                <span class="text-base">📄</span> 
+                <span class="flex-1">数据结构_第三章.pdf</span>
+                <button class="file-action-btn p-1 hover:bg-white/60 rounded transition-colors opacity-0 hover:opacity-100" title="更多操作">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                  </svg>
+                </button>
+              </li>
+              <li class="file-item p-2 hover:bg-white/40 rounded-xl cursor-pointer text-gray-600 flex items-center gap-2 transition-colors" data-path="/操作系统/导论.pdf">
+                <span class="text-base">📄</span> 
+                <span class="flex-1">操作系统导论.pdf</span>
+                <button class="file-action-btn p-1 hover:bg-white/60 rounded transition-colors opacity-0 hover:opacity-100" title="更多操作">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                  </svg>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 配置文件（隐藏/显示） -->
+          <div id="config-files-section" class="hidden">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-2">配置文件</p>
+            <ul class="space-y-1 text-sm">
+              <li class="config-file-item p-2 opacity-50 hover:opacity-100 hover:bg-white/20 rounded-xl cursor-help flex items-center gap-2 transition-all" data-path="/.kb_config.json">
+                <span class="text-base">⚙️</span> 
+                <span class="text-[10px] font-mono">.kb_config.json</span>
+              </li>
+              <li class="config-file-item p-2 opacity-50 hover:opacity-100 hover:bg-white/20 rounded-xl cursor-help flex items-center gap-2 transition-all" data-path="/.learning_profile.json">
+                <span class="text-base">👤</span> 
+                <span class="text-[10px] font-mono">.learning_profile.json</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <button id="toggle-config" class="mt-auto text-[10px] text-center text-gray-400 hover:text-brand-blue py-2 border-t border-brand-blue/5 transition-colors">
+          显示配置文件
+        </button>
+      </div>
+
+      <div id="drawer-content-config" class="drawer-section hidden">
+        <h3 class="font-bold text-gray-800 mb-6">偏好设置</h3>
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <span class="text-[10px] font-bold text-gray-400 uppercase px-1">AI 响应精度</span>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="text-xs p-2 bg-white rounded-lg border border-brand-blue/20 text-brand-blue font-medium">应试模式</button>
+              <button class="text-xs p-2 bg-brand-surface border border-transparent rounded-lg text-gray-500">博学模式</button>
+            </div>
+          </div>
+          <div class="p-4 bg-brand-cream/50 rounded-2xl border border-brand-blue/10">
+            <p class="text-[10px] text-gray-500 leading-relaxed">
+              当前画像：<span class="text-brand-blue font-bold">2026 考研 408 专项</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+</div>
+
+<script>
+  const drawer = document.getElementById('side-drawer');
+  const sections = document.querySelectorAll('.drawer-section');
+  const buttons = document.querySelectorAll('[data-drawer]');
+  const configItems = document.querySelectorAll('.config-file-item');
+  const toggleConfigBtn = document.getElementById('toggle-config');
+
+  let activeDrawer = null;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-drawer');
+      const indicator = btn.querySelector('.indicator');
+      
+      // 如果点击的是当前已经打开的，则关闭
+      if (activeDrawer === target) {
+        drawer.style.width = '0';
+        activeDrawer = null;
+        indicator?.classList.add('opacity-0');
+      } else {
+        // 切换内容
+        sections.forEach(s => s.classList.add('hidden'));
+        document.getElementById(`drawer-content-${target}`)?.classList.remove('hidden');
+        
+        // 切换指示器视觉状态
+        document.querySelectorAll('.indicator').forEach(i => i.classList.add('opacity-0'));
+        indicator?.classList.remove('opacity-0');
+
+        drawer.style.width = '256px';
+        activeDrawer = target;
+      }
+    });
+  });
+
+  // 功能 4：切换隐藏文件夹/配置文件显示
+  let showConfig = false;
+  toggleConfigBtn?.addEventListener('click', () => {
+    showConfig = !showConfig;
+    configItems.forEach(item => {
+      item.classList.toggle('hidden', !showConfig);
+    });
+    toggleConfigBtn.innerText = showConfig ? "隐藏配置文件" : "显示配置文件";
+  });
+
+  // 功能 5：文件夹树形结构交互
+  const folderHeaders = document.querySelectorAll('.folder-header');
+  const addFolderBtns = document.querySelectorAll('.add-folder-btn');
+  const actionBtns = document.querySelectorAll('.file-action-btn');
+
+  // 文件夹展开/收起
+  folderHeaders.forEach(header => {
+    header.addEventListener('click', (e) => {
+      // 如果点击的是按钮，不触发文件夹展开
+      if (e.target.closest('button')) return;
+      
+      const folderItem = header.closest('.folder-item');
+      folderItem.classList.toggle('expanded');
+      
+      // 保存状态到本地存储
+      const folderPath = folderItem.getAttribute('data-path');
+      const isExpanded = folderItem.classList.contains('expanded');
+      localStorage.setItem(`folder-expanded-${folderPath}`, isExpanded.toString());
+    });
+  });
+
+  // 新建文件夹功能
+  addFolderBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const folderItem = btn.closest('.folder-item');
+      const children = folderItem.querySelector('.folder-children');
+      
+      // 创建新的文件夹输入框
+      const newFolderDiv = document.createElement('div');
+      newFolderDiv.className = 'new-folder-item ml-4';
+      newFolderDiv.innerHTML = `
+        <input type="text" class="new-folder-input" placeholder="文件夹名称" />
+      `;
+      
+      children.appendChild(newFolderDiv);
+      
+      // 自动展开父文件夹
+      folderItem.classList.add('expanded');
+      
+      // 聚焦到输入框
+      const input = newFolderDiv.querySelector('.new-folder-input');
+      input.focus();
+      
+      // 处理输入完成
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const folderName = input.value.trim();
+          if (folderName) {
+            // 创建新的文件夹项
+            const newFolderItem = document.createElement('div');
+            newFolderItem.className = 'folder-item';
+            newFolderItem.setAttribute('data-path', `/${folderName}`);
+            newFolderItem.innerHTML = `
+              <div class="folder-header flex items-center gap-2 p-1 hover:bg-white/30 rounded-lg cursor-pointer transition-colors">
+                <svg class="folder-icon w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                </svg>
+                <span class="text-gray-600 text-xs">${folderName}</span>
+                <button class="add-folder-btn ml-auto p-0.5 hover:bg-white/60 rounded transition-colors" title="新建文件夹">
+                  <svg class="w-2 h-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="folder-children ml-3 space-y-1"></div>
+            `;
+            
+            // 替换输入框为新的文件夹项
+            newFolderDiv.replaceWith(newFolderItem);
+            
+            // 为新文件夹添加事件监听
+            const newHeader = newFolderItem.querySelector('.folder-header');
+            const newAddBtn = newFolderItem.querySelector('.add-folder-btn');
+            
+            newHeader.addEventListener('click', (e) => {
+              if (e.target.closest('button')) return;
+              newFolderItem.classList.toggle('expanded');
+            });
+            
+            newAddBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              // 触发当前文件夹的新建子文件夹逻辑
+              const parentFolder = newAddBtn.closest('.folder-item');
+              const parentHeader = parentFolder.querySelector('.folder-header');
+              parentHeader.click();
+              
+              // 延迟执行，确保文件夹展开
+              setTimeout(() => {
+                const addBtn = parentFolder.querySelector('.add-folder-btn');
+                if (addBtn) {
+                  addBtn.click();
+                }
+              }, 100);
+            });
+            
+            console.log(`[Folder] 新建文件夹: ${folderName}`);
+          } else {
+            // 名称为空，移除输入框
+            newFolderDiv.remove();
+          }
+        }
+      });
+      
+      // 失去焦点时移除输入框
+      input.addEventListener('blur', () => {
+        setTimeout(() => {
+          if (input.value.trim() === '') {
+            newFolderDiv.remove();
+          }
+        }, 200);
+      });
+    });
+  });
+
+  // 文件操作功能
+  actionBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const action = btn.getAttribute('title');
+      const fileItem = btn.closest('.file-item');
+      const fileName = fileItem.querySelector('span:nth-child(2)').textContent;
+      
+      if (action === '重命名') {
+        // 重命名逻辑
+        const currentName = fileName;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'rename-input bg-transparent border-none outline-none text-xs';
+        input.value = currentName;
+        
+        const nameSpan = fileItem.querySelector('span:nth-child(2)');
+        nameSpan.replaceWith(input);
+        input.focus();
+        input.select();
+        
+        const saveRename = () => {
+          const newName = input.value.trim() || currentName;
+          const newSpan = document.createElement('span');
+          newSpan.className = 'text-gray-600 text-xs';
+          newSpan.textContent = newName;
+          input.replaceWith(newSpan);
+          console.log(`[File] 重命名文件: ${currentName} -> ${newName}`);
+        };
+        
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') saveRename();
+        });
+        
+        input.addEventListener('blur', saveRename);
+        
+      } else if (action === '删除') {
+        // 删除确认
+        if (confirm(`确定要删除文件 "${fileName}" 吗？`)) {
+          fileItem.remove();
+          console.log(`[File] 删除文件: ${fileName}`);
+        }
+      }
+    });
+  });
+
+  // 恢复文件夹展开状态
+  const savedExpandedStates = localStorage.getItem('folder-expanded-states');
+  if (savedExpandedStates) {
+    const states = JSON.parse(savedExpandedStates);
+    Object.entries(states).forEach(([path, isExpanded]) => {
+      const folderItem = document.querySelector(`[data-path="${path}"]`);
+      if (folderItem && isExpanded) {
+        folderItem.classList.add('expanded');
+      }
+    });
+  }
+
+  // 保存文件夹展开状态
+  window.addEventListener('beforeunload', () => {
+    const states = {};
+    document.querySelectorAll('.folder-item').forEach(item => {
+      const path = item.getAttribute('data-path');
+      const isExpanded = item.classList.contains('expanded');
+      states[path] = isExpanded;
+    });
+    localStorage.setItem('folder-expanded-states', JSON.stringify(states));
+  });
+
+  // 处理新建项目弹窗触发
+  const newProjectBtn = document.getElementById('btn-new-project');
+  newProjectBtn?.addEventListener('click', () => {
+    const modal = document.getElementById('new-project-modal');
+    modal?.showModal();
+  });
+</script>
+
+<style>
+  /* 文件夹树形结构样式 */
+  .folder-children {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .folder-item.expanded .folder-children {
+    max-height: 500px;
+  }
+  
+  .folder-icon {
+    transition: transform 0.2s ease;
+  }
+  
+  .folder-item.expanded .folder-icon {
+    transform: rotate(90deg);
+  }
+  
+  .file-actions {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .file-header:hover .file-actions {
+    opacity: 1;
+  }
+  
+  .action-btn {
+    opacity: 0.6;
+  }
+  
+  .action-btn:hover {
+    opacity: 1;
+  }
+  
+  /* 新建文件夹输入框 */
+  .new-folder-input {
+    background: transparent;
+    border: 1px dashed #A3D1CC;
+    outline: none;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    width: 120px;
+  }
+  
+  .new-folder-input:focus {
+    border-style: solid;
+    background: white;
+  }
+  
+  /* 隐藏滚动条但保留滚动功能 */
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style>

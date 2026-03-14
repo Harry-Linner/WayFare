@@ -1,0 +1,467 @@
+---
+import '../styles/global.css';
+
+// 定义知识库用途选项
+const PURPOSE_OPTIONS = [
+  { value: 'exam-prep', label: '备考突击', icon: '📚', description: '为考试做准备，需要快速掌握知识点' },
+  { value: 'long-term', label: '长期学习', icon: '🌱', description: '系统性学习，建立完整的知识体系' },
+  { value: 'project-based', label: '项目实践', icon: '💼', description: '围绕具体项目学习相关知识和技能' },
+  { value: 'research', label: '研究探索', icon: '🔍', description: '深入研究某个领域或主题' },
+  { value: 'skill-building', label: '技能提升', icon: '🚀', description: '提升专业技能或学习新技术' },
+  { value: 'hobby', label: '兴趣爱好', icon: '🎨', description: '出于兴趣的学习和探索' }
+];
+
+// 定义学科分类选项
+const SUBJECT_OPTIONS = [
+  { value: 'computer-science', label: '计算机科学', icon: '💻' },
+  { value: 'mathematics', label: '数学', icon: '📐' },
+  { value: 'physics', label: '物理学', icon: '⚛️' },
+  { value: 'chemistry', label: '化学', icon: '🧪' },
+  { value: 'biology', label: '生物学', icon: '🧬' },
+  { value: 'economics', label: '经济学', icon: '📈' },
+  { value: 'language', label: '语言文学', icon: '📖' },
+  { value: 'history', label: '历史学', icon: '🏛️' },
+  { value: 'other', label: '其他', icon: '📋' }
+];
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>创建知识库 - WayFare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body class="bg-brand-cream min-h-screen">
+    <!-- 顶部导航栏 -->
+    <nav class="bg-white shadow-sm border-b border-brand-blue/10 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a href="/dashboard" class="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center text-white font-bold hover:opacity-90 transition-all">
+            W
+          </a>
+          <div>
+            <h1 class="text-xl font-bold text-gray-800">创建知识库</h1>
+            <p class="text-xs text-gray-500">设置你的学习空间</p>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main class="max-w-4xl mx-auto px-6 py-8">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+        <!-- 步骤指示器 -->
+        <div class="flex items-center justify-center mb-8">
+          <div class="flex items-center space-x-4">
+            <div id="step1-indicator" class="flex items-center space-x-2">
+              <div class="w-8 h-8 bg-brand-blue text-white rounded-full flex items-center justify-center font-bold">1</div>
+              <span class="text-sm font-medium text-gray-700">选择创建方式</span>
+            </div>
+            <div class="w-16 h-px bg-gray-300"></div>
+            <div id="step2-indicator" class="flex items-center space-x-2 opacity-50">
+              <div class="w-8 h-8 bg-gray-300 text-white rounded-full flex items-center justify-center font-bold">2</div>
+              <span class="text-sm font-medium text-gray-500">填写信息</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 步骤1：选择创建方式 -->
+        <div id="step1-content" class="space-y-6">
+          <h2 class="text-2xl font-bold text-gray-800 text-center mb-2">如何创建知识库？</h2>
+          <p class="text-gray-600 text-center mb-8">选择适合你的方式来开始知识管理之旅</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 导入选项 -->
+            <div id="import-option" class="border-2 border-gray-200 rounded-xl p-6 hover:border-brand-blue hover:shadow-lg transition-all cursor-pointer group">
+              <div class="text-center space-y-4">
+                <div class="w-16 h-16 bg-brand-blue/10 rounded-full flex items-center justify-center mx-auto group-hover:bg-brand-blue/20 transition-all">
+                  <svg class="w-8 h-8 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">导入现有文件夹</h3>
+                <p class="text-gray-600">选择本地文件夹作为知识库，自动识别文档结构</p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                  <li>• 自动识别文档类型</li>
+                  <li>• 保持原有文件结构</li>
+                  <li>• 快速建立知识库</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- 创建新选项 -->
+            <div id="create-option" class="border-2 border-gray-200 rounded-xl p-6 hover:border-brand-blue hover:shadow-lg transition-all cursor-pointer group">
+              <div class="text-center space-y-4">
+                <div class="w-16 h-16 bg-brand-blue/10 rounded-full flex items-center justify-center mx-auto group-hover:bg-brand-blue/20 transition-all">
+                  <svg class="w-8 h-8 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">创建新知识库</h3>
+                <p class="text-gray-600">从零开始建立知识库，自定义结构和管理方式</p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                  <li>• 完全自定义结构</li>
+                  <li>• 灵活的文档组织</li>
+                  <li>• 个性化设置</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 步骤2：填写信息表单 -->
+        <div id="step2-content" class="hidden space-y-6">
+          <h2 class="text-2xl font-bold text-gray-800 text-center mb-2">完善知识库信息</h2>
+          <p class="text-gray-600 text-center mb-8">告诉我们更多关于你的知识库</p>
+
+          <form id="knowledge-base-form" class="space-y-6">
+            <!-- 知识库名称 -->
+            <div>
+              <label for="kb-name" class="block text-sm font-medium text-gray-700 mb-2">
+                知识库名称 <span class="text-red-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="kb-name" 
+                name="name"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-all"
+                placeholder="给你的知识库起个名字"
+              />
+              <p class="text-xs text-gray-500 mt-1">这个名字只用于在WayFare中显示</p>
+            </div>
+
+            <!-- 知识库用途 -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-3">主要用途 <span class="text-red-500">*</span></label>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {PURPOSE_OPTIONS.map(option => (
+                  <label class="purpose-option relative cursor-pointer group">
+                    <input 
+                      type="radio" 
+                      name="purpose" 
+                      value={option.value}
+                      class="sr-only peer"
+                      required
+                    />
+                    <div class="border-2 border-gray-200 rounded-lg p-4 peer-checked:border-brand-blue peer-checked:bg-brand-blue/5 peer-checked:shadow-md hover:border-brand-blue/50 transition-all">
+                      <div class="flex items-center gap-3">
+                        <span class="text-2xl">{option.icon}</span>
+                        <div>
+                          <div class="font-medium text-gray-800">{option.label}</div>
+                          <div class="text-xs text-gray-500">{option.description}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <!-- 学科分类 -->
+            <div>
+              <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">学科分类</label>
+              <select 
+                id="subject" 
+                name="subject"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-all"
+              >
+                <option value="">请选择学科分类（可选）</option>
+                {SUBJECT_OPTIONS.map(option => (
+                  <option value={option.value}>
+                    {option.icon} {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <!-- 学习目标 -->
+            <div>
+              <label for="learning-goals" class="block text-sm font-medium text-gray-700 mb-2">学习目标</label>
+              <textarea 
+                id="learning-goals" 
+                name="learningGoals"
+                rows="3"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-all resize-none"
+                placeholder="描述你希望通过这个知识库达到什么学习目标..."
+              ></textarea>
+              <p class="text-xs text-gray-500 mt-1">这将帮助我们为你提供更好的学习建议</p>
+            </div>
+
+            <!-- 预计学习时间 -->
+            <div class="mb-6 pb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-3">预计学习时间</label>
+              <div class="flex gap-4">
+                <label class="flex items-center">
+                  <input type="radio" name="studyTime" value="short" class="mr-2 text-brand-blue focus:ring-brand-blue" />
+                  <span class="text-sm text-gray-700">短期（1-4周）</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="studyTime" value="medium" class="mr-2 text-brand-blue focus:ring-brand-blue" />
+                  <span class="text-sm text-gray-700">中期（1-3个月）</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="studyTime" value="long" class="mr-2 text-brand-blue focus:ring-brand-blue" />
+                  <span class="text-sm text-gray-700">长期（3个月以上）</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 导入文件夹信息（仅在导入时显示） -->
+            <div id="import-folder-info" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                  <p class="text-sm font-medium text-blue-800">已选择文件夹</p>
+                  <p id="selected-folder-name" class="text-sm text-blue-600"></p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="flex justify-between pt-6 border-t border-gray-200">
+          <button 
+            id="back-btn" 
+            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all hidden"
+          >
+            上一步
+          </button>
+          <div></div>
+          <div class="flex gap-3">
+            <a 
+              href="/dashboard" 
+              class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all"
+            >
+              取消
+            </a>
+            <button 
+              id="next-btn" 
+              class="px-6 py-3 bg-brand-blue text-white rounded-lg font-medium hover:opacity-90 transition-all"
+            >
+              下一步
+            </button>
+            <button 
+              id="create-btn" 
+              class="px-6 py-3 bg-brand-blue text-white rounded-lg font-medium hover:opacity-90 transition-all hidden"
+            >
+              创建知识库
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 隐藏的文件输入 -->
+    <input 
+      type="file" 
+      id="folder-input" 
+      webkitdirectory="true" 
+      directory="true" 
+      multiple 
+      class="hidden"
+    />
+
+    <script>
+      // 状态管理
+      let currentStep = 1;
+      let creationMethod = ''; // 'import' 或 'create'
+      let selectedFolderName = '';
+
+      // DOM元素
+      const step1Content = document.getElementById('step1-content');
+      const step2Content = document.getElementById('step2-content');
+      const step1Indicator = document.getElementById('step1-indicator');
+      const step2Indicator = document.getElementById('step2-indicator');
+      const nextBtn = document.getElementById('next-btn');
+      const backBtn = document.getElementById('back-btn');
+      const createBtn = document.getElementById('create-btn');
+      const importOption = document.getElementById('import-option');
+      const createOption = document.getElementById('create-option');
+      const folderInput = document.getElementById('folder-input');
+      const importFolderInfo = document.getElementById('import-folder-info');
+      const selectedFolderNameEl = document.getElementById('selected-folder-name');
+      const form = document.getElementById('knowledge-base-form');
+
+      // 步骤切换函数
+      function showStep(step: number) {
+        currentStep = step;
+        
+        if (step === 1) {
+          step1Content.classList.remove('hidden');
+          step2Content.classList.add('hidden');
+          step1Indicator.classList.remove('opacity-50');
+          step2Indicator.classList.add('opacity-50');
+          backBtn.classList.add('hidden');
+          nextBtn.classList.remove('hidden');
+          createBtn.classList.add('hidden');
+        } else {
+          step1Content.classList.add('hidden');
+          step2Content.classList.remove('hidden');
+          step1Indicator.classList.add('opacity-50');
+          step2Indicator.classList.remove('opacity-50');
+          backBtn.classList.remove('hidden');
+          nextBtn.classList.add('hidden');
+          createBtn.classList.remove('hidden');
+        }
+      }
+
+      // 导入选项点击事件
+      if (importOption) {
+        importOption.addEventListener('click', () => {
+          creationMethod = 'import';
+          if (folderInput) {
+            folderInput.click();
+          }
+        });
+      }
+
+      // 创建选项点击事件
+      if (createOption) {
+        createOption.addEventListener('click', () => {
+          creationMethod = 'create';
+          showStep(2);
+        });
+      }
+
+      // 文件夹选择事件
+      folderInput?.addEventListener('change', (event: Event) => {
+        const target = event.target as HTMLInputElement;
+        const files = target.files;
+        
+        if (files && files.length > 0) {
+          // 获取文件夹路径
+          const path = files[0].webkitRelativePath;
+          const folderName = path.split('/')[0];
+          selectedFolderName = folderName;
+          
+          // 显示文件夹信息
+          if (selectedFolderNameEl) {
+            selectedFolderNameEl.textContent = folderName;
+          }
+          importFolderInfo?.classList.remove('hidden');
+          
+          // 自动填充知识库名称
+          const nameInput = document.getElementById('kb-name') as HTMLInputElement;
+          if (nameInput) {
+            nameInput.value = folderName;
+          }
+          
+          showStep(2);
+        }
+      });
+
+      // 返回按钮
+      if (backBtn) {
+        backBtn.addEventListener('click', () => {
+          if (currentStep === 1) {
+            // 如果在第一步，返回dashboard时强制刷新
+            window.location.href = '/dashboard?refresh=' + Date.now();
+          } else {
+            showStep(1);
+          }
+        });
+      }
+
+      // 创建按钮
+      createBtn?.addEventListener('click', async () => {
+        if (!form || !(form as HTMLFormElement).checkValidity()) {
+          form && (form as HTMLFormElement).reportValidity();
+          return;
+        }
+
+        // 收集表单数据
+        const formData = new FormData(form);
+        
+        // 动态导入存储函数
+        try {
+          const { addKnowledgeBase, knowledgeBases } = await import('../store/learningStore');
+          
+          // 准备知识库数据
+          const kbData = {
+            name: formData.get('name') as string,
+            description: formData.get('learningGoals') as string || '暂无描述',
+            progress: 0,
+            lastAccessed: new Date().toISOString(),
+            documentCount: 0,
+            color: getRandomColor(),
+            icon: getRandomIcon(),
+            purpose: formData.get('purpose') as string,
+            subject: formData.get('subject') as string || undefined,
+            learningGoals: formData.get('learningGoals') as string || undefined,
+            studyTime: (formData.get('studyTime') as 'short' | 'medium' | 'long') || undefined,
+            creationMethod: creationMethod as 'import' | 'create',
+            folderName: selectedFolderName || undefined,
+            createdAt: new Date().toISOString()
+          };
+          
+          // 添加知识库
+          const newKb = addKnowledgeBase(kbData);
+          console.log('知识库创建成功:', newKb);
+          
+          // 验证知识库是否已添加到状态
+          const updatedKbs = knowledgeBases.get();
+          console.log('当前知识库列表:', updatedKbs);
+          
+          // 显示成功消息
+          alert('知识库创建成功！即将跳转到仪表板...');
+          
+          // 触发自定义事件通知其他页面
+          window.dispatchEvent(new CustomEvent('knowledgebase:added', { 
+            detail: { knowledgeBase: newKb, allKnowledgeBases: updatedKbs }
+          }));
+          
+          // 使用更长的延迟确保状态完全同步，然后跳转
+          setTimeout(() => {
+            // 强制刷新页面以确保获取最新数据
+            window.location.href = '/dashboard?refresh=' + Date.now();
+          }, 500);
+          
+        } catch (error) {
+          console.error('创建知识库失败:', error);
+          alert('创建失败，请重试');
+        }
+      });
+
+      // 辅助函数：获取随机颜色
+      function getRandomColor(): string {
+        const colors = [
+          'bg-brand-blue',
+          'bg-priority-important',
+          'bg-priority-critical',
+          'bg-green-500',
+          'bg-purple-500',
+          'bg-yellow-500',
+          'bg-pink-500',
+          'bg-indigo-500'
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      // 辅助函数：获取随机图标
+      function getRandomIcon(): string {
+        const icons = [
+          '📚', '🌳', '💻', '🌐', '🧠', '🔬', '📝', '🎨', 
+          '🚀', '💡', '🔧', '📖', '🏛️', '⚛️', '🧪', '📈'
+        ];
+        return icons[Math.floor(Math.random() * icons.length)];
+      }
+
+      // 表单验证
+      const nameInput = document.getElementById('kb-name') as HTMLInputElement;
+      if (nameInput) {
+        nameInput.addEventListener('input', (e) => {
+          const target = e.target as HTMLInputElement;
+          if (target.value.trim().length < 2) {
+            target.setCustomValidity('知识库名称至少需要2个字符');
+          } else {
+            target.setCustomValidity('');
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
