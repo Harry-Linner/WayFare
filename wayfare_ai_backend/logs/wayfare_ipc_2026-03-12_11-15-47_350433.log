@@ -1,0 +1,7 @@
+2026-03-12 11:15:47.351 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 11:15:47.352 | INFO     | __main__:main:94 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 11:16:08.096 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-1] parse
+2026-03-12 11:16:08.097 | INFO     | services:_background_parse:29 - Starting real background parse for 71ef569e17b8c71ef5606f58d92a92fc (C:/你的一个测试.pdf)
+2026-03-12 11:16:08.098 | ERROR    | document_parser:_extract_and_chunk_pdf_sync:40 - PyMuPDF failed to parse C:/你的一个测试.pdf: no such file: 'C:/你的一个测试.pdf'
+2026-03-12 11:16:08.100 | ERROR    | services:_background_parse:62 - Parse failed: no such file: 'C:/你的一个测试.pdf'
+2026-03-12 11:17:47.526 | INFO     | __main__:<module>:112 - Sidecar shut down cleanly.

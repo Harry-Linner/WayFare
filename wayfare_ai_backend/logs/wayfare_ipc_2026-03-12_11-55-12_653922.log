@@ -1,0 +1,43 @@
+2026-03-12 11:55:12.655 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 11:55:12.682 | INFO     | database:init_db_pool:18 - Database connection pool initialized.
+2026-03-12 11:55:12.684 | INFO     | database:init_tables:83 - Database tables and pgvector extension are ready.
+2026-03-12 11:55:12.685 | INFO     | __main__:main:93 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 11:55:21.189 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-2] parse
+2026-03-12 11:55:21.189 | INFO     | services:_background_parse:29 - Starting real background parse for d4a98a020e64c960e3397827b91fe8b4 (C:/Users/fjt/Desktop/大物/大学物理(上)期末复习.pdf)
+2026-03-12 11:55:21.216 | INFO     | services:_background_parse:34 - Extracted 327 chunks from C:/Users/fjt/Desktop/大物/大学物理(上)期末复习.pdf
+2026-03-12 11:55:51.051 | INFO     | services:_background_parse:59 - Parse completed for d4a98a020e64c960e3397827b91fe8b4, 327 vectors inserted.
+2026-03-12 11:57:36.425 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-3] query
+2026-03-12 11:57:36.774 | ERROR    | __main__:dispatch_request:65 - Error handling IPC request test-3: Traceback (most recent call last):
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 63, in dispatch_request
+    send_success(req_id, seq, data)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 26, in send_success
+    send_response({
+    ~~~~~~~~~~~~~^^
+        "id": req_id,
+        ^^^^^^^^^^^^^
+    ...<2 lines>...
+        "data": data
+        ^^^^^^^^^^^^
+    })
+    ^^
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 23, in send_response
+    print(json.dumps(payload, ensure_ascii=False), flush=True)
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 242, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 202, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 263, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 182, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type UUID is not JSON serializable
+when serializing dict item 'segment_id'
+when serializing list item 0
+when serializing dict item 'results'
+when serializing dict item 'data'
+
+2026-03-12 11:59:26.283 | INFO     | __main__:<module>:109 - Sidecar shut down cleanly.

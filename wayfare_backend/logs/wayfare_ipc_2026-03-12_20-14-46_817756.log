@@ -1,0 +1,107 @@
+2026-03-12 20:14:46.820 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 20:14:46.852 | ERROR    | database:init_db_pool:21 - Failed to initialize database pool: password authentication failed for user "your_db_user"
+2026-03-12 20:14:46.853 | WARNING  | __main__:main:74 - Database unavailable: password authentication failed for user "your_db_user"
+2026-03-12 20:14:46.853 | INFO     | __main__:main:93 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 20:14:57.693 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=7a07aa89-6f7f-46b5-9921-fd26a418fd61] annotate
+2026-03-12 20:14:57.694 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: 'utf-8' codec can't encode character '\udcae' in position 37: surrogates not allowed
+2026-03-12 20:14:57.694 | ERROR    | llm_provider:call_llm:71 - Unexpected error during LLM call
+Traceback (most recent call last):
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 107, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000002B86E962F00>
+    │       └ <function run at 0x000002B86BAEE610>
+    └ <module 'asyncio' from 'C:\\Users\\fjt\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+           │      │   └ <coroutine object main at 0x000002B86D36AAC0>
+           │      └ <function Runner.run at 0x000002B86BAEEA30>
+           └ <asyncio.runners.Runner object at 0x000002B86BD6E270>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<main() running at C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py:96> wait_for=...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x000002B86BAEAE50>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x000002B86BD6E270>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x000002B86BAEADA0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000002B86BAECF60>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x000002B86BA65590>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000002B86E95B400>()>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000002B86E95B400>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000002B86E95B400>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000002B86E95B400>()>
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 53, in dispatch_request
+    data = await handle_annotate(params)
+                 │               └ {'context': '甯\udcae鎴戞\udc80荤粨涓\udc80涓嬭繖浠藉\udca4嶄範璧勬枡鐨勬牳蹇冭\udc80冪偣锛\udc9f', 'docHashes': ['1cdd84383f97ddfa8f1c254e6cdea3e4']...
+                 └ <function handle_annotate at 0x000002B86E9622A0>
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\services.py", line 105, in handle_annotate
+    res_json = await llm_client.call_llm(
+                     │          └ <function LLMProvider.call_llm at 0x000002B86D055640>
+                     └ <llm_provider.LLMProvider object at 0x000002B86CF91940>
+
+> File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\llm_provider.py", line 48, in call_llm
+    resp = await self.client.post(
+                 │    │      └ <function AsyncClient.post at 0x000002B86D0541A0>
+                 │    └ <httpx.AsyncClient object at 0x000002B86CF91A90>
+                 └ <llm_provider.LLMProvider object at 0x000002B86CF91940>
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 1859, in post
+    return await self.request(
+                 │    └ <function AsyncClient.request at 0x000002B86D04B3D0>
+                 └ <httpx.AsyncClient object at 0x000002B86CF91A90>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 1527, in request
+    request = self.build_request(
+              │    └ <function BaseClient.build_request at 0x000002B86D048040>
+              └ <httpx.AsyncClient object at 0x000002B86CF91A90>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 378, in build_request
+    return Request(
+           └ <class 'httpx.Request'>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_models.py", line 408, in __init__
+    headers, stream = encode_request(
+    │                 └ <function encode_request at 0x000002B86CFB6DA0>
+    └ Headers({'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'user-agent': 'python-httpx/0.28.1'...
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_content.py", line 216, in encode_request
+    return encode_json(json)
+           │           └ {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'system', 'content': '你现在是 WayFare，一位顶尖的主动式个性化AI学习管家。\n你的核心任务是...
+           └ <function encode_json at 0x000002B86CFB6C40>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_content.py", line 179, in encode_json
+    ).encode("utf-8")
+
+UnicodeEncodeError: 'utf-8' codec can't encode character '\udcae' in position 487: surrogates not allowed
+2026-03-12 20:14:57.696 | ERROR    | services:handle_annotate:120 - LLM fallback triggered: 'utf-8' codec can't encode character '\udcae' in position 487: surrogates not allowed
+2026-03-12 20:14:57.697 | ERROR    | __main__:dispatch_request:65 - Error handling IPC request 7a07aa89-6f7f-46b5-9921-fd26a418fd61: Traceback (most recent call last):
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 63, in dispatch_request
+    send_success(req_id, seq, data)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 26, in send_success
+    send_response({
+    ~~~~~~~~~~~~~^^
+        "id": req_id,
+        ^^^^^^^^^^^^^
+    ...<2 lines>...
+        "data": data
+        ^^^^^^^^^^^^
+    })
+    ^^
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 23, in send_response
+    print(json.dumps(payload, ensure_ascii=False), flush=True)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'gbk' codec can't encode character '\u26a0' in position 181: illegal multibyte sequence
+
+2026-03-12 20:16:57.874 | INFO     | __main__:<module>:109 - Sidecar shut down cleanly.

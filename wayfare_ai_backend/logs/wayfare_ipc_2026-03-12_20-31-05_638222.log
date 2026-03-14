@@ -1,0 +1,14 @@
+2026-03-12 20:31:05.639 | INFO     | __main__:main:71 - Initializing DB Pool...
+2026-03-12 20:31:05.677 | INFO     | database:init_db_pool:18 - Database connection pool initialized.
+2026-03-12 20:31:05.682 | INFO     | database:init_tables:83 - Database tables and pgvector extension are ready.
+2026-03-12 20:31:05.685 | INFO     | __main__:main:95 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 20:31:14.638 | DEBUG    | __main__:dispatch_request:51 - IPC RECV -> [req_id=2e9d9873-19e5-4926-b8c9-3e677786651c] annotate
+2026-03-12 20:31:32.410 | DEBUG    | __main__:dispatch_request:51 - IPC RECV -> [req_id=3f594f4a-f43f-4a4e-be9e-0aad6983d0d1] parse
+2026-03-12 20:31:32.412 | INFO     | services:_background_parse:29 - Starting real background parse for b7d1e5c9bc0aa94d121c09095b20e349 (C:\Users\fjt\Desktop\wayfare\wayfare_backend\uploads\3b73f6b3-0312-4a2f-a508-86f065d3f8a8.pdf)
+2026-03-12 20:31:32.456 | INFO     | services:_background_parse:34 - Extracted 327 chunks from C:\Users\fjt\Desktop\wayfare\wayfare_backend\uploads\3b73f6b3-0312-4a2f-a508-86f065d3f8a8.pdf
+2026-03-12 20:31:34.781 | DEBUG    | __main__:dispatch_request:51 - IPC RECV -> [req_id=5890d13a-8ec1-40b7-a0e6-d55fee276283] parse
+2026-03-12 20:31:34.782 | INFO     | services:_background_parse:29 - Starting real background parse for e095a12fe656dee3f039422036f19781 (C:\Users\fjt\Desktop\wayfare\wayfare_backend\uploads\37d0aa5b-52f5-413f-a7f6-9d909cec66a9.pdf)
+2026-03-12 20:31:34.824 | INFO     | services:_background_parse:34 - Extracted 327 chunks from C:\Users\fjt\Desktop\wayfare\wayfare_backend\uploads\37d0aa5b-52f5-413f-a7f6-9d909cec66a9.pdf
+2026-03-12 20:31:37.333 | DEBUG    | __main__:dispatch_request:51 - IPC RECV -> [req_id=16075a20-cbfc-44bc-abbf-893056be9529] annotate
+2026-03-12 20:31:53.737 | INFO     | services:_background_parse:59 - Parse completed for b7d1e5c9bc0aa94d121c09095b20e349, 327 vectors inserted.
+2026-03-12 20:31:57.118 | INFO     | services:_background_parse:59 - Parse completed for e095a12fe656dee3f039422036f19781, 327 vectors inserted.

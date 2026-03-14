@@ -1,0 +1,9 @@
+2026-03-12 11:52:07.613 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 11:52:07.640 | INFO     | database:init_db_pool:18 - Database connection pool initialized.
+2026-03-12 11:52:07.642 | INFO     | database:init_tables:83 - Database tables and pgvector extension are ready.
+2026-03-12 11:52:07.644 | INFO     | __main__:main:93 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 11:52:10.594 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-2] parse
+2026-03-12 11:52:10.594 | INFO     | services:_background_parse:29 - Starting real background parse for d4a98a020e64c960e3397827b91fe8b4 (C:/Users/fjt/Desktop/大物/大学物理(上)期末复习.pdf)
+2026-03-12 11:52:10.669 | INFO     | services:_background_parse:34 - Extracted 327 chunks from C:/Users/fjt/Desktop/大物/大学物理(上)期末复习.pdf
+2026-03-12 11:52:10.878 | ERROR    | services:_background_parse:62 - Parse failed: invalid input for query argument $7: [-0.0016653779, 0.04288172, -0.039461706... (expected str, got list)
+2026-03-12 11:54:54.208 | INFO     | __main__:<module>:109 - Sidecar shut down cleanly.

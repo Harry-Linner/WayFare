@@ -1,0 +1,7 @@
+2026-03-12 11:59:42.589 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 11:59:42.615 | INFO     | database:init_db_pool:18 - Database connection pool initialized.
+2026-03-12 11:59:42.617 | INFO     | database:init_tables:83 - Database tables and pgvector extension are ready.
+2026-03-12 11:59:42.618 | INFO     | __main__:main:93 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 11:59:50.583 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-3] query
+2026-03-12 12:01:57.538 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-4] annotate
+2026-03-12 13:38:20.887 | INFO     | __main__:<module>:109 - Sidecar shut down cleanly.

@@ -1,0 +1,668 @@
+2026-03-12 20:24:32.587 | INFO     | __main__:main:71 - Initializing DB Pool...
+2026-03-12 20:24:32.614 | ERROR    | database:init_db_pool:21 - Failed to initialize database pool: password authentication failed for user "your_db_user"
+2026-03-12 20:24:32.615 | WARNING  | __main__:main:76 - Database unavailable: password authentication failed for user "your_db_user"
+2026-03-12 20:24:32.615 | INFO     | __main__:main:95 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 20:24:42.419 | DEBUG    | __main__:dispatch_request:51 - IPC RECV -> [req_id=ee5eb7d8-ce8a-4c3e-828c-e1fa8dbd243e] parse
+2026-03-12 20:24:42.421 | INFO     | services:_background_parse:29 - Starting real background parse for 5ec7ed5081956748e16fdc32c35d5e2e (C:\Users\fjt\Desktop\wayfare\wayfare_backend\uploads\803f810f-63d0-4db8-bc89-d2a172ad0546.pdf)
+2026-03-12 20:24:42.461 | INFO     | services:_background_parse:34 - Extracted 327 chunks from C:\Users\fjt\Desktop\wayfare\wayfare_backend\uploads\803f810f-63d0-4db8-bc89-d2a172ad0546.pdf
+2026-03-12 20:24:42.562 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.587 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.609 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.632 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.655 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.677 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.703 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.728 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.749 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.770 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.791 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.812 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.832 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.851 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.871 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.893 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.914 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.934 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.955 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.975 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:42.999 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.029 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.057 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.083 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.107 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.135 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.159 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.187 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.221 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.247 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.271 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.298 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.326 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.361 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.388 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.421 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.456 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.478 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.498 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.518 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.538 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.565 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.588 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.610 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.633 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.662 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.685 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.711 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.742 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.765 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.788 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.810 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.832 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.855 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.877 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.899 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.921 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.944 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:43.968 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.004 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.030 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.066 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.097 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.119 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.143 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.168 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.191 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.214 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.238 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.267 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.291 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.314 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.338 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.362 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.385 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.407 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.430 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.455 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.479 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.505 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.529 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.552 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.579 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.606 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.629 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.651 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.673 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.694 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.716 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.738 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.762 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.784 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.807 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.831 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.856 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.879 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.901 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.924 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.970 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:44.994 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.090 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.090 | DEBUG    | __main__:dispatch_request:51 - IPC RECV -> [req_id=82d88ffa-a82d-473d-9ca8-5fcced9fbac2] annotate
+2026-03-12 20:24:45.111 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.132 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.151 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.152 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.176 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.198 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.212 | ERROR    | llm_provider:call_llm:65 - LLM API HTTP Error: "Invalid token"
+2026-03-12 20:24:45.212 | ERROR    | services:handle_annotate:120 - LLM fallback triggered: LLM API request failed: 401
+2026-03-12 20:24:45.222 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.245 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.269 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.294 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.318 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.344 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.367 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.392 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.416 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.440 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.464 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.490 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.519 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.544 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.569 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.593 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.621 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.646 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.669 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.694 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.718 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.745 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.770 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.797 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.822 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.847 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.871 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.898 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.930 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.955 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:45.978 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.003 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.029 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.053 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.077 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.100 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.126 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.152 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.175 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.199 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.229 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.254 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.280 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.306 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.330 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.354 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.380 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.404 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.429 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.453 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.475 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.500 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.542 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.565 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.586 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.606 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.625 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.645 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.665 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.685 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.706 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.727 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.750 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.773 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.801 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.826 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.851 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.876 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.902 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.927 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.951 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.975 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:46.999 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.023 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.048 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.072 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.096 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.121 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.145 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.169 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.193 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.217 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.241 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.265 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.293 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.318 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.343 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.367 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.394 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.419 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.443 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.467 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.491 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.515 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.535 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.552 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.570 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.588 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.607 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.626 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.645 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.661 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.677 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.696 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.712 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.730 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.746 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.762 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.779 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.795 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.812 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.830 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.848 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.865 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.882 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.898 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.917 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.935 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.956 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.974 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:47.990 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.008 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.036 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.053 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.070 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.088 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.104 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.121 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.139 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.156 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.174 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.191 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.207 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.224 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.241 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.257 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.286 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.302 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.318 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.334 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.352 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.370 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.387 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.407 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.424 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.442 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.458 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.476 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.495 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.514 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.531 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.548 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.565 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.583 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.604 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.623 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.636 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.650 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.664 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.676 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.689 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.702 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.716 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.729 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.742 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.755 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.767 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.779 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.791 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.806 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.820 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.835 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.854 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.871 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.886 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.905 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.922 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.937 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.952 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.968 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:48.984 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.001 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.018 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.035 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.055 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.072 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.089 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.105 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.125 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.141 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.159 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.175 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.192 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.289 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.311 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.335 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.358 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.381 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.405 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.428 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.449 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.474 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.498 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.523 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.563 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.599 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.622 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.647 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.670 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.693 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.718 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.741 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.766 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.789 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.811 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.834 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.857 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.881 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.903 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.927 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.950 | ERROR    | embedding_provider:get_embedding:35 - Embedding API failed: Client error '401 Unauthorized' for url 'https://api.siliconflow.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+2026-03-12 20:24:49.951 | INFO     | services:_background_parse:59 - Parse completed for 5ec7ed5081956748e16fdc32c35d5e2e, 327 vectors inserted.
+2026-03-12 20:30:59.394 | INFO     | __main__:<module>:111 - Sidecar shut down cleanly.

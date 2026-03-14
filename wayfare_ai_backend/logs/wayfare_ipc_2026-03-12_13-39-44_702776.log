@@ -1,0 +1,173 @@
+2026-03-12 13:39:44.704 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 13:39:44.732 | INFO     | database:init_db_pool:18 - Database connection pool initialized.
+2026-03-12 13:39:44.737 | INFO     | database:init_tables:83 - Database tables and pgvector extension are ready.
+2026-03-12 13:39:44.739 | INFO     | __main__:main:93 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 13:39:48.753 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-query-history] query
+2026-03-12 13:40:48.848 | ERROR    | llm_provider:call_llm:71 - Unexpected error during LLM call
+Traceback (most recent call last):
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+                 │    │     │                    └ <Request [b'POST']>
+                 │    │     └ <function AsyncConnectionPool.handle_async_request at 0x000001FBC2CE9900>
+                 │    └ <AsyncHTTPProxy [Requests: 0 active, 0 queued | Connections: 0 active, 0 idle]>
+                 └ <httpx.AsyncHTTPTransport object at 0x000001FBC2C8E350>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+                     │          └ <function AsyncTunnelHTTPConnection.handle_async_request at 0x000001FBC2CEBC10>
+                     └ <AsyncTunnelHTTPConnection ['https://api.siliconflow.cn:443', HTTP/1.1, CLOSED, Request Count: 1]>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_async\http_proxy.py", line 343, in handle_async_request
+    return await self._connection.handle_async_request(request)
+                 │    │           │                    └ <Request [b'POST']>
+                 │    │           └ <function AsyncHTTP11Connection.handle_async_request at 0x000001FBC2CD14E0>
+                 │    └ <AsyncHTTP11Connection ['https://api.siliconflow.cn:443', CLOSED, Request Count: 1]>
+                 └ <AsyncTunnelHTTPConnection ['https://api.siliconflow.cn:443', HTTP/1.1, CLOSED, Request Count: 1]>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_async\http11.py", line 136, in handle_async_request
+    raise exc
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_async\http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+              │    │                           └ {'request': <Request [b'POST']>}
+              │    └ <function AsyncHTTP11Connection._receive_response_headers at 0x000001FBC2CD1A60>
+              └ <AsyncHTTP11Connection ['https://api.siliconflow.cn:443', CLOSED, Request Count: 1]>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_async\http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+                  │    │                      └ 60.0
+                  │    └ <function AsyncHTTP11Connection._receive_event at 0x000001FBC2CD1D20>
+                  └ <AsyncHTTP11Connection ['https://api.siliconflow.cn:443', CLOSED, Request Count: 1]>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_async\http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+                 │    │               └ <function AnyIOStream.read at 0x000001FBC2CF3060>
+                 │    └ <httpcore._backends.anyio.AnyIOStream object at 0x000001FBC491A210>
+                 └ <AsyncHTTP11Connection ['https://api.siliconflow.cn:443', CLOSED, Request Count: 1]>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_backends\anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+         │              └ {<class 'TimeoutError'>: <class 'httpcore.ReadTimeout'>, <class 'anyio.BrokenResourceError'>: <class 'httpcore.ReadError'>, <...
+         └ <function map_exceptions at 0x000001FBC2ABBE20>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    │    │   │     └ TimeoutError()
+    │    │   └ <method 'throw' of 'generator' objects>
+    │    └ <generator object map_exceptions at 0x000001FBC33DA040>
+    └ <contextlib._GeneratorContextManager object at 0x000001FBC48972A0>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+          └ <class 'httpcore.ReadTimeout'>
+
+httpcore.ReadTimeout
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 107, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000001FBC4A0A2A0>
+    │       └ <function run at 0x000001FBC1EF1170>
+    └ <module 'asyncio' from 'C:\\Users\\fjt\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+           │      │   └ <coroutine object main at 0x000001FBC2EAC7B0>
+           │      └ <function Runner.run at 0x000001FBC1EF1590>
+           └ <asyncio.runners.Runner object at 0x000001FBC1FFC2F0>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<main() running at C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py:96> wait_for=...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x000001FBC1EDD9B0>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x000001FBC1FFC2F0>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x000001FBC1EDD900>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000001FBC1EDFA00>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x000001FBC1E3FE20>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001FBC4A02440>()>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001FBC4A02440>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001FBC4A02440>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001FBC4A02440>()>
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 55, in dispatch_request
+    data = await handle_query(params)
+                 │            └ {'docHash': 'd4a98a020e64c960e3397827b91fe8b4', 'query': '那它的公式是什么？', 'topK': 2, 'history': [{'role': 'user', 'content': '质心运...
+                 └ <function handle_query at 0x000001FBC4A09900>
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\services.py", line 164, in handle_query
+    actual_query = await _rewrite_query_with_history(raw_query, history)
+                         │                           │          └ [{'role': 'user', 'content': '质心运动定理是什么？'}, {'role': 'assistant', 'content': '想象一个班级的同学在拔河比赛。虽然每个人都在用力拉绳子，但我们可以找到一个平均位置...'}]
+                         │                           └ '那它的公式是什么？'
+                         └ <function _rewrite_query_with_history at 0x000001FBC4A097A0>
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\services.py", line 142, in _rewrite_query_with_history
+    res = await llm_client.call_llm(
+                │          └ <function LLMProvider.call_llm at 0x000001FBC29CF5E0>
+                └ <llm_provider.LLMProvider object at 0x000001FBC29B0AD0>
+
+> File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\llm_provider.py", line 48, in call_llm
+    resp = await self.client.post(
+                 │    │      └ <function AsyncClient.post at 0x000001FBC29CE140>
+                 │    └ <httpx.AsyncClient object at 0x000001FBC29B0C20>
+                 └ <llm_provider.LLMProvider object at 0x000001FBC29B0AD0>
+
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 1859, in post
+    return await self.request(
+                 │    └ <function AsyncClient.request at 0x000001FBC29CD430>
+                 └ <httpx.AsyncClient object at 0x000001FBC29B0C20>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+                 │    │    │             │                      └ <httpx._client.UseClientDefault object at 0x000001FBC29B0830>
+                 │    │    │             └ <httpx._client.UseClientDefault object at 0x000001FBC29B0830>
+                 │    │    └ <Request('POST', 'https://api.siliconflow.cn/v1/chat/completions')>
+                 │    └ <function AsyncClient.send at 0x000001FBC29CD7A0>
+                 └ <httpx.AsyncClient object at 0x000001FBC29B0C20>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+                     │    └ <function AsyncClient._send_handling_auth at 0x000001FBC29CD900>
+                     └ <httpx.AsyncClient object at 0x000001FBC29B0C20>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+                     │    └ <function AsyncClient._send_handling_redirects at 0x000001FBC29CDA60>
+                     └ <httpx.AsyncClient object at 0x000001FBC29B0C20>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+                     │    │                    └ <Request('POST', 'https://api.siliconflow.cn/v1/chat/completions')>
+                     │    └ <function AsyncClient._send_single_request at 0x000001FBC29CDBC0>
+                     └ <httpx.AsyncClient object at 0x000001FBC29B0C20>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+                     │         │                    └ <Request('POST', 'https://api.siliconflow.cn/v1/chat/completions')>
+                     │         └ <function AsyncHTTPTransport.handle_async_request at 0x000001FBC29BEAE0>
+                     └ <httpx.AsyncHTTPTransport object at 0x000001FBC2C8E350>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         └ <function map_httpcore_exceptions at 0x000001FBC29BD590>
+  File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    │    │   │     └ ReadTimeout(TimeoutError())
+    │    │   └ <method 'throw' of 'generator' objects>
+    │    └ <generator object map_httpcore_exceptions at 0x000001FBC2EDFE40>
+    └ <contextlib._GeneratorContextManager object at 0x000001FBC4897B60>
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+          │          └ ''
+          └ <class 'httpx.ReadTimeout'>
+
+httpx.ReadTimeout
+2026-03-12 13:40:48.883 | WARNING  | services:_rewrite_query_with_history:152 - ⚠️ Query rewrite failed, falling back to original query: 
+2026-03-12 13:42:26.655 | INFO     | __main__:<module>:109 - Sidecar shut down cleanly.

@@ -1,0 +1,7 @@
+2026-03-12 11:49:36.924 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 11:49:36.960 | INFO     | database:init_db_pool:18 - Database connection pool initialized.
+2026-03-12 11:49:37.030 | INFO     | database:init_tables:83 - Database tables and pgvector extension are ready.
+2026-03-12 11:49:37.032 | INFO     | __main__:main:93 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 11:50:34.107 | ERROR    | __main__:main:101 - Failed to decode IPC message: {"id": "test-2", "seq": 2, "method": "parse", "params": {"path": "C:\Users\fjt\Desktop\大物\大学物理(上)期末复习.pdf"}}
+
+2026-03-12 11:52:04.332 | INFO     | __main__:<module>:109 - Sidecar shut down cleanly.

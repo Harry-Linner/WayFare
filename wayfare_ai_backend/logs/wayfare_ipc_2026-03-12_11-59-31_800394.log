@@ -1,0 +1,78 @@
+2026-03-12 11:59:31.801 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 11:59:31.828 | INFO     | database:init_db_pool:18 - Database connection pool initialized.
+2026-03-12 11:59:31.830 | INFO     | database:init_tables:83 - Database tables and pgvector extension are ready.
+2026-03-12 11:59:31.831 | INFO     | __main__:main:93 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 11:59:35.263 | ERROR    | __main__:main:101 - Failed to decode IPC message: 2026-03-12 11:57:36.425 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-3] query
+
+2026-03-12 11:59:35.264 | ERROR    | __main__:main:101 - Failed to decode IPC message: 2026-03-12 11:57:36.774 | ERROR    | __main__:dispatch_request:65 - Error handling IPC request test-3: Traceback (most recent call last):
+
+2026-03-12 11:59:35.264 | ERROR    | __main__:main:101 - Failed to decode IPC message:   File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 63, in dispatch_request
+
+2026-03-12 11:59:35.264 | ERROR    | __main__:main:101 - Failed to decode IPC message:     send_success(req_id, seq, data)
+
+2026-03-12 11:59:35.264 | ERROR    | __main__:main:101 - Failed to decode IPC message:     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+
+2026-03-12 11:59:35.264 | ERROR    | __main__:main:101 - Failed to decode IPC message:   File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 26, in send_success
+
+2026-03-12 11:59:35.264 | ERROR    | __main__:main:101 - Failed to decode IPC message:     send_response({
+
+2026-03-12 11:59:35.264 | ERROR    | __main__:main:101 - Failed to decode IPC message:     ~~~~~~~~~~~~~^^
+
+2026-03-12 11:59:35.264 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-3] query
+2026-03-12 11:59:35.267 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=test-3] None
+2026-03-12 11:59:35.268 | ERROR    | __main__:dispatch_request:65 - Error handling IPC request test-3: Traceback (most recent call last):
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 61, in dispatch_request
+    raise ValueError(f"Unknown RPC method: {method}")
+ValueError: Unknown RPC method: None
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:         "id": req_id,
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:         ^^^^^^^^^^^^^
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:     ...<2 lines>...
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:         "data": data
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:         ^^^^^^^^^^^^
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:     })
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:     ^^
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:   File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 23, in send_response
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:     print(json.dumps(payload, ensure_ascii=False), flush=True)
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:   File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 242, in dumps
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:     **kw).encode(obj)
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:           ~~~~~~^^^^^
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:   File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 202, in encode
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:     chunks = self.iterencode(o, _one_shot=True)
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:   File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 263, in iterencode
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:     return _iterencode(o, 0)
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:   File "C:\Users\fjt\AppData\Local\Python\pythoncore-3.14-64\Lib\json\encoder.py", line 182, in default
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:     raise TypeError(f'Object of type {o.__class__.__name__} '
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message:                     f'is not JSON serializable')
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message: TypeError: Object of type UUID is not JSON serializable
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message: when serializing dict item 'segment_id'
+
+2026-03-12 11:59:35.268 | ERROR    | __main__:main:101 - Failed to decode IPC message: when serializing list item 0
+
+2026-03-12 11:59:35.269 | ERROR    | __main__:main:101 - Failed to decode IPC message: when serializing dict item 'results'
+
+2026-03-12 11:59:35.269 | ERROR    | __main__:main:101 - Failed to decode IPC message: when serializing dict item 'data'
+
+2026-03-12 11:59:38.826 | INFO     | __main__:<module>:109 - Sidecar shut down cleanly.

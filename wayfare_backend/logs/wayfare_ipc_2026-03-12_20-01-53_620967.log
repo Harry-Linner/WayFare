@@ -1,0 +1,15 @@
+2026-03-12 20:01:53.622 | INFO     | __main__:main:69 - Initializing DB Pool...
+2026-03-12 20:01:53.653 | ERROR    | database:init_db_pool:21 - Failed to initialize database pool: password authentication failed for user "your_db_user"
+2026-03-12 20:01:53.653 | WARNING  | __main__:main:74 - Database unavailable: password authentication failed for user "your_db_user"
+2026-03-12 20:01:53.654 | INFO     | __main__:main:93 - WayFare Python Sidecar ready. Listening on stdin.
+2026-03-12 20:05:10.488 | DEBUG    | __main__:dispatch_request:49 - IPC RECV -> [req_id=2e0107eb-8232-4fd0-81b9-941001f59fc6] parse
+2026-03-12 20:05:10.489 | ERROR    | __main__:dispatch_request:65 - Error handling IPC request 2e0107eb-8232-4fd0-81b9-941001f59fc6: Traceback (most recent call last):
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py", line 51, in dispatch_request
+    data = await handle_parse(params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\services.py", line 74, in handle_parse
+    doc_hash = hashlib.md5(path.encode('utf-8')).hexdigest()
+                           ~~~~~~~~~~~^^^^^^^^^
+UnicodeEncodeError: 'utf-8' codec can't encode character '\udcad' in position 55: surrogates not allowed
+
+2026-03-12 20:06:50.063 | INFO     | __main__:<module>:109 - Sidecar shut down cleanly.
