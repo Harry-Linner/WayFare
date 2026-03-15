@@ -1,26 +1,110 @@
+﻿---
+---
 
----
-// 配色：背景 #E1FCF6, 按钮 #A3D1CC
----
-<dialog id="upload-modal" class="backdrop:bg-black/50 p-0 rounded-2xl shadow-2xl border-none">
-  <div class="bg-brand-surface w-[400px] p-6 flex flex-col gap-4">
-    <h3 class="text-xl font-bold text-gray-800">检测到新文件</h3>
-    <p class="text-sm text-gray-600">你希望如何处理这个文件？</p>
-    
+<dialog id="upload-modal" class="backdrop:bg-black/50 p-0 rounded-2xl shadow-2xl border-none w-[440px] max-w-[calc(100vw-2rem)]">
+  <div class="bg-brand-surface p-6 flex flex-col gap-4">
+    <div>
+      <h3 class="text-xl font-bold text-gray-800">上传学习资料</h3>
+      <p class="text-sm text-gray-600 mt-1">选择这批资料的处理方式，随后即可从电脑中选择文件。</p>
+    </div>
+
     <div class="space-y-2">
-      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="annotate">
+      <button class="upload-action-btn w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="annotate" data-label="自动添加 AI 批注">
         ✨ 自动添加 AI 批注
       </button>
-      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="summary">
+      <button class="upload-action-btn w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="summary" data-label="生成学习笔记">
         📝 生成学习笔记
       </button>
-      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="nothing">
-        📂 仅复制文件，不做处理
+      <button class="upload-action-btn w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="nothing" data-label="仅上传原文件">
+        📁 仅上传原文件，不做处理
+      </button>
+      <button id="other-action-btn" class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" type="button">
+        ➕ 其他
       </button>
     </div>
 
-    <button onclick="this.closest('dialog').close()" class="mt-2 text-center text-gray-400 text-sm hover:underline">
-      取消
+    <div id="other-action-panel" class="hidden bg-white/70 rounded-xl border border-brand-blue/10 p-4 space-y-3">
+      <label for="other-action-input" class="block text-sm font-medium text-gray-700">自定义处理方式</label>
+      <input
+        id="other-action-input"
+        type="text"
+        maxlength="40"
+        placeholder="例如：老师要求的归档方式 / 自己的备注"
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-all"
+      />
+      <div class="flex justify-end gap-2">
+        <button id="other-cancel-btn" type="button" class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">
+          取消
+        </button>
+        <button id="other-confirm-btn" type="button" class="px-4 py-2 text-sm bg-brand-blue text-white rounded-lg hover:opacity-90">
+          确定并选文件
+        </button>
+      </div>
+    </div>
+
+    <button id="close-upload-modal-btn" type="button" class="mt-1 text-center text-gray-400 text-sm hover:underline">
+      关闭
     </button>
   </div>
 </dialog>
+
+<script>
+  const uploadModal = document.getElementById('upload-modal') as HTMLDialogElement | null;
+  const otherActionBtn = document.getElementById('other-action-btn');
+  const otherActionPanel = document.getElementById('other-action-panel');
+  const otherActionInput = document.getElementById('other-action-input') as HTMLInputElement | null;
+  const otherCancelBtn = document.getElementById('other-cancel-btn');
+  const otherConfirmBtn = document.getElementById('other-confirm-btn');
+  const closeUploadModalBtn = document.getElementById('close-upload-modal-btn');
+
+  function emitUploadSelection(mode: 'annotate' | 'summary' | 'nothing' | 'other', label: string) {
+    window.dispatchEvent(
+      new CustomEvent('workspace:upload-option-selected', {
+        detail: { mode, label }
+      })
+    );
+    uploadModal?.close();
+    otherActionPanel?.classList.add('hidden');
+    if (otherActionInput) {
+      otherActionInput.value = '';
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('.upload-action-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const mode = button.dataset.action as 'annotate' | 'summary' | 'nothing';
+      const label = button.dataset.label ?? button.textContent?.trim() ?? '未命名方式';
+      emitUploadSelection(mode, label);
+    });
+  });
+
+  otherActionBtn?.addEventListener('click', () => {
+    otherActionPanel?.classList.remove('hidden');
+    otherActionInput?.focus();
+  });
+
+  otherCancelBtn?.addEventListener('click', () => {
+    otherActionPanel?.classList.add('hidden');
+    if (otherActionInput) {
+      otherActionInput.value = '';
+    }
+  });
+
+  otherConfirmBtn?.addEventListener('click', () => {
+    const label = otherActionInput?.value.trim();
+    if (!label) {
+      otherActionInput?.focus();
+      return;
+    }
+
+    emitUploadSelection('other', label);
+  });
+
+  closeUploadModalBtn?.addEventListener('click', () => {
+    uploadModal?.close();
+    otherActionPanel?.classList.add('hidden');
+    if (otherActionInput) {
+      otherActionInput.value = '';
+    }
+  });
+</script>

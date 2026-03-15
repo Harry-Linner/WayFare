@@ -5,22 +5,29 @@ import AIAssistant from '../../components/ai/AIAssistant.astro';
 import AIToggleButton from '../../components/ai/AIToggleButton.astro';
 import { MOCK_ANNOTATIONS } from '../../constants/mockData';
 
-// 设置此页面为服务器渲染模式，避免需要getStaticPaths
-export const prerender = false;
+// 静态生成所有知识库页面
+export async function getStaticPaths() {
+  // 这里可以返回一些示例知识库ID，或者从配置文件中读取
+  const knowledgeBaseIds = ['math-101', 'os-intro', 'network-basic'];
+  
+  return knowledgeBaseIds.map(kbId => ({
+    params: { kbId }
+  }));
+}
 
-// 获取路由参数，例如 /workspace/math-101
-const { kbId } = Astro.params;
+// 使用客户端路由参数获取
+// const { kbId } = Astro.params; // 在客户端获取
 ---
 
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>知识库: {kbId}</title>
+    <title>知识库</title>
   </head>
   <body class="bg-brand-cream h-screen overflow-hidden flex">
     
     <!-- 左侧导航栏 -->
-    <aside class="w-16 hover:w-64 transition-all duration-300 bg-brand-blue flex flex-col items-center py-4 z-20 shadow-lg">
+    <aside class="w-16 bg-brand-blue flex flex-col items-center py-4 z-20 shadow-lg">
       <div class="flex-1 space-y-8">
         <button class="p-2 hover:bg-white/20 rounded-lg text-white" title="管理文件夹">
           <span class="block w-6 h-6 border-2 border-white rounded-sm"></span>
@@ -28,9 +35,6 @@ const { kbId } = Astro.params;
         <button class="p-2 hover:bg-white/20 rounded-lg text-white" title="修改配置">
           <span class="block w-6 h-6 border-2 border-white rounded-full"></span>
         </button>
-      </div>
-      <div class="pb-4">
-        <div class="w-8 h-8 bg-brand-sand rounded-full"></div>
       </div>
     </aside>
 
@@ -45,7 +49,7 @@ const { kbId } = Astro.params;
   <nav class="flex items-center justify-between mb-6 bg-white/50 p-3 rounded-xl border border-brand-blue/10">
     <div class="flex items-center gap-2 text-sm text-gray-600">
       <span class="opacity-50">项目:</span>
-      <span class="font-medium text-brand-blue">{kbId}</span>
+      <span class="font-medium text-brand-blue" id="kb-id">加载中...</span>
       <span class="mx-2 text-gray-300">/</span>
       <span class="font-bold text-gray-800 underline decoration-brand-blue/30">数据结构_第三章_树.pdf</span>
     </div>
@@ -107,6 +111,19 @@ const { kbId } = Astro.params;
 <script>
   import { setActiveAnnotation } from '../../store/learningStore';
   import { MOCK_ANNOTATIONS } from '../../constants/mockData';
+
+  // 获取知识库ID从URL路径
+  const pathParts = window.location.pathname.split('/');
+  const kbId = pathParts[pathParts.length - 1];
+  
+  // 更新页面标题和显示
+  if (kbId) {
+    document.title = `知识库: ${kbId}`;
+    const kbIdElement = document.getElementById('kb-id');
+    if (kbIdElement) {
+      kbIdElement.textContent = kbId;
+    }
+  }
 
   // --- A. 气泡点击联动逻辑 ---
   const bubbles = document.querySelectorAll('[data-annotation-id]');

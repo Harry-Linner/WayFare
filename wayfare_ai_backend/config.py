@@ -6,6 +6,10 @@ class Settings(BaseSettings):
     LLM_API_KEY: str = os.getenv("LLM_API_KEY", "your_llm_api_key_here")
     LLM_BASE_URL: str = os.getenv("LLM_BASE_URL", "https://api.siliconflow.cn/v1/chat/completions")
     LLM_MODEL_NAME: str = os.getenv("LLM_MODEL_NAME", "Pro/deepseek-ai/DeepSeek-V3")
+    GO_BACKEND_CALLBACK_URL: str = os.getenv(
+        "GO_BACKEND_CALLBACK_URL",
+        "http://localhost:8080/api/internal/parse-status",
+    )
     MAX_WORKERS: int = int(os.getenv("MAX_WORKERS", "4"))
     
     # 动态配置阈值，默认 60 秒

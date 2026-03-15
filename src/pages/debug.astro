@@ -1,0 +1,404 @@
+---
+// WayFare联调测试页面 - 用于验证Astro与Go后端的集成
+import ThreePaneLayout from '../layouts/ThreePaneLayout.astro';
+import { wayfareDebugger } from '../lib/api/debugger';
+
+const title = "联调测试 - WayFare AI学习助手";
+---
+
+<ThreePaneLayout title={title}>
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-6xl mx-auto px-4">
+      <!-- 页面标题 -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
+        <p class="text-gray-600">Astro前端与Go后端联调测试工具</p>
+      </div>
+
+      <!-- 快速操作面板 -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">🚀 快速操作</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button id="test-connection" class="px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+            🔍 测试连接
+          </button>
+          <button id="run-full-test" class="px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+            🧪 完整测试
+          </button>
+          <button id="clear-console" class="px-4 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+            🧹 清空控制台
+          </button>
+        </div>
+      </div>
+
+      <!-- 连接状态监控 -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-800">📡 连接状态</h2>
+          <button id="refresh-status" class="px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors text-sm">
+            刷新
+          </button>
+        </div>
+        <div id="connection-status" class="space-y-3">
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+            <span class="text-gray-600">正在检查连接状态...</span>
+            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 聊天测试 -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">💬 聊天测试</h2>
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" id="chat-doc-hash" placeholder="文档哈希 (可选)" 
+              class="px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+            <select id="quick-messages" class="px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+              <option value="">选择快速消息</option>
+              <option value="你好，请介绍一下WayFare系统">介绍系统</option>
+              <option value="如何上传文档？">上传文档</option>
+              <option value="支持哪些文件格式？">文件格式</option>
+              <option value="如何开始学习？">开始学习</option>
+            </select>
+          </div>
+          <div class="flex space-x-2">
+            <input type="text" id="chat-message" placeholder="输入测试消息..." 
+              class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+            <button id="send-test-chat" class="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors">
+              发送
+            </button>
+          </div>
+        </div>
+        <div id="chat-result" class="mt-4 p-3 rounded-md hidden"></div>
+      </div>
+
+      <!-- 文件上传测试 -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">📁 文件上传测试</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">选择测试文件</label>
+            <input type="file" id="test-file" class="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-md file:border-0
+              file:text-sm file:font-semibold
+              file:bg-green-50 file:text-green-700
+              hover:file:bg-green-100
+              border border-gray-300 rounded-md
+              focus:ring-green-500 focus:border-green-500" />
+          </div>
+          <div id="upload-controls" class="hidden">
+            <div class="bg-gray-50 p-3 rounded">
+              <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <span id="upload-filename">文件名</span>
+                <span id="upload-size">大小</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div id="upload-progress-bar" class="bg-green-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+              <div id="upload-status" class="text-sm text-gray-600 mt-2">准备上传...</div>
+            </div>
+          </div>
+          <button id="upload-test-file" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
+            上传文件
+          </button>
+        </div>
+        <div id="upload-result" class="mt-4 p-3 rounded-md hidden"></div>
+      </div>
+
+      <!-- 控制台输出 -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-800">🖥️ 控制台输出</h2>
+          <div class="flex space-x-2">
+            <button id="export-log" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors text-sm">
+              导出日志
+            </button>
+            <button id="clear-log" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-sm">
+              清空
+            </button>
+          </div>
+        </div>
+        <div id="console-output" class="bg-gray-900 text-green-400 p-4 rounded-md font-mono text-sm h-64 overflow-y-auto">
+          <div class="text-gray-500">控制台就绪，点击上方按钮开始测试...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { wayfareDebugger } from '../lib/api/debugger';
+    
+    // 控制台日志功能
+    class ConsoleLogger {
+      private consoleEl: HTMLElement;
+      private logs: string[] = [];
+      
+      constructor() {
+        this.consoleEl = document.getElementById('console-output') as HTMLElement;
+      }
+      
+      log(message: string, type: 'info' | 'success' | 'error' | 'warning' = 'info') {
+        const timestamp = new Date().toLocaleTimeString();
+        const colorClass = {
+          info: 'text-blue-400',
+          success: 'text-green-400',
+          error: 'text-red-400',
+          warning: 'text-yellow-400'
+        }[type];
+        
+        const logEntry = `<div class="${colorClass}">[${timestamp}] ${message}</div>`;
+        this.logs.push(logEntry);
+        
+        if (this.consoleEl) {
+          this.consoleEl.innerHTML = this.logs.join('') + 
+            '<div class="text-gray-500 mt-2">--- 日志结束 ---</div>';
+          this.consoleEl.scrollTop = this.consoleEl.scrollHeight;
+        }
+      }
+      
+      clear() {
+        this.logs = [];
+        if (this.consoleEl) {
+          this.consoleEl.innerHTML = '<div class="text-gray-500">控制台已清空</div>';
+        }
+      }
+      
+      export() {
+        const logText = this.logs.map(log => 
+          log.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')
+        ).join('\n');
+        
+        const blob = new Blob([logText], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `wayfare-debug-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.log`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    }
+    
+    const logger = new ConsoleLogger();
+    
+    // 连接状态检查
+    async function checkConnectionStatus() {
+      const statusDiv = document.getElementById('connection-status') as HTMLElement;
+      
+      try {
+        logger.log('正在检查连接状态...', 'info');
+        
+        // 检查Go后端
+        const goResponse = await fetch('/health');
+        const goStatus = goResponse.ok ? 'success' : 'error';
+        
+        statusDiv.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 ${goStatus === 'success' ? 'bg-green-50' : 'bg-red-50'} rounded">
+              <div class="flex items-center">
+                <div class="w-3 h-3 ${goStatus === 'success' ? 'bg-green-500' : 'bg-red-500'} rounded-full mr-3"></div>
+                <span class="${goStatus === 'success' ? 'text-green-800' : 'text-red-800'}">Go后端 (localhost:8080)</span>
+              </div>
+              <span class="text-sm ${goStatus === 'success' ? 'text-green-600' : 'text-red-600'}">
+                ${goStatus === 'success' ? '连接正常' : '连接失败'}
+              </span>
+            </div>
+          </div>
+        `;
+        
+        logger.log(`Go后端连接: ${goStatus === 'success' ? '正常' : '失败'}`, goStatus);
+        
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        logger.log(`连接检查失败: ${errorMessage}`, 'error');
+        statusDiv.innerHTML = `
+          <div class="p-3 bg-red-50 rounded">
+            <div class="text-red-800">连接检查失败: ${errorMessage}</div>
+          </div>
+        `;
+      }
+    }
+    
+    // 事件监听器
+    document.getElementById('test-connection')?.addEventListener('click', async () => {
+      logger.log('开始连接测试...', 'info');
+      await checkConnectionStatus();
+      logger.log('连接测试完成', 'success');
+    });
+    
+    document.getElementById('run-full-test')?.addEventListener('click', async () => {
+      logger.log('开始完整测试...', 'info');
+      
+      try {
+        // 使用全局调试器
+        if ((window as any).WayFareDebug) {
+          await (window as any).WayFareDebug.runFullTest();
+          logger.log('完整测试完成', 'success');
+        } else {
+          logger.log('调试器未加载，使用内置测试...', 'warning');
+          await checkConnectionStatus();
+          
+          // 简单的聊天测试
+          logger.log('测试聊天功能...', 'info');
+          const chatResponse = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: '你好，这是一个测试消息',
+              context: '测试上下文'
+            })
+          });
+          
+          if (chatResponse.ok) {
+            logger.log('聊天功能测试成功', 'success');
+          } else {
+            logger.log(`聊天功能测试失败: ${chatResponse.status}`, 'error');
+          }
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        logger.log(`完整测试失败: ${errorMessage}`, 'error');
+      }
+    });
+    
+    document.getElementById('clear-console')?.addEventListener('click', () => {
+      logger.clear();
+      logger.log('控制台已清空', 'info');
+    });
+    
+    document.getElementById('refresh-status')?.addEventListener('click', () => {
+      checkConnectionStatus();
+    });
+    
+    // 聊天测试
+    document.getElementById('send-test-chat')?.addEventListener('click', async () => {
+      const messageInput = document.getElementById('chat-message') as HTMLInputElement;
+      const docHashInput = document.getElementById('chat-doc-hash') as HTMLInputElement;
+      const resultDiv = document.getElementById('chat-result') as HTMLElement;
+      
+      const message = messageInput.value.trim();
+      if (!message) {
+        logger.log('请输入测试消息', 'warning');
+        return;
+      }
+      
+      const docHash = docHashInput.value.trim() || undefined;
+      
+      logger.log(`发送测试聊天: "${message}" ${docHash ? `(doc: ${docHash})` : ''}`, 'info');
+      resultDiv.className = 'mt-4 p-3 rounded-md bg-blue-50 border border-blue-200';
+      resultDiv.innerHTML = '<div class="flex items-center"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div><span class="text-blue-700">正在发送...</span></div>';
+      resultDiv.classList.remove('hidden');
+      
+      try {
+        if ((window as any).WayFareDebug) {
+          await (window as any).WayFareDebug.testChat(message, docHash);
+          resultDiv.className = 'mt-4 p-3 rounded-md bg-green-50 border border-green-200';
+          resultDiv.innerHTML = '<div class="text-green-800">✅ 聊天测试完成，请查看控制台输出</div>';
+        } else {
+          logger.log('调试器未加载，使用内置聊天测试', 'warning');
+          resultDiv.className = 'mt-4 p-3 rounded-md bg-yellow-50 border border-yellow-200';
+          resultDiv.innerHTML = '<div class="text-yellow-800">⚠️ 调试器未完全加载</div>';
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        logger.log(`聊天测试失败: ${errorMessage}`, 'error');
+        resultDiv.className = 'mt-4 p-3 rounded-md bg-red-50 border border-red-200';
+        resultDiv.innerHTML = `<div class="text-red-800">❌ 测试失败: ${errorMessage}</div>`;
+      }
+    });
+    
+    // 快速消息选择
+    document.getElementById('quick-messages')?.addEventListener('change', (e) => {
+      const select = e.target as HTMLSelectElement;
+      const messageInput = document.getElementById('chat-message') as HTMLInputElement;
+      if (select.value) {
+        messageInput.value = select.value;
+        select.value = '';
+      }
+    });
+    
+    // 文件上传测试
+    document.getElementById('upload-test-file')?.addEventListener('click', async () => {
+      const fileInput = document.getElementById('test-file') as HTMLInputElement;
+      const controlsDiv = document.getElementById('upload-controls') as HTMLElement;
+      const progressBar = document.getElementById('upload-progress-bar') as HTMLElement;
+      const statusText = document.getElementById('upload-status') as HTMLElement;
+      const resultDiv = document.getElementById('upload-result') as HTMLElement;
+      
+      if (!fileInput.files || fileInput.files.length === 0) {
+        logger.log('请选择测试文件', 'warning');
+        return;
+      }
+      
+      const file = fileInput.files[0];
+      
+      // 显示文件信息
+      controlsDiv.classList.remove('hidden');
+      document.getElementById('upload-filename')!.textContent = file.name;
+      document.getElementById('upload-size')!.textContent = `${(file.size / 1024).toFixed(2)} KB`;
+      
+      logger.log(`开始上传测试文件: ${file.name}`, 'info');
+      
+      try {
+        if ((window as any).WayFareDebug) {
+          await (window as any).WayFareDebug.api.uploadDocument(file, (progress: number) => {
+            progressBar.style.width = `${progress}%`;
+            statusText.textContent = `上传进度: ${Math.round(progress)}%`;
+            logger.log(`上传进度: ${Math.round(progress)}%`, 'info');
+          });
+          
+          logger.log('文件上传测试完成', 'success');
+          resultDiv.className = 'mt-4 p-3 rounded-md bg-green-50 border border-green-200';
+          resultDiv.innerHTML = '<div class="text-green-800">✅ 文件上传测试完成，请查看控制台输出</div>';
+        } else {
+          logger.log('调试器未加载，使用模拟上传', 'warning');
+          
+          // 模拟上传进度
+          for (let i = 0; i <= 100; i += 10) {
+            progressBar.style.width = `${i}%`;
+            statusText.textContent = `模拟上传: ${i}%`;
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
+          
+          resultDiv.className = 'mt-4 p-3 rounded-md bg-yellow-50 border border-yellow-200';
+          resultDiv.innerHTML = '<div class="text-yellow-800">⚠️ 调试器未完全加载，使用模拟上传</div>';
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        logger.log(`文件上传测试失败: ${errorMessage}`, 'error');
+        resultDiv.className = 'mt-4 p-3 rounded-md bg-red-50 border border-red-200';
+        resultDiv.innerHTML = `<div class="text-red-800">❌ 上传失败: ${errorMessage}</div>`;
+      }
+      
+      resultDiv.classList.remove('hidden');
+    });
+    
+    // 日志导出和清空
+    document.getElementById('export-log')?.addEventListener('click', () => {
+      logger.export();
+      logger.log('日志已导出', 'success');
+    });
+    
+    document.getElementById('clear-log')?.addEventListener('click', () => {
+      logger.clear();
+      logger.log('日志已清空', 'info');
+    });
+    
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      logger.log('联调测试页面已加载', 'success');
+      logger.log('正在加载调试器...', 'info');
+      
+      // 延迟检查调试器加载
+      setTimeout(() => {
+        if ((window as any).WayFareDebug) {
+          logger.log('✅ 调试器加载成功', 'success');
+        } else {
+          logger.log('⚠️ 调试器加载延迟，部分功能可能受限', 'warning');
+        }
+        checkConnectionStatus();
+      }, 1000);
+    });
+  </script>
+</ThreePaneLayout>

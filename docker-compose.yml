@@ -1,0 +1,95 @@
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: wayfare_postgres
+    environment:
+      POSTGRES_DB: wayfare_db
+      POSTGRES_USER: luckdd
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - wayfare_network
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: wayfare_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - wayfare_network
+
+  # Go 后端服务
+  go_backend:
+    build: ./wayfare_backend
+    container_name: wayfare_go_backend
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: wayfare_db
+      DB_USER: luckdd
+      DB_PASSWORD: 123456
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PYTHON_AI_URL: http://python_ai:8001
+      UPLOAD_DIR: /app/uploads
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - wayfare_network
+    volumes:
+      - ./wayfare_backend:/app
+      - ./uploads:/app/uploads
+
+  # Python AI 服务
+  python_ai:
+    build: ./wayfare_ai_backend
+    container_name: wayfare_python_ai
+    ports:
+      - "8001:8001"
+    environment:
+      DB_DSN: postgresql://luckdd:123456@postgres:5432/wayfare_db
+      LLM_API_KEY: ${LLM_API_KEY:-your_llm_api_key_here}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.siliconflow.cn/v1/chat/completions}
+      LLM_MODEL_NAME: ${LLM_MODEL_NAME:-Pro/deepseek-ai/DeepSeek-V3}
+      GO_BACKEND_CALLBACK_URL: http://go_backend:8080/api/internal/parse-status
+    depends_on:
+      - postgres
+    networks:
+      - wayfare_network
+    volumes:
+      - ./wayfare_ai_backend:/app
+      - ./uploads:/app/uploads
+
+  # 前端开发服务器
+  frontend:
+    build: .
+    container_name: wayfare_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      GO_BACKEND_URL: http://go_backend:8080
+      AI_URL: http://python_ai:8001
+      SANDBOX_URL: http://cpp_sandbox:8002
+    depends_on:
+      - go_backend
+      - python_ai
+    networks:
+      - wayfare_network
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+networks:
+  wayfare_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

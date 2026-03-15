@@ -3,6 +3,7 @@ import json
 import uuid
 import hashlib
 import time
+import requests
 from loguru import logger
 from typing import Any, Dict
 
@@ -22,6 +23,28 @@ page_dwell_state: Dict[str, float] = {}
 def send_notification(notification_data: dict):
     payload = {"type": "notification", "data": notification_data}
     print(json.dumps(payload, ensure_ascii=False), flush=True)
+
+
+async def report_parse_status(doc_hash: str, status: str, segment_count: int = 0, error: str = ""):
+    callback_url = settings.GO_BACKEND_CALLBACK_URL
+    if not callback_url:
+        return
+
+    payload = {
+        "docHash": doc_hash,
+        "status": status,
+        "segmentCount": segment_count,
+        "error": error,
+    }
+
+    def _post():
+        requests.post(callback_url, json=payload, timeout=10)
+
+    try:
+        await asyncio.to_thread(_post)
+        logger.info(f"Reported parse status to Go backend: {payload}")
+    except Exception as exc:
+        logger.warning(f"Failed to report parse status to Go backend: {exc}")
 
 
 # ----------------- 真实的 PARSE (解析与向量入库) -----------------
@@ -56,6 +79,7 @@ async def _background_parse(path: str, doc_hash: str):
             "segmentCount": success_count,
             "status": "completed"
         })
+        await report_parse_status(doc_hash, "completed", success_count)
         logger.info(f"Parse completed for {doc_hash}, {success_count} vectors inserted.")
 
     except Exception as e:
@@ -65,6 +89,7 @@ async def _background_parse(path: str, doc_hash: str):
             "docHash": doc_hash,
             "error": str(e)
         })
+        await report_parse_status(doc_hash, "failed", 0, str(e))
 
 
 async def handle_parse(params: Dict[str, Any]) -> Dict[str, Any]:
@@ -114,7 +139,7 @@ async def handle_annotate(params: Dict[str, Any]) -> Dict[str, Any]:
         freq = res_json.get("frequency", "0次")
 
         # 记录用户认知轨迹 (这里的 user_id 后续可以从 params 里获取真实数据)
-        await insert_cognitive_trace("default_user", "mock_uuid_no_db", f"annotate_{anno_type}", f"[{kp}] {content}")
+        await insert_cognitive_trace(1, "mock_uuid_no_db", f"annotate_{anno_type}", f"[{kp}] {content}")
 
     except Exception as e:
         logger.error(f"LLM fallback triggered: {e}")

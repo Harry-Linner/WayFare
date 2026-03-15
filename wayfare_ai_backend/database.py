@@ -49,7 +49,7 @@ async def init_tables():
             
             CREATE TABLE IF NOT EXISTS user_interactions (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                user_id VARCHAR(255) NOT NULL,
+                user_id BIGINT NOT NULL,
                 chunk_id UUID REFERENCES knowledge_chunks(id),
                 interaction_type VARCHAR(50), 
                 duration_seconds INT DEFAULT 0,
@@ -57,14 +57,14 @@ async def init_tables():
             );
             
             CREATE TABLE IF NOT EXISTS users (
-                id VARCHAR(255) PRIMARY KEY,
+                id BIGSERIAL PRIMARY KEY,
                 preferences JSONB, 
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
             );
             
             CREATE TABLE IF NOT EXISTS cognitive_traces (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                user_id VARCHAR(255) REFERENCES users(id),
+                user_id BIGINT REFERENCES users(id),
                 chunk_id UUID REFERENCES knowledge_chunks(id),
                 trace_type VARCHAR(50), 
                 content TEXT NOT NULL,
@@ -73,7 +73,7 @@ async def init_tables():
             
             CREATE TABLE IF NOT EXISTS study_plans (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                user_id VARCHAR(255) REFERENCES users(id),
+                user_id BIGINT REFERENCES users(id),
                 doc_hash VARCHAR(255),
                 plan_content JSONB,
                 deadline TIMESTAMP WITH TIME ZONE,
@@ -107,7 +107,7 @@ async def search_similar_chunks(doc_hash: str, embedding: list[float], limit: in
         records = await conn.fetch(query, doc_hash, str(embedding), limit)
         return [dict(r) for r in records]
 
-async def upsert_user_preference(user_id: str, preferences: dict):
+async def upsert_user_preference(user_id: int, preferences: dict):
     query = """
         INSERT INTO users (id, preferences)
         VALUES ($1, $2)
@@ -118,14 +118,14 @@ async def upsert_user_preference(user_id: str, preferences: dict):
     async with db_pool.acquire() as conn:
         await conn.execute(query, user_id, json.dumps(preferences))
 
-async def get_user_preference(user_id: str) -> dict:
+async def get_user_preference(user_id: int) -> dict:
     query = "SELECT preferences FROM users WHERE id = $1;"
     if db_pool is None: return {}
     async with db_pool.acquire() as conn:
         val = await conn.fetchval(query, user_id)
         return json.loads(val) if val else {}
 
-async def insert_cognitive_trace(user_id: str, chunk_id: str, trace_type: str, content: str):
+async def insert_cognitive_trace(user_id: int, chunk_id: str, trace_type: str, content: str):
     query = """
         INSERT INTO cognitive_traces (user_id, chunk_id, trace_type, content)
         VALUES ($1, $2::uuid, $3, $4);
@@ -134,7 +134,7 @@ async def insert_cognitive_trace(user_id: str, chunk_id: str, trace_type: str, c
     async with db_pool.acquire() as conn:
         await conn.execute(query, user_id, chunk_id, trace_type, content)
 
-async def insert_study_plan(user_id: str, doc_hash: str, plan_content: dict, deadline: str = None):
+async def insert_study_plan(user_id: int, doc_hash: str, plan_content: dict, deadline: str = None):
     query = """
         INSERT INTO study_plans (user_id, doc_hash, plan_content, deadline)
         VALUES ($1, $2, $3, $4::timestamp with time zone);

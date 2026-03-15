@@ -1,0 +1,46 @@
+﻿---
+import type { DemoScenario } from '../../types/sharedtypes';
+
+interface Props {
+  scenario: DemoScenario;
+}
+
+const { scenario } = Astro.props;
+---
+
+<div id="demo-processing-overlay" class="fixed inset-0 z-[80] hidden bg-[#0e2235]/70 backdrop-blur-sm">
+  <div class="h-full w-full flex items-center justify-center px-4">
+    <div class="w-[560px] max-w-full rounded-[28px] bg-white shadow-2xl border border-white/20 overflow-hidden">
+      <div class="bg-[#102C46] px-7 py-6 text-white">
+        <div class="text-xs uppercase tracking-[0.2em] text-white/60">AI 正在处理中</div>
+        <h3 class="mt-2 text-2xl font-black">正在构建知识库内容</h3>
+        <p class="mt-2 text-sm text-white/80 leading-6">WayFare 正在为这份资料生成可学习、可提问、可复用的结构化结果。</p>
+      </div>
+
+      <div class="p-7">
+        <div class="mb-5 flex items-center justify-between text-sm">
+          <span class="font-semibold text-gray-700">处理进度</span>
+          <span id="demo-processing-progress-label" class="text-brand-blue font-bold">0%</span>
+        </div>
+
+        <div class="h-2 rounded-full bg-gray-100 overflow-hidden">
+          <div id="demo-processing-progress-bar" class="h-2 rounded-full bg-brand-blue transition-all duration-500" style="width: 0%"></div>
+        </div>
+
+        <div class="mt-6 space-y-3" id="demo-processing-steps">
+          {scenario.processingSteps.map((step, index) => (
+            <div class="demo-processing-step flex items-center gap-3 rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3" data-step-index={index}>
+              <div class="step-indicator flex h-7 w-7 items-center justify-center rounded-full bg-white border border-gray-200 text-xs font-bold text-gray-400">
+                {index + 1}
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-700">{step}</div>
+              </div>
+              <div class="step-status text-xs text-gray-400">等待中</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

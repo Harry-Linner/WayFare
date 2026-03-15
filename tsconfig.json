@@ -7,7 +7,15 @@
     },
     "jsx": "preserve",
     "jsxImportSource": "astro",
-    "types": ["astro/client"]
+    "types": ["astro/client"],
+    "target": "ES2020",
+    "module": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/*.d.ts", "dist", "build"]
 }

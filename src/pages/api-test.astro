@@ -1,0 +1,304 @@
+---
+// WayFare API测试页面 - 展示如何使用API客户端
+import ThreePaneLayout from '../layouts/ThreePaneLayout.astro';
+import { api } from '../lib/api/client';
+
+// 页面标题
+const title = "API测试 - WayFare AI学习助手";
+---
+
+<ThreePaneLayout title={title}>
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-4xl mx-auto px-4">
+      <!-- 页面标题 -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
+        <p class="text-gray-600">测试WayFare AI学习助手的各项API功能</p>
+      </div>
+
+      <!-- 系统状态卡片 -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">🚀 系统状态</h2>
+        <div id="system-status" class="space-y-2">
+          <div class="flex items-center">
+            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div>
+            <span class="text-gray-600">正在检查系统状态...</span>
+          </div>
+        </div>
+        <button id="refresh-status" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+          刷新状态
+        </button>
+      </div>
+
+      <!-- 文件上传测试 -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">📁 文件上传测试</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">选择文件</label>
+            <input type="file" id="file-input" class="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100
+              border border-gray-300 rounded-md
+              focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div id="upload-progress" class="hidden">
+            <div class="bg-gray-200 rounded-full h-2 mb-2">
+              <div id="progress-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p id="upload-status" class="text-sm text-gray-600"></p>
+          </div>
+          <button id="upload-btn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+            上传文件
+          </button>
+          <div id="upload-result" class="mt-4 p-3 rounded-md hidden"></div>
+        </div>
+      </div>
+
+      <!-- 聊天测试 -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">💬 聊天测试</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">文档哈希 (可选)</label>
+            <input type="text" id="doc-hash" placeholder="留空则为通用聊天" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">消息</label>
+            <textarea id="chat-message" rows="3" placeholder="输入您的消息..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></textarea>
+          </div>
+          <button id="send-chat" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors">
+            发送消息
+          </button>
+          <div id="chat-result" class="mt-4 p-3 rounded-md hidden"></div>
+        </div>
+      </div>
+
+      <!-- 文档列表 -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">📋 文档列表</h2>
+        <button id="load-documents" class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors mb-4">
+          加载文档
+        </button>
+        <div id="documents-list" class="space-y-2">
+          <p class="text-gray-500">点击上方按钮加载文档列表</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 系统状态检查
+    async function checkSystemStatus() {
+      const statusDiv = document.getElementById('system-status') as HTMLElement;
+      const refreshBtn = document.getElementById('refresh-status') as HTMLButtonElement;
+      
+      if (!statusDiv || !refreshBtn) {
+        console.error('无法找到系统状态相关元素');
+        return;
+      }
+      
+      refreshBtn.disabled = true;
+      statusDiv.innerHTML = '<div class="flex items-center"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div><span class="text-gray-600">正在检查系统状态...</span></div>';
+      
+      try {
+        const response = await api.healthCheck();
+        
+        if (response.success) {
+          statusDiv.innerHTML = `
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                <span class="text-green-700 font-medium">Go后端运行正常</span>
+              </div>
+              <div class="text-sm text-gray-600">
+                <p>最后检查: ${new Date(response.data.timestamp).toLocaleString()}</p>
+                <p>状态: ${response.data.status}</p>
+              </div>
+            </div>
+          `;
+        } else {
+          statusDiv.innerHTML = `
+            <div class="flex items-center">
+              <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+              <span class="text-red-700 font-medium">系统检查失败: ${response.error}</span>
+            </div>
+          `;
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        statusDiv.innerHTML = `
+          <div class="flex items-center">
+            <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+            <span class="text-red-700 font-medium">网络错误: ${errorMessage}</span>
+          </div>
+        `;
+      } finally {
+        if (refreshBtn) {
+          (refreshBtn as HTMLButtonElement).disabled = false;
+        }
+      }
+    }
+
+    // 文件上传处理
+    document.getElementById('upload-btn')?.addEventListener('click', async () => {
+      const fileInput = document.getElementById('file-input') as HTMLInputElement;
+      const progressDiv = document.getElementById('upload-progress');
+      const progressBar = document.getElementById('progress-bar') as HTMLElement;
+      const statusText = document.getElementById('upload-status') as HTMLElement;
+      const resultDiv = document.getElementById('upload-result') as HTMLElement;
+      
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('请选择要上传的文件');
+        return;
+      }
+      
+      const file = fileInput.files[0];
+      
+      // 显示进度条
+      progressDiv?.classList.remove('hidden');
+      statusText.textContent = `正在上传 ${file.name}...`;
+      
+      try {
+        const response = await api.uploadDocument(file, (progress) => {
+          progressBar.style.width = `${progress}%`;
+          statusText.textContent = `上传进度: ${Math.round(progress)}%`;
+        });
+        
+        if (response.success) {
+          resultDiv.className = 'mt-4 p-3 rounded-md bg-green-50 border border-green-200';
+          resultDiv.innerHTML = `
+            <h4 class="font-medium text-green-800">上传成功！</h4>
+            <p class="text-green-700 mt-1">文件名: ${response.data.filename}</p>
+            <p class="text-green-700">文档ID: ${response.data.id}</p>
+            <p class="text-green-700">哈希: ${response.data.docHash}</p>
+            <p class="text-green-700">状态: ${response.data.status}</p>
+          `;
+          
+          // 清空文件输入
+          fileInput.value = '';
+        } else {
+          resultDiv.className = 'mt-4 p-3 rounded-md bg-red-50 border border-red-200';
+          resultDiv.innerHTML = `
+            <h4 class="font-medium text-red-800">上传失败</h4>
+            <p class="text-red-700 mt-1">错误: ${response.error}</p>
+          `;
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        resultDiv.className = 'mt-4 p-3 rounded-md bg-red-50 border border-red-200';
+        resultDiv.innerHTML = `
+          <h4 class="font-medium text-red-800">网络错误</h4>
+          <p class="text-red-700 mt-1">${errorMessage}</p>
+        `;
+      } finally {
+        progressDiv?.classList.add('hidden');
+        resultDiv.classList.remove('hidden');
+      }
+    });
+
+    // 聊天处理
+    document.getElementById('send-chat')?.addEventListener('click', async () => {
+      const messageInput = document.getElementById('chat-message') as HTMLTextAreaElement;
+      const docHashInput = document.getElementById('doc-hash') as HTMLInputElement;
+      const resultDiv = document.getElementById('chat-result') as HTMLElement;
+      
+      const message = messageInput.value.trim();
+      if (!message) {
+        alert('请输入消息内容');
+        return;
+      }
+      
+      const docHash = docHashInput.value.trim() || undefined;
+      
+      resultDiv.className = 'mt-4 p-3 rounded-md bg-blue-50 border border-blue-200';
+      resultDiv.innerHTML = '<div class="flex items-center"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div><span class="text-blue-700">正在发送消息...</span></div>';
+      resultDiv.classList.remove('hidden');
+      
+      try {
+        const response = await api.sendChatMessage(message, docHash);
+        
+        if (response.success) {
+          resultDiv.className = 'mt-4 p-3 rounded-md bg-green-50 border border-green-200';
+          resultDiv.innerHTML = `
+            <h4 class="font-medium text-green-800">AI回复</h4>
+            <p class="text-green-700 mt-1">${response.data.message}</p>
+            ${response.data.knowledgePoint ? `<p class="text-green-600 text-sm mt-2">知识点: ${response.data.knowledgePoint}</p>` : ''}
+            ${response.data.type ? `<p class="text-green-600 text-sm">类型: ${response.data.type}</p>` : ''}
+          `;
+          
+          // 清空消息输入
+          messageInput.value = '';
+        } else {
+          resultDiv.className = 'mt-4 p-3 rounded-md bg-red-50 border border-red-200';
+          resultDiv.innerHTML = `
+            <h4 class="font-medium text-red-800">发送失败</h4>
+            <p class="text-red-700 mt-1">错误: ${response.error}</p>
+          `;
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        resultDiv.className = 'mt-4 p-3 rounded-md bg-red-50 border border-red-200';
+        resultDiv.innerHTML = `
+          <h4 class="font-medium text-red-800">网络错误</h4>
+          <p class="text-red-700 mt-1">${errorMessage}</p>
+        `;
+      }
+    });
+
+    // 加载文档列表
+    document.getElementById('load-documents')?.addEventListener('click', async () => {
+      const loadBtn = document.getElementById('load-documents') as HTMLButtonElement;
+      const listDiv = document.getElementById('documents-list') as HTMLElement;
+      
+      loadBtn.disabled = true;
+      loadBtn.textContent = '加载中...';
+      listDiv.innerHTML = '<div class="flex items-center"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-500 mr-2"></div><span class="text-gray-600">正在加载文档...</span></div>';
+      
+      try {
+        const response = await api.getDocuments();
+        
+        if (response.success && response.data && response.data.length > 0) {
+          listDiv.innerHTML = response.data.map(doc => `
+            <div class="border border-gray-200 rounded-md p-3 hover:bg-gray-50 transition-colors">
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <h4 class="font-medium text-gray-900">${doc.filename}</h4>
+                  <p class="text-sm text-gray-600 mt-1">ID: ${doc.id} | 哈希: ${doc.docHash?.substring(0, 8) || 'N/A'}...</p>
+                  <p class="text-sm text-gray-500">创建时间: ${new Date(doc.createdAt).toLocaleString()}</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="px-2 py-1 text-xs rounded-full ${
+                    doc.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
+                    doc.status === 'completed' ? 'bg-green-100 text-green-800' :
+                    'bg-red-100 text-red-800'
+                  }">${doc.status === 'processing' ? '处理中' : doc.status === 'completed' ? '已完成' : '失败'}</span>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        } else if (response.success) {
+          listDiv.innerHTML = '<p class="text-gray-500">暂无文档</p>';
+        } else {
+          listDiv.innerHTML = `<p class="text-red-600">加载失败: ${response.error || '未知错误'}</p>`;
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        listDiv.innerHTML = `<p class="text-red-600">网络错误: ${errorMessage}</p>`;
+      } finally {
+        loadBtn.disabled = false;
+        loadBtn.textContent = '加载文档';
+      }
+    });
+
+    // 页面加载时检查系统状态
+    document.addEventListener('DOMContentLoaded', () => {
+      checkSystemStatus();
+    });
+  </script>
+</ThreePaneLayout>

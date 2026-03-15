@@ -1,0 +1,110 @@
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: wayfare_postgres
+    environment:
+      POSTGRES_DB: wayfare_db
+      POSTGRES_USER: luckdd
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - wayfare_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U luckdd -d wayfare_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: wayfare_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - wayfare_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Go 后端服务
+  go_backend:
+    build: ./wayfare_backend
+    container_name: wayfare_go_backend
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: wayfare_db
+      DB_USER: luckdd
+      DB_PASSWORD: 123456
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PYTHON_AI_URL: http://python_ai:8001
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - wayfare_network
+    volumes:
+      - ./wayfare_backend:/app
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+
+  # Python AI 服务
+  python_ai:
+    build: ./wayfare_ai_backend
+    container_name: wayfare_python_ai
+    ports:
+      - "8001:8001"
+    environment:
+      DB_DSN: postgresql://luckdd:123456@postgres:5432/wayfare_db
+      LLM_API_KEY: ${LLM_API_KEY:-your_llm_api_key_here}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.siliconflow.cn/v1/chat/completions}
+      LLM_MODEL_NAME: ${LLM_MODEL_NAME:-Pro/deepseek-ai/DeepSeek-V3}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - wayfare_network
+    volumes:
+      - ./wayfare_ai_backend:/app
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+
+  # 前端开发服务器
+  frontend:
+    build: .
+    container_name: wayfare_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      API_URL: http://go_backend:8080
+      AI_URL: http://python_ai:8001
+    depends_on:
+      go_backend:
+        condition: service_started
+      python_ai:
+        condition: service_started
+    networks:
+      - wayfare_network
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+networks:
+  wayfare_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -1,11 +1,23 @@
+﻿---
+import '../styles/global.css';
 ---
-// 逻辑层：直接重定向到 onboarding 页面
----
-<script>
-  // 也可以用 HTML meta 刷新，或者 JS 跳转
-  window.location.href = '/onboarding';
-</script>
 
-<div class="h-screen flex items-center justify-center bg-brand-cream">
-  <p class="text-brand-blue animate-pulse font-bold">正在进入学习空间...</p>
-</div>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WayFare - 正在进入学习空间</title>
+    <meta http-equiv="refresh" content="0;url=/onboarding" />
+  </head>
+  <body class="bg-brand-cream h-screen flex items-center justify-center">
+    <script>
+      window.location.replace('/onboarding');
+    </script>
+
+    <div class="flex flex-col items-center gap-4 text-brand-blue">
+      <div class="w-10 h-10 rounded-full border-4 border-brand-blue/20 border-t-brand-blue animate-spin"></div>
+      <p class="font-bold tracking-wide">正在进入学习空间...</p>
+    </div>
+  </body>
+</html>

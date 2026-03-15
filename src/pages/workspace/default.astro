@@ -1,169 +1,352 @@
----
+﻿---
 import ThreePaneLayout from '../../layouts/ThreePaneLayout.astro';
 import FileUploadModal from '../../components/common/FileUploadModal.astro';
-
-// 默认知识库页面
-const kbId = 'default';
+import AIAssistant from '../../components/ai/AIAssistant.astro';
+import AIToggleButton from '../../components/ai/AIToggleButton.astro';
+import AnnotatedDocumentPreview from '../../components/demo/AnnotatedDocumentPreview.astro';
+import { demoAnnotatedPaper } from '../../data/demoAnnotatedPaper';
 ---
 
-<ThreePaneLayout title={`知识库: ${kbId}`}>
+<ThreePaneLayout title="知识库工作区 - WayFare" showStaticAssistant={false}>
+  <aside slot="left-panel" class="w-80 bg-white/75 backdrop-blur border-r border-brand-blue/10 flex flex-col shadow-sm">
+    <div class="p-5 border-b border-brand-blue/10">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-gray-400">Knowledge Base</p>
+          <h2 id="documents-panel-title" class="text-lg font-bold text-gray-800 mt-1">资料列表</h2>
+        </div>
+        <span id="documents-count" class="px-2.5 py-1 text-xs rounded-full bg-brand-blue/10 text-brand-blue font-semibold">0 份</span>
+      </div>
+      <p class="text-sm text-gray-500 mt-3">这里会展示当前知识库下的源文件与 AI 生成结果。</p>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-4 space-y-3">
+      <div id="documents-empty-state" class="rounded-2xl border border-dashed border-brand-blue/20 bg-brand-cream/60 p-5 text-sm text-gray-500 leading-6">
+        当前还没有资料。你可以点击右侧“上传学习资料”或顶部“上传文件”开始添加内容。
+      </div>
+      <ul id="documents-list" class="space-y-2"></ul>
+    </div>
+  </aside>
+
   <nav class="flex items-center justify-between mb-6 bg-white/50 p-3 rounded-xl border border-brand-blue/10">
     <div class="flex items-center gap-2 text-sm text-gray-600">
       <span class="opacity-50">项目:</span>
-      <span class="font-medium text-brand-blue">{kbId}</span>
+      <span id="workspace-kb-name" class="font-medium text-brand-blue">默认知识库</span>
       <span class="mx-2 text-gray-300">/</span>
-      <span class="font-bold text-gray-800 underline decoration-brand-blue/30">欢迎使用学习空间</span>
+      <span id="workspace-document-name" class="font-bold text-gray-800 underline decoration-brand-blue/30">
+        欢迎使用学习空间
+      </span>
     </div>
     <div class="flex gap-2">
-      <button class="text-xs px-3 py-1 bg-white border border-brand-blue/20 rounded-md hover:bg-brand-blue/5">上传文件</button>
-      <button class="text-xs px-3 py-1 bg-white border border-brand-blue/20 rounded-md hover:bg-brand-blue/5">新建项目</button>
+      <button
+        id="nav-upload-btn"
+        class="text-xs px-3 py-1 bg-white border border-brand-blue/20 rounded-md hover:bg-brand-blue/5"
+      >
+        上传文件
+      </button>
     </div>
   </nav>
 
-  <div 
+  <div
     id="reader-container"
-    class="relative min-h-[600px] bg-white p-12 shadow-sm rounded-2xl border border-transparent transition-all duration-300 group flex items-center justify-center"
+    class="relative min-h-[600px] bg-white p-6 shadow-sm rounded-2xl border border-transparent transition-all duration-300 group"
   >
     <div id="drop-overlay" class="hidden absolute inset-0 bg-brand-blue/10 border-2 border-dashed border-brand-blue rounded-2xl z-50 flex items-center justify-center pointer-events-none">
       <div class="bg-white p-6 rounded-2xl shadow-xl text-center">
         <p class="text-brand-blue font-bold text-lg">松开鼠标以上传文件</p>
-        <p class="text-gray-400 text-sm">文件将存入当前知识库目录</p>
+        <p class="text-gray-400 text-sm">文件将保存到当前知识库目录</p>
       </div>
     </div>
 
-    <div class="text-center">
-      <div class="mb-8">
-        <svg class="w-24 h-24 mx-auto text-brand-blue/30" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-        </svg>
-      </div>
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">欢迎来到学习空间</h2>
-      <p class="text-gray-600 mb-8">开始你的学习之旅，上传文档或创建新的学习项目</p>
-      
-      <div class="flex gap-4 justify-center">
-        <button 
-          id="upload-btn"
-          class="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold shadow-lg shadow-brand-blue/30 hover:opacity-90 transition-all"
-        >
-          上传学习材料
-        </button>
-        <button 
-          id="create-btn"
-          class="px-6 py-3 border-2 border-brand-blue text-brand-blue rounded-xl font-bold hover:bg-brand-blue/5 transition-all"
-        >
-          创建新项目
-        </button>
-      </div>
+    <div id="generic-workspace-content" class="space-y-6">
+      <div class="rounded-2xl border border-brand-blue/10 bg-brand-cream/50 px-5 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h2 id="workspace-title" class="text-2xl font-bold text-gray-800">欢迎来到学习空间</h2>
+          <p id="workspace-description" class="text-gray-600 mt-2">
+            你可以上传学习资料，把这份知识库逐步整理成自己的长期学习空间。
+          </p>
+        </div>
 
-      <div class="mt-12 text-left max-w-2xl mx-auto">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">快速开始指南</h3>
-        <div class="space-y-3 text-sm text-gray-600">
-          <div class="flex items-start gap-3">
-            <div class="w-6 h-6 bg-brand-blue text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
-            <div>
-              <strong>上传文档：</strong>拖拽PDF、Word或图片文件到此处，AI会自动分析内容
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <div class="w-6 h-6 bg-brand-blue text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
-            <div>
-              <strong>智能标注：</strong>系统会自动识别重点知识，生成学习气泡
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <div class="w-6 h-6 bg-brand-blue text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
-            <div>
-              <strong>互动学习：</strong>点击气泡与AI对话，深入理解知识点
-            </div>
-          </div>
+        <div class="flex gap-3">
+          <button
+            id="upload-btn"
+            class="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold shadow-lg shadow-brand-blue/30 hover:opacity-90 transition-all"
+          >
+            上传学习资料
+          </button>
         </div>
       </div>
+
+      <div class="rounded-[28px] border border-brand-blue/10 bg-[#fcf8ef] p-10 text-center shadow-sm">
+        <div class="w-24 h-24 mx-auto text-brand-blue/25 mb-6">
+          <svg fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-black text-[#102C46]">知识库正在等待你的内容</h3>
+        <p class="max-w-2xl mx-auto mt-4 text-gray-600 leading-7">
+          你可以导入讲义、论文、课程阅读或自己的笔记。WayFare 会在后续把它们转化为更适合大学生理解、复习与表达的学习内容。
+        </p>
+      </div>
+    </div>
+
+    <div id="scenario-workspace-content" class="hidden space-y-6">
+      <div class="rounded-2xl border border-brand-blue/10 bg-brand-cream/50 px-5 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h2 id="scenario-title" class="text-2xl font-bold text-gray-800">AI 已完成预处理</h2>
+          <p id="scenario-description" class="text-gray-600 mt-2">
+            当前知识库已生成可直接展示的分层批注效果，并可继续通过 AI 助手进行深度提问。
+          </p>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            id="scenario-upload-btn"
+            class="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold shadow-lg shadow-brand-blue/30 hover:opacity-90 transition-all"
+          >
+            继续上传资料
+          </button>
+        </div>
+      </div>
+
+      <AnnotatedDocumentPreview data={demoAnnotatedPaper} />
     </div>
   </div>
 
   <FileUploadModal />
+  <AIAssistant slot="floating-ui" isOpen={false} pageType="document" />
+  <AIToggleButton slot="floating-ui" position="right" bottom="6rem" />
 </ThreePaneLayout>
 
+<input id="workspace-file-input" type="file" multiple class="hidden" />
+
 <script>
-  // 文件拖拽上传交互
+  import { knowledgeBases, updateKnowledgeBaseDocumentCount } from '../../store/learningStore';
+  import {
+    addDocumentsToKnowledgeBase,
+    getDocumentsForKnowledgeBase,
+    knowledgeBaseDocuments,
+    removeDocumentFromKnowledgeBase
+  } from '../../store/documentStore';
+  import { getDemoScenarioById } from '../../data/demoScenarios';
+  import type { KnowledgeBaseDocument, UploadProcessingMode } from '../../types/sharedtypes';
+
+  const params = new URLSearchParams(window.location.search);
+  const requestedKbId = params.get('kbId') ?? 'default';
+  const currentKnowledgeBase = knowledgeBases.get().find((kb) => kb.id === requestedKbId);
+  const scenarioId = params.get('scenario') || currentKnowledgeBase?.demoScenarioId || null;
+  const activeScenario = getDemoScenarioById(scenarioId);
+  const isScenarioReady = !!activeScenario && currentKnowledgeBase?.demoStatus === 'completed';
+
+  const workspaceName = currentKnowledgeBase?.name ?? requestedKbId;
+  const workspaceKbName = document.getElementById('workspace-kb-name');
+  const workspaceDocumentName = document.getElementById('workspace-document-name');
+  const workspaceTitle = document.getElementById('workspace-title');
+  const workspaceDescriptionElement = document.getElementById('workspace-description');
+  const documentsPanelTitle = document.getElementById('documents-panel-title');
+  const documentsCount = document.getElementById('documents-count');
+  const documentsList = document.getElementById('documents-list');
+  const emptyState = document.getElementById('documents-empty-state');
+  const genericWorkspaceContent = document.getElementById('generic-workspace-content');
+  const scenarioWorkspaceContent = document.getElementById('scenario-workspace-content');
+  const scenarioTitle = document.getElementById('scenario-title');
+  const scenarioDescription = document.getElementById('scenario-description');
+
+  document.title = `${workspaceName} - WayFare`;
+
+  if (workspaceKbName) workspaceKbName.textContent = workspaceName;
+  if (documentsPanelTitle) documentsPanelTitle.textContent = `${workspaceName} · 资料`;
+  if (workspaceDocumentName) {
+    workspaceDocumentName.textContent = isScenarioReady ? `${workspaceName} / 已完成批注` : `${workspaceName} 工作区`;
+  }
+
+  if (workspaceTitle) workspaceTitle.textContent = `欢迎来到「${workspaceName}」`;
+  if (workspaceDescriptionElement) {
+    workspaceDescriptionElement.textContent = isScenarioReady
+      ? '当前知识库已经生成演示级分层批注内容，你可以直接浏览文章、查看批注，或唤起 AI 助手继续提问。'
+      : '你可以上传学习资料，把这份知识库逐步整理成自己的长期学习空间。';
+  }
+
+  if (isScenarioReady) {
+    genericWorkspaceContent?.classList.add('hidden');
+    scenarioWorkspaceContent?.classList.remove('hidden');
+    if (scenarioTitle) scenarioTitle.textContent = 'AI 已完成预处理';
+    if (scenarioDescription) {
+      scenarioDescription.textContent = currentKnowledgeBase?.demoProcessingMode === 'study-brief'
+        ? '这份知识库已提炼出适合汇报与复习的重点表达，同时保留完整文章与可视化批注演示。'
+        : '当前知识库已生成可直接展示的分层批注效果，并可继续通过 AI 助手进行深度提问。';
+    }
+
+    window.dispatchEvent(new CustomEvent('wayfare:assistant-config', {
+      detail: { scenarioId: activeScenario?.id }
+    }));
+  } else {
+    window.dispatchEvent(new CustomEvent('wayfare:assistant-config', {
+      detail: { scenarioId: null }
+    }));
+  }
+
   const container = document.getElementById('reader-container');
   const overlay = document.getElementById('drop-overlay');
-  const modal = document.getElementById('upload-modal') as HTMLDialogElement;
+  const modal = document.getElementById('upload-modal') as HTMLDialogElement | null;
+  const fileInput = document.getElementById('workspace-file-input') as HTMLInputElement | null;
   const uploadBtn = document.getElementById('upload-btn');
-  const createBtn = document.getElementById('create-btn');
+  const scenarioUploadBtn = document.getElementById('scenario-upload-btn');
+  const navUploadBtn = document.getElementById('nav-upload-btn');
 
-  // 上传按钮点击事件
-  uploadBtn?.addEventListener('click', () => {
+  let pendingSelection: { mode: UploadProcessingMode; label: string } | null = null;
+  let pendingFiles: File[] = [];
+
+  function formatFileSize(size: number) {
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
+    return `${(size / 1024 / 1024).toFixed(1)} MB`;
+  }
+
+  function formatDate(value: string) {
+    return new Intl.DateTimeFormat('zh-CN', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(new Date(value));
+  }
+
+  function getFileIcon(name: string, type: string, kind?: string, generatedType?: string) {
+    if (kind === 'generated') {
+      if (generatedType === 'annotated-view') return '🧠';
+      if (generatedType === 'study-brief') return '🗂️';
+      return '✨';
+    }
+
+    const lowerName = name.toLowerCase();
+    if (lowerName.endsWith('.md')) return '📝';
+    if (lowerName.endsWith('.pdf')) return '📕';
+    if (lowerName.endsWith('.doc') || lowerName.endsWith('.docx')) return '📘';
+    if (lowerName.endsWith('.ppt') || lowerName.endsWith('.pptx')) return '📙';
+    if (type.startsWith('image/')) return '🖼️';
+    return '📄';
+  }
+
+  function renderDocuments(items: KnowledgeBaseDocument[]) {
+    if (!documentsList || !emptyState || !documentsCount) return;
+
+    documentsCount.textContent = `${items.length} 份`;
+    const sourceDocumentCount = items.filter((item) => item.kind !== 'generated').length;
+    updateKnowledgeBaseDocumentCount(requestedKbId, sourceDocumentCount);
+
+    if (items.length === 0) {
+      documentsList.innerHTML = '';
+      emptyState.classList.remove('hidden');
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    documentsList.innerHTML = items
+      .slice()
+      .sort((left, right) => new Date(right.uploadedAt).getTime() - new Date(left.uploadedAt).getTime())
+      .map(
+        (item) => `
+          <li class="group rounded-2xl border border-brand-blue/10 bg-white/90 p-3 shadow-sm" data-document-id="${item.id}">
+            <div class="flex items-start gap-3">
+              <div class="text-2xl leading-none mt-0.5">${getFileIcon(item.name, item.type, item.kind, item.generatedType)}</div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start justify-between gap-2">
+                  <p class="font-medium text-gray-800 break-all">${item.name}</p>
+                  <button class="remove-document-btn text-xs text-gray-400 hover:text-red-500 transition-colors" type="button" data-document-id="${item.id}">删除</button>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-2 text-xs">
+                  <span class="px-2 py-1 rounded-full bg-brand-blue/10 text-brand-blue">${item.processingLabel}</span>
+                  ${item.kind === 'generated' ? '<span class="px-2 py-1 rounded-full bg-purple-50 text-purple-600">AI 生成</span>' : `<span class="px-2 py-1 rounded-full bg-gray-100 text-gray-500">${formatFileSize(item.size)}</span>`}
+                </div>
+                <p class="text-xs text-gray-400 mt-2">上传于 ${formatDate(item.uploadedAt)}</p>
+              </div>
+            </div>
+          </li>
+        `
+      )
+      .join('');
+
+    documentsList.querySelectorAll<HTMLButtonElement>('.remove-document-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const documentId = button.dataset.documentId;
+        if (!documentId) return;
+        const nextDocuments = removeDocumentFromKnowledgeBase(requestedKbId, documentId);
+        renderDocuments(nextDocuments);
+      });
+    });
+  }
+
+  function openUploadModal(withFiles: File[] = []) {
+    pendingFiles = withFiles;
+    pendingSelection = null;
     modal?.showModal();
+  }
+
+  function finalizeUpload(files: File[], selection: { mode: UploadProcessingMode; label: string }) {
+    if (!files.length) return;
+    const nextDocuments = addDocumentsToKnowledgeBase(requestedKbId, files, selection.mode, selection.label);
+    renderDocuments(nextDocuments);
+    pendingFiles = [];
+    pendingSelection = null;
+    if (fileInput) fileInput.value = '';
+  }
+
+  uploadBtn?.addEventListener('click', () => openUploadModal());
+  scenarioUploadBtn?.addEventListener('click', () => openUploadModal());
+  navUploadBtn?.addEventListener('click', () => openUploadModal());
+
+  fileInput?.addEventListener('change', () => {
+    if (!pendingSelection || !fileInput?.files?.length) return;
+    finalizeUpload(Array.from(fileInput.files), pendingSelection);
   });
 
-  // 创建按钮点击事件
-  createBtn?.addEventListener('click', () => {
-    alert('创建新项目功能开发中...');
+  window.addEventListener('workspace:upload-option-selected', ((event: CustomEvent<{ mode: UploadProcessingMode; label: string }>) => {
+    pendingSelection = event.detail;
+
+    if (pendingFiles.length > 0) {
+      finalizeUpload(pendingFiles, pendingSelection);
+      return;
+    }
+
+    fileInput?.click();
+  }) as EventListener);
+
+  renderDocuments(getDocumentsForKnowledgeBase(requestedKbId));
+  knowledgeBaseDocuments.subscribe((allDocuments) => {
+    renderDocuments(allDocuments[requestedKbId] ?? []);
   });
 
-  // 文件拖拽处理
   if (container && overlay) {
-    // 拖入激活
-    container.addEventListener('dragover', (e) => {
-      e.preventDefault();
+    container.addEventListener('dragover', (event) => {
+      event.preventDefault();
       overlay.classList.remove('hidden');
     });
 
-    // 拖离或取消
-    container.addEventListener('dragleave', (e) => {
-      if (e.relatedTarget === null || !(container.contains(e.relatedTarget as Node))) {
+    container.addEventListener('dragleave', (event) => {
+      if (event.relatedTarget === null || !(container.contains(event.relatedTarget as Node))) {
         overlay.classList.add('hidden');
       }
     });
 
-    // 释放文件
-    container.addEventListener('drop', (e) => {
-      e.preventDefault();
+    container.addEventListener('drop', (event) => {
+      event.preventDefault();
       overlay.classList.add('hidden');
-      
-      const files = e.dataTransfer?.files;
-      if (files && files.length > 0) {
-        // 弹出对话框确认操作
-        modal?.showModal();
+
+      const files = Array.from(event.dataTransfer?.files ?? []);
+      if (files.length > 0) {
+        openUploadModal(files);
         console.log(`[File] 检测到拖入: ${files[0].name}`);
       }
     });
   }
-
-  // 处理对话框操作按钮
-  modal?.querySelectorAll('button[data-action]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const action = (e.currentTarget as HTMLButtonElement).dataset.action;
-      console.log(`[Action] 用户选择: ${action}`);
-      // 此处对接 Go 网关后端
-      modal.close();
-    });
-  });
 </script>
 
 <style>
-  /* 页面入场动画 */
-  .text-center > div {
-    animation: fadeInUp 0.8s ease-out forwards;
-  }
-  
-  @keyframes fadeInUp {
-    from { 
-      opacity: 0; 
-      transform: translateY(30px); 
-    }
-    to { 
-      opacity: 1; 
-      transform: translateY(0); 
-    }
-  }
-
-  /* 按钮悬停效果 */
   button:hover {
     transform: translateY(-2px);
   }
-  
+
   button:active {
     transform: translateY(0);
   }

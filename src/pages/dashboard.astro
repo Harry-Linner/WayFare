@@ -1,16 +1,10 @@
----
+﻿---
 import AIAssistant from '../components/ai/AIAssistant.astro';
 import AIToggleButton from '../components/ai/AIToggleButton.astro';
-import { knowledgeBases } from '../store/learningStore';
 import '../styles/global.css';
 
-// 获取当前知识库数据（服务器端获取初始数据）
-const initialKnowledgeBases = knowledgeBases.get();
-
-// 学习统计数据（这里可以后续也做成动态的）
 const learningStats = {
-  totalStudyTime: '156小时',
-  totalDocuments: initialKnowledgeBases.reduce((sum, kb) => sum + kb.documentCount, 0),
+  totalStudyTime: '156 小时',
   streakDays: 12,
   masteryRate: '68%'
 };
@@ -19,380 +13,439 @@ const learningStats = {
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>知识库管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>知识库管理 - WayFare</title>
   </head>
-  <body class="bg-brand-cream min-h-screen">
-    
-    <!-- 顶部导航栏 -->
+  <body class="bg-brand-cream min-h-screen text-gray-800">
     <nav class="bg-white shadow-sm border-b border-brand-blue/10 px-6 py-4">
-      <div class="max-w-6xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <div class="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center text-white font-bold">
+      <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+        <a href="/dashboard" class="flex items-center gap-4">
+          <div class="w-10 h-10 bg-brand-blue rounded-xl flex items-center justify-center text-white font-bold shadow-sm">
             W
           </div>
           <div>
-            <h1 class="text-xl font-bold text-gray-800">WayFare 学习平台</h1>
-            <p class="text-xs text-gray-500">知识库管理系统</p>
+            <h1 class="text-xl font-bold">WayFare 学习平台</h1>
+            <p class="text-xs text-gray-500">知识库管理中心</p>
           </div>
-        </div>
-        
+        </a>
+
         <div class="flex items-center gap-4">
-          <button class="px-4 py-2 bg-brand-blue text-white rounded-lg font-medium hover:opacity-90 transition-all">
+          <a
+            href="/create-knowledge-base"
+            class="px-4 py-2 bg-brand-blue text-white rounded-lg font-medium hover:opacity-90 transition-all"
+          >
             新建知识库
-          </button>
-          <div class="w-8 h-8 bg-brand-sand rounded-full"></div>
+          </a>
+          <div class="w-9 h-9 bg-brand-sand rounded-full shadow-inner"></div>
         </div>
       </div>
     </nav>
 
-    <!-- 主内容区域 -->
     <main class="max-w-6xl mx-auto px-6 py-8 space-y-8">
-  <main class="max-w-6xl mx-auto px-6 py-8 space-y-8">
-    <!-- 页面标题和学习统计 -->
-    <header class="flex justify-between items-center">
-      <div>
-        <h1 class="text-3xl font-black text-gray-800">我的知识库</h1>
-        <p class="text-gray-500 mt-2 text-sm">管理和查看你的学习项目</p>
-      </div>
-      
-      <!-- 学习统计卡片 -->
-      <div class="grid grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-brand-blue/10 text-center">
-          <div class="text-2xl font-bold text-brand-blue">{learningStats.totalStudyTime}</div>
-          <div class="text-xs text-gray-500">总学习时长</div>
+      <header class="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
+        <div>
+          <h2 class="text-3xl font-black">我的知识库</h2>
+          <p class="text-gray-500 mt-2 text-sm">管理、查看并继续你的学习项目。</p>
         </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-brand-blue/10 text-center">
-          <div class="text-2xl font-bold text-brand-blue">{learningStats.totalDocuments}</div>
-          <div class="text-xs text-gray-500">文档数量</div>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-brand-blue/10 text-center">
-          <div class="text-2xl font-bold text-brand-blue">{learningStats.streakDays}</div>
-          <div class="text-xs text-gray-500">连续天数</div>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-brand-blue/10 text-center">
-          <div class="text-2xl font-bold text-brand-blue">{learningStats.masteryRate}</div>
-          <div class="text-xs text-gray-500">掌握程度</div>
-        </div>
-      </div>
-    </header>
 
-    <!-- 操作按钮区域 -->
-    <div class="flex justify-between items-center">
-      <div class="flex gap-3">
-        <a href="/create-knowledge-base" class="px-4 py-2 bg-brand-blue text-white rounded-lg font-medium hover:opacity-90 transition-all">
-          新建知识库
-        </a>
-      </div>
-      
-      <div class="flex gap-2">
-        <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
-          <option>最近访问</option>
-          <option>学习进度</option>
-          <option>文档数量</option>
-        </select>
-        <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">
-          网格视图
-        </button>
-      </div>
-    </div>
-
-    <!-- 知识库列表 -->
-    <div id="knowledge-base-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {initialKnowledgeBases.map((kb) => (
-        <a href={`/workspace/${kb.id}`} class="block group" data-kb-id={kb.id}>
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-brand-blue/30 transition-all duration-300">
-            <!-- 知识库头部 -->
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <div class={`w-12 h-12 ${kb.color} rounded-xl flex items-center justify-center text-2xl`}>
-                  {kb.icon}
-                </div>
-                <div>
-                  <h3 class="font-bold text-gray-800 group-hover:text-brand-blue transition-colors">
-                    {kb.name}
-                  </h3>
-                  <p class="text-xs text-gray-500">{kb.documentCount} 个文档</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <div class="text-sm font-bold text-gray-700">{kb.progress}%</div>
-                <div class="text-xs text-gray-500">进度</div>
-              </div>
-            </div>
-
-            <!-- 描述 -->
-            <p class="text-sm text-gray-600 mb-4 line-clamp-2">{kb.description}</p>
-
-            <!-- 进度条 -->
-            <div class="mb-4">
-              <div class="flex justify-between text-xs text-gray-500 mb-1">
-                <span>学习进度</span>
-                <span>{kb.progress}%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  class={`h-2 rounded-full ${kb.color} transition-all duration-500`}
-                  style={`width: ${kb.progress}%`}
-                ></div>
-              </div>
-            </div>
-
-            <!-- 底部信息 -->
-            <div class="flex justify-between items-center text-xs text-gray-500">
-              <span>最后访问: {kb.lastAccessed}</span>
-              <div class="flex gap-2">
-                <button class="px-2 py-1 hover:bg-gray-100 rounded transition-colors">
-                  设置
-                </button>
-                <button class="px-2 py-1 hover:bg-gray-100 rounded transition-colors">
-                  统计
-                </button>
-              </div>
-            </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full xl:w-auto xl:min-w-[34rem]">
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-brand-blue/10 text-center">
+            <div class="text-2xl font-bold text-brand-blue">{learningStats.totalStudyTime}</div>
+            <div class="text-xs text-gray-500">总学习时长</div>
           </div>
-        </a>
-      ))}
-    </div>
-
-    <!-- 空状态提示 -->
-    {initialKnowledgeBases.length === 0 && (
-      <div class="text-center py-16">
-        <div class="w-24 h-24 mx-auto mb-4 text-gray-300">
-          <svg fill="currentColor" viewBox="0 0 24 24">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-          </svg>
-        </div>
-        <h3 class="text-lg font-bold text-gray-600 mb-2">还没有知识库</h3>
-        <p class="text-gray-500 mb-6">创建你的第一个知识库开始学习之旅</p>
-        <a href="/create-knowledge-base" class="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold hover:opacity-90 transition-all inline-block">
-          创建知识库
-        </a>
-      </div>
-    )}
-  </div>
-</ThreePaneLayout>
-
-  <!-- AI学习助手组件 -->
-  <AIAssistant isOpen={false} />
-  
-  <!-- AI助手唤起按钮 -->
-  <AIToggleButton position="right" bottom="6rem" />
-
-  <script>
-    // 客户端脚本：监听知识库变化并动态更新UI
-    import { knowledgeBases } from '../store/learningStore';
-    
-    // 渲染知识库卡片
-    function renderKnowledgeBaseCard(kb) {
-      return `
-        <a href="/workspace/${kb.id}" class="block group" data-kb-id="${kb.id}">
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-brand-blue/30 transition-all duration-300">
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 ${kb.color} rounded-xl flex items-center justify-center text-2xl">
-                  ${kb.icon}
-                </div>
-                <div>
-                  <h3 class="font-bold text-gray-800 group-hover:text-brand-blue transition-colors">
-                    ${kb.name}
-                  </h3>
-                  <p class="text-xs text-gray-500">${kb.documentCount} 个文档</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <div class="text-sm font-bold text-gray-700">${kb.progress}%</div>
-                <div class="text-xs text-gray-500">进度</div>
-              </div>
-            </div>
-            <p class="text-sm text-gray-600 mb-4 line-clamp-2">${kb.description}</p>
-            <div class="mb-4">
-              <div class="flex justify-between text-xs text-gray-500 mb-1">
-                <span>学习进度</span>
-                <span>${kb.progress}%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="h-2 rounded-full ${kb.color} transition-all duration-500" style="width: ${kb.progress}%"></div>
-              </div>
-            </div>
-            <div class="flex justify-between items-center text-xs text-gray-500">
-              <span>最后访问: ${kb.lastAccessed}</span>
-              <div class="flex gap-2">
-                <button class="px-2 py-1 hover:bg-gray-100 rounded transition-colors">设置</button>
-                <button class="px-2 py-1 hover:bg-gray-100 rounded transition-colors">统计</button>
-              </div>
-            </div>
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-brand-blue/10 text-center">
+            <div id="knowledge-base-count" class="text-2xl font-bold text-brand-blue">0</div>
+            <div class="text-xs text-gray-500">知识库数量</div>
           </div>
-        </a>
-      `;
-    }
-    
-    // 更新整个UI
-    function updateUI(kbs) {
-      console.log('更新知识库UI，数量:', kbs.length);
-      
-      // 更新文档总数统计
-      const totalDocsElement = document.querySelector('.grid.grid-cols-4 > div:nth-child(2) > div:first-child');
-      if (totalDocsElement) {
-        totalDocsElement.textContent = kbs.reduce((sum, kb) => sum + kb.documentCount, 0).toString();
-      }
-      
-      // 更新知识库网格
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-brand-blue/10 text-center">
+            <div id="total-documents" class="text-2xl font-bold text-brand-blue">0</div>
+            <div class="text-xs text-gray-500">文档数量</div>
+          </div>
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-brand-blue/10 text-center">
+            <div class="text-2xl font-bold text-brand-blue">{learningStats.streakDays}</div>
+            <div class="text-xs text-gray-500">连续学习天数</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex gap-3">
+          <a
+            href="/create-knowledge-base"
+            class="px-4 py-2 bg-brand-blue text-white rounded-lg font-medium hover:opacity-90 transition-all"
+          >
+            新建知识库
+          </a>
+        </div>
+
+        <div class="flex gap-2 items-center">
+          <label for="sort-select" class="text-sm text-gray-500">排序方式</label>
+          <select id="sort-select" class="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white">
+            <option value="manual">默认顺序</option>
+            <option value="lastAccessed">最近访问</option>
+            <option value="createdAt">最近创建</option>
+            <option value="progress">学习进度</option>
+            <option value="documentCount">文档数量</option>
+          </select>
+        </div>
+      </section>
+
+      <section>
+        <div id="knowledge-base-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+
+        <div id="empty-state" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-brand-blue/20 shadow-sm">
+          <div class="w-24 h-24 mx-auto mb-4 text-gray-300">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-gray-700 mb-2">还没有知识库</h3>
+          <p class="text-gray-500 mb-6">点击下方按钮创建你的第一个知识库。</p>
+          <a
+            href="/create-knowledge-base"
+            class="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold hover:opacity-90 transition-all inline-block"
+          >
+            去创建
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <AIAssistant isOpen={false} pageType="dashboard" />
+    <AIToggleButton position="right" bottom="6rem" />
+
+    <script>
+      import { knowledgeBases, removeKnowledgeBase, updateKnowledgeBaseAccess } from '../store/learningStore';
+      import { removeAllDocumentsForKnowledgeBase } from '../store/documentStore';
+      import type { KnowledgeBase } from '../types/sharedtypes';
+
+      const PURPOSE_LABELS: Record<string, string> = {
+        'exam-prep': '备考冲刺',
+        'long-term': '长期学习',
+        'project-based': '项目实践',
+        research: '研究探索',
+        'skill-building': '技能提升',
+        hobby: '兴趣爱好'
+      };
+
+      const SUBJECT_LABELS: Record<string, string> = {
+        'computer-science': '计算机科学',
+        mathematics: '数学',
+        physics: '物理',
+        chemistry: '化学',
+        biology: '生物',
+        economics: '经济学',
+        language: '语言文学',
+        history: '历史学',
+        other: '其他'
+      };
+
+      const CREATION_METHOD_LABELS: Record<string, string> = {
+        create: '新建',
+        import: '导入'
+      };
+
+      const ALLOWED_COLOR_CLASSES = new Set([
+        'bg-brand-blue',
+        'bg-priority-important',
+        'bg-priority-critical',
+        'bg-green-500',
+        'bg-purple-500',
+        'bg-yellow-500',
+        'bg-pink-500',
+        'bg-indigo-500'
+      ]);
+
+      const PREBUILT_WORKSPACE_IDS = new Set(['math-101', 'os-intro', 'network-basic']);
+
       const gridElement = document.getElementById('knowledge-base-grid');
-      const emptyState = document.querySelector('.text-center.py-16');
-      
-      if (gridElement) {
-        if (kbs.length === 0) {
-          // 显示空状态
-          gridElement.innerHTML = '';
-          if (emptyState) {
-            emptyState.style.display = 'block';
-          } else {
-            // 如果空状态元素不存在，创建它
-            const emptyStateHtml = `
-              <div class="text-center py-16">
-                <div class="w-24 h-24 mx-auto mb-4 text-gray-300">
-                  <svg fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-                  </svg>
-                </div>
-                <h3 class="text-lg font-bold text-gray-600 mb-2">还没有知识库</h3>
-                <p class="text-gray-500 mb-6">创建你的第一个知识库开始学习之旅</p>
-                <a href="/create-knowledge-base" class="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold hover:opacity-90 transition-all inline-block">
-                  创建知识库
-                </a>
-              </div>
-            `;
-            gridElement.insertAdjacentHTML('afterend', emptyStateHtml);
-          }
-        } else {
-          // 渲染知识库列表
-          gridElement.innerHTML = kbs.map(kb => renderKnowledgeBaseCard(kb)).join('');
-          if (emptyState) {
-            emptyState.style.display = 'none';
-          }
-          
-          // 重新绑定点击事件
-          bindClickEvents();
+      const emptyStateElement = document.getElementById('empty-state');
+      const totalDocumentsElement = document.getElementById('total-documents');
+      const knowledgeBaseCountElement = document.getElementById('knowledge-base-count');
+      const sortSelectElement = document.getElementById('sort-select') as HTMLSelectElement | null;
+      const highlightedKnowledgeBaseId = new URLSearchParams(window.location.search).get('highlight');
+
+      function escapeHtml(value: string) {
+        const container = document.createElement('div');
+        container.textContent = value;
+        return container.innerHTML;
+      }
+
+      function formatDate(value: string) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) {
+          return value;
+        }
+
+        return new Intl.DateTimeFormat('zh-CN', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        }).format(date);
+      }
+
+      function clampProgress(value: number) {
+        if (!Number.isFinite(value)) {
+          return 0;
+        }
+
+        return Math.max(0, Math.min(100, Math.round(value)));
+      }
+
+      function sanitizeColorClass(color: string) {
+        return ALLOWED_COLOR_CLASSES.has(color) ? color : 'bg-brand-blue';
+      }
+
+      function getWorkspaceHref(kb: KnowledgeBase) {
+        if (kb.demoScenarioId) {
+          return `/workspace/default?kbId=${encodeURIComponent(kb.id)}&scenario=${encodeURIComponent(kb.demoScenarioId)}`;
+        }
+
+        if (PREBUILT_WORKSPACE_IDS.has(kb.id)) {
+          return `/workspace/${encodeURIComponent(kb.id)}`;
+        }
+
+        return `/workspace/default?kbId=${encodeURIComponent(kb.id)}`;
+      }
+
+      function getSortValue(kb: KnowledgeBase, sortBy: string) {
+        switch (sortBy) {
+          case 'createdAt':
+            return new Date(kb.createdAt).getTime();
+          case 'progress':
+            return clampProgress(kb.progress);
+          case 'documentCount':
+            return Number.isFinite(kb.documentCount) ? kb.documentCount : 0;
+          case 'lastAccessed':
+          default:
+            return new Date(kb.lastAccessed).getTime();
         }
       }
-    }
-    
-    // 绑定点击事件
-    function bindClickEvents() {
-      const kbCards = document.querySelectorAll('[data-kb-id]');
-      kbCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-          e.preventDefault();
-          const kbId = card.getAttribute('data-kb-id');
-          if (kbId) {
-            // 更新访问时间
-            import('../store/learningStore').then(({ updateKnowledgeBaseAccess }) => {
-              updateKnowledgeBaseAccess(kbId);
-              // 跳转到工作区
-              window.location.href = `/workspace/${kbId}`;
-            });
+
+      function sortKnowledgeBases(items: KnowledgeBase[]) {
+        const sortBy = sortSelectElement?.value ?? 'manual';
+        if (sortBy === 'manual') {
+          return [...items];
+        }
+        return [...items].sort((left, right) => getSortValue(right, sortBy) - getSortValue(left, sortBy));
+      }
+
+      function renderKnowledgeBaseCard(kb: KnowledgeBase) {
+        const progress = clampProgress(kb.progress);
+        const documentCount = Number.isFinite(kb.documentCount) ? Math.max(0, kb.documentCount) : 0;
+        const colorClass = sanitizeColorClass(kb.color);
+        const subjectLabel = kb.subject ? SUBJECT_LABELS[kb.subject] ?? kb.subject : '未分类';
+        const purposeLabel = PURPOSE_LABELS[kb.purpose] ?? kb.purpose;
+        const creationMethodLabel = CREATION_METHOD_LABELS[kb.creationMethod] ?? kb.creationMethod;
+        const isHighlighted = highlightedKnowledgeBaseId === kb.id;
+
+        return `
+          <article
+            class="block group cursor-pointer ${isHighlighted ? 'dashboard-highlight-target' : ''}"
+            data-kb-link
+            data-kb-id="${escapeHtml(kb.id)}"
+            data-kb-href="${getWorkspaceHref(kb)}"
+          >
+            <div class="dashboard-card-surface bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-brand-blue/30 transition-all duration-300 h-full">
+              <div class="flex items-start justify-between gap-4 mb-4">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-12 h-12 ${colorClass} rounded-xl flex items-center justify-center text-2xl shrink-0">
+                    ${escapeHtml(kb.icon)}
+                  </div>
+                  <div class="min-w-0">
+                    <h3 class="font-bold text-gray-800 group-hover:text-brand-blue transition-colors truncate">
+                      ${escapeHtml(kb.name)}
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-1">${documentCount} 个文档</p>
+                  </div>
+                </div>
+
+                <div class="text-right shrink-0">
+                  <div class="text-sm font-bold text-gray-700">${progress}%</div>
+                  <div class="text-xs text-gray-500">进度</div>
+                </div>
+              </div>
+
+              <p class="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[3rem]">${escapeHtml(kb.description || '暂无描述')}</p>
+
+              <div class="flex flex-wrap gap-2 mb-4 text-xs">
+                <span class="px-2 py-1 rounded-full bg-brand-blue/10 text-brand-blue">${escapeHtml(subjectLabel)}</span>
+                <span class="px-2 py-1 rounded-full bg-gray-100 text-gray-600">${escapeHtml(purposeLabel)}</span>
+                <span class="px-2 py-1 rounded-full bg-gray-100 text-gray-600">${escapeHtml(creationMethodLabel)}</span>
+              </div>
+
+              <div class="mb-4">
+                <div class="flex justify-between text-xs text-gray-500 mb-1">
+                  <span>学习进度</span>
+                  <span>${progress}%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                  <div class="h-2 rounded-full ${colorClass} transition-all duration-500" style="width: ${progress}%"></div>
+                </div>
+              </div>
+
+              <div class="flex justify-between items-center text-xs text-gray-500 gap-3">
+                <span>最近访问：${escapeHtml(formatDate(kb.lastAccessed))}</span>
+                <span>创建于 ${escapeHtml(formatDate(kb.createdAt))}</span>
+              </div>
+
+              <div class="mt-5 flex items-center justify-between gap-3">
+                <span class="text-xs text-gray-400">点击卡片进入知识库</span>
+                <button
+                  type="button"
+                  class="kb-delete-btn px-3 py-1.5 text-xs rounded-full border border-red-200 text-red-500 hover:bg-red-50 transition-colors"
+                  data-kb-delete="${escapeHtml(kb.id)}"
+                >
+                  删除知识库
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderKnowledgeBases(items: KnowledgeBase[]) {
+        const sortedKnowledgeBases = sortKnowledgeBases(items);
+        const totalDocuments = sortedKnowledgeBases.reduce((total, kb) => {
+          return total + (Number.isFinite(kb.documentCount) ? Math.max(0, kb.documentCount) : 0);
+        }, 0);
+
+        if (knowledgeBaseCountElement) {
+          knowledgeBaseCountElement.textContent = String(sortedKnowledgeBases.length);
+        }
+
+        if (totalDocumentsElement) {
+          totalDocumentsElement.textContent = String(totalDocuments);
+        }
+
+        if (!gridElement || !emptyStateElement) {
+          return;
+        }
+
+        if (sortedKnowledgeBases.length === 0) {
+          gridElement.innerHTML = '';
+          emptyStateElement.classList.remove('hidden');
+          return;
+        }
+
+        emptyStateElement.classList.add('hidden');
+        gridElement.innerHTML = sortedKnowledgeBases.map(renderKnowledgeBaseCard).join('');
+        bindCardEvents();
+      }
+
+      function bindCardEvents() {
+        document.querySelectorAll<HTMLElement>('[data-kb-link]').forEach((card) => {
+          if (card.dataset.bound === 'true') {
+            return;
           }
+
+          card.dataset.bound = 'true';
+          card.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement | null;
+            if (target?.closest('[data-kb-delete]')) {
+              return;
+            }
+
+            const kbId = card.dataset.kbId;
+            const href = card.dataset.kbHref;
+            if (kbId) {
+              updateKnowledgeBaseAccess(kbId);
+              if (href) {
+                window.location.href = href;
+              }
+            }
+          });
         });
-      });
-    }
-    
-    // 订阅知识库变化
-    let unsubscribe = knowledgeBases.subscribe((kbs) => {
-      console.log('知识库列表更新:', kbs);
-      updateUI(kbs);
-    });
-    
-    // 页面加载完成后初始化
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('Dashboard页面加载完成');
-      
-      // 立即获取当前数据并渲染
-      const currentKbs = knowledgeBases.get();
-      updateUI(currentKbs);
-      
-      // 绑定初始点击事件
-      bindClickEvents();
-      
-      // 监听知识库添加事件（从创建页面返回时可能触发）
-      window.addEventListener('knowledgebase:added', (event) => {
-        console.log('收到知识库添加事件:', event.detail);
-        const updatedKbs = knowledgeBases.get();
-        updateUI(updatedKbs);
-      });
-      
-      // 检查URL参数，如果是从创建页面返回，强制刷新数据
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('refresh')) {
-        console.log('检测到从创建页面返回，强制刷新数据');
-        // 给store一点时间来同步状态，然后更新UI
-        setTimeout(() => {
-          const latestKbs = knowledgeBases.get();
-          updateUI(latestKbs);
-        }, 100);
+
+        document.querySelectorAll<HTMLButtonElement>('[data-kb-delete]').forEach((button) => {
+          if (button.dataset.bound === 'true') {
+            return;
+          }
+
+          button.dataset.bound = 'true';
+          button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const kbId = button.dataset.kbDelete;
+            if (!kbId) {
+              return;
+            }
+
+            const card = button.closest<HTMLElement>('[data-kb-link]');
+            const kbName = card?.querySelector('h3')?.textContent?.trim() ?? '该知识库';
+            if (!window.confirm(`确定要删除“${kbName}”吗？`)) {
+              return;
+            }
+
+            removeAllDocumentsForKnowledgeBase(kbId);
+            removeKnowledgeBase(kbId);
+          });
+        });
       }
-    });
-    
-    // 页面卸载时取消订阅
-    window.addEventListener('beforeunload', () => {
-      if (unsubscribe) {
-        unsubscribe();
+
+      renderKnowledgeBases(knowledgeBases.get());
+      knowledgeBases.subscribe((items) => {
+        renderKnowledgeBases(items);
+      });
+
+      sortSelectElement?.addEventListener('change', () => {
+        renderKnowledgeBases(knowledgeBases.get());
+      });
+
+      window.addEventListener('knowledgebases:updated', () => {
+        renderKnowledgeBases(knowledgeBases.get());
+      });
+
+      if (highlightedKnowledgeBaseId) {
+        window.history.replaceState({}, '', '/dashboard');
       }
-    });
-  </script>
+    </script>
+  </body>
+</html>
 
 <style>
-  /* 全局样式优化 */
   body {
     overflow-x: hidden;
   }
-  
-  /* 卡片悬停效果 */
-  .group:hover .group-hover\:shadow-lg {
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  }
-  
-  /* 文本截断 */
+
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
-  /* 页面加载动画 */
-  .grid > a {
-    animation: fadeInUp 0.6s ease-out forwards;
-    opacity: 0;
-    transform: translateY(20px);
+
+  #knowledge-base-grid > article {
+    animation: fadeInUp 0.35s ease-out forwards;
   }
-  
-  .grid > a:nth-child(1) { animation-delay: 0.1s; }
-  .grid > a:nth-child(2) { animation-delay: 0.2s; }
-  .grid > a:nth-child(3) { animation-delay: 0.3s; }
-  
+
   @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
-  
-  /* 响应式设计 */
-  @media (max-width: 768px) {
-    header {
-      flex-direction: column;
-      gap: 1.5rem;
-      text-align: center;
-    }
-    
-    .grid {
-      grid-template-columns: 1fr;
-    }
+
+  .dashboard-highlight-target .dashboard-card-surface {
+    border-color: rgba(163, 209, 204, 0.95);
+    animation: dashboardGlow 2.6s ease-in-out infinite;
   }
-  
-  /* 选中文本时的品牌色 */
-  ::selection {
-    background: #A3D1CC;
-    color: white;
+
+  @keyframes dashboardGlow {
+    0%, 100% {
+      box-shadow:
+        0 0 0 0 rgba(163, 209, 204, 0.18),
+        0 8px 22px -8px rgba(163, 209, 204, 0.28);
+    }
+    50% {
+      box-shadow:
+        0 0 0 5px rgba(163, 209, 204, 0.22),
+        0 0 28px 10px rgba(163, 209, 204, 0.22),
+        0 12px 28px -8px rgba(163, 209, 204, 0.36);
+    }
   }
 </style>

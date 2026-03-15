@@ -1,14 +1,19 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
+
+const defaultProjectID uint = 1
 
 func UploadDocumentAPI(c *gin.Context, db *gorm.DB) {
 	file, err := c.FormFile("file")
@@ -17,44 +22,113 @@ func UploadDocumentAPI(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
-	// 确保上传目录存在
-	os.MkdirAll("./uploads", os.ModePerm)
+	const maxFileSize = 50 * 1024 * 1024
+	if file.Size > maxFileSize {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "文件大小超过 50MB 限制"})
+		return
+	}
 
-	// 🚀 【核心修复】：生成纯英文的 UUID 作为物理文件名，彻底消灭乱码和安全隐患！
-	safeFilename := uuid.New().String() + filepath.Ext(file.Filename)
-	savePath := filepath.Join("./uploads", safeFilename)
+	projectID := parseProjectID(c.PostForm("projectId"))
+	uploadDir := getEnv("UPLOAD_DIR", "./uploads")
 
-	// 保存文件到本地 (此时存下的是类似 uploads/550e8400-e29b...pdf)
+	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "创建上传目录失败"})
+		return
+	}
+
+	ext := filepath.Ext(file.Filename)
+	safeFilename := uuid.New().String() + ext
+	savePath := filepath.Join(uploadDir, safeFilename)
+
 	if err := c.SaveUploadedFile(file, savePath); err != nil {
-		c.JSON(500, gin.H{"error": "文件保存失败"})
+		log.Printf("❌ 文件保存失败: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "文件保存失败"})
 		return
 	}
 
-	// 此时的 absPath 是绝对纯净的英文路径，Python 绝对不会报错
-	absPath, _ := filepath.Abs(savePath)
-	resp, err := CallPython("parse", map[string]interface{}{
-		"path": absPath,
-	})
-
+	absPath, err := filepath.Abs(savePath)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		log.Printf("❌ 获取绝对路径失败: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "路径处理失败"})
 		return
 	}
 
-	docHash := resp.Data["docHash"].(string)
-
-	// 落盘到 Go 的业务数据库
-	doc := Document{
-		ProjectID: 1,
-		FileName:  file.Filename, // 数据库里依然存原始中文名，等 React 前端来请求时展示用
-		FileURL:   absPath,       // 物理路径是安全的 UUID 路径
-		DocHash:   docHash,
-		Status:    "processing",
+	resp, err := CallPythonViaNetwork("parse", map[string]interface{}{
+		"path":     absPath,
+		"filename": file.Filename,
+		"size":     file.Size,
+	})
+	if err != nil {
+		log.Printf("❌ Python 解析失败: %v", err)
+		c.JSON(http.StatusBadGateway, gin.H{"error": "AI 解析失败: " + err.Error()})
+		return
 	}
-	db.Create(&doc)
+
+	docHash, ok := resp.Data["docHash"].(string)
+	if !ok || docHash == "" {
+		log.Printf("❌ 无效的 docHash 响应: %+v", resp.Data)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "AI 响应格式错误"})
+		return
+	}
+
+	status := normalizeDocumentStatus(valueAsString(resp.Data["status"]))
+	if status == "" {
+		status = "processing"
+	}
+
+	document := Document{
+		ProjectID:   projectID,
+		FileName:    file.Filename,
+		FileURL:     "/uploads/" + safeFilename,
+		StoragePath: absPath,
+		DocHash:     docHash,
+		Status:      status,
+		CreatedAt:   time.Now().UTC(),
+		UpdatedAt:   time.Now().UTC(),
+	}
+
+	if err := db.Create(&document).Error; err != nil {
+		log.Printf("❌ 数据库写入失败: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "数据库操作失败"})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "上传成功，AI正在阅读",
-		"docHash": docHash,
+		"id":        document.ID,
+		"projectId": document.ProjectID,
+		"filename":  document.FileName,
+		"fileUrl":   document.FileURL,
+		"docHash":   document.DocHash,
+		"status":    document.Status,
+		"createdAt": document.CreatedAt,
+		"updatedAt": document.UpdatedAt,
+		"message":   "文件上传成功，Python 正在解析",
 	})
+}
+
+func normalizeDocumentStatus(status string) string {
+	switch status {
+	case "pending", "processing", "completed", "failed":
+		return status
+	default:
+		return ""
+	}
+}
+
+func parseProjectID(raw string) uint {
+	if raw == "" {
+		return defaultProjectID
+	}
+
+	parsed, err := strconv.ParseUint(raw, 10, 64)
+	if err != nil || parsed == 0 {
+		return defaultProjectID
+	}
+
+	return uint(parsed)
+}
+
+func valueAsString(value interface{}) string {
+	stringValue, _ := value.(string)
+	return stringValue
 }
