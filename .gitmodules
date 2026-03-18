@@ -1,0 +1,3 @@
+[submodule "WayFare-AI-C"]
+	path = WayFare-AI-C
+	url = git@github.com:eric-117c/WayFare-AI-_-C.git

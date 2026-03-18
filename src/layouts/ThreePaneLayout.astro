@@ -1,5 +1,4 @@
 ---
-// 导入 Mock 数据进行初步渲染验证
 import { MOCK_CHAT } from '../constants/mockData';
 import '../styles/global.css';
 
@@ -13,59 +12,91 @@ const { title } = Astro.props;
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
   </head>
-  <body class="bg-brand-cream h-screen overflow-hidden flex">
-    
-    <aside class="w-16 hover:w-64 transition-all duration-300 bg-brand-blue flex flex-col items-center py-4 z-20 shadow-lg">
-      <div class="flex-1 space-y-8">
-        <button class="p-2 hover:bg-white/20 rounded-lg text-white" title="管理文件夹">
-          <span class="block w-6 h-6 border-2 border-white rounded-sm"></span> </button>
-        <button class="p-2 hover:bg-white/20 rounded-lg text-white" title="修改配置">
-          <span class="block w-6 h-6 border-2 border-white rounded-full"></span>
-        </button>
-      </div>
-      <div class="pb-4">
-        <div class="w-8 h-8 bg-brand-sand rounded-full"></div> </div>
-    </aside>
+  <body class="min-h-screen bg-brand-cream">
+    <div class="flex h-screen overflow-hidden">
+      <aside class="hidden md:flex w-[72px] border-r border-slate-100 bg-white/85 backdrop-blur-sm">
+        <div class="flex w-full flex-col items-center justify-between py-6">
+          <div class="flex flex-col items-center gap-4">
+            <a
+              href="/dashboard"
+              class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-brand-surface/40 text-slate-700 transition hover:border-brand-blue/50 hover:bg-brand-surface/70"
+              title="返回仪表盘"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.75 12 3l8.25 6.75V20.25H3.75z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 20.25v-6h6v6" />
+              </svg>
+            </a>
+            <button
+              class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-brand-blue/40 hover:text-slate-700"
+              title="文件结构"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75h15M4.5 12h15M4.5 17.25h9" />
+              </svg>
+            </button>
+            <button
+              class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-brand-blue/40 hover:text-slate-700"
+              title="视图设置"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9m-9 6h9m-9 6h9M4.5 6h.008v.008H4.5zm0 6h.008v.008H4.5zm0 6h.008v.008H4.5z" />
+              </svg>
+            </button>
+          </div>
 
-    <main class="flex-1 relative overflow-y-auto px-12 py-8 shadow-inner">
-      <header class="mb-8 border-b border-brand-blue/20 pb-4">
-        <h1 class="text-2xl font-bold text-gray-800">当前知识库文档</h1>
-      </header>
-      
-      <article class="prose prose-slate max-w-none relative">
-        <slot /> </article>
-    </main>
+          <div class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-brand-sand/35 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+            WF
+          </div>
+        </div>
+      </aside>
 
-    <section class="w-[380px] bg-brand-surface border-l border-brand-blue/20 flex flex-col">
-      <div class="p-4 border-b border-brand-blue/20 font-bold text-gray-700">
-        AI 学习助手
-      </div>
-      
-      <div class="flex-1 overflow-y-auto p-4 space-y-4">
-        {MOCK_CHAT.map(msg => (
-          <div class={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div class={`max-w-[80%] p-3 rounded-2xl ${
-              msg.role === 'user' ? 'bg-brand-blue text-white' : 'bg-white shadow-sm'
-            }`}>
-              {msg.content}
+      <main class="flex-1 overflow-y-auto">
+        <div class="mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
+          <header class="mb-8 border-b border-slate-100 pb-5">
+            <p class="mb-2 text-[11px] uppercase tracking-[0.24em] text-slate-400">Workspace</p>
+            <h1 class="text-2xl font-semibold tracking-tight text-slate-800">{title}</h1>
+          </header>
+
+          <article class="relative">
+            <slot />
+          </article>
+        </div>
+      </main>
+
+      <section class="hidden xl:flex w-[360px] border-l border-slate-100 bg-white/85 backdrop-blur-sm">
+        <div class="flex w-full flex-col">
+          <div class="border-b border-slate-100 px-5 py-4">
+            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Reading Notes</p>
+            <h2 class="mt-1 text-sm font-medium tracking-tight text-slate-700">学习侧栏</h2>
+          </div>
+
+          <div class="flex-1 overflow-y-auto px-5 py-5 space-y-4">
+            {MOCK_CHAT.map((msg) => (
+              <div class={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div
+                  class={`max-w-[88%] rounded-lg border px-4 py-3 text-sm leading-7 tracking-tight ${
+                    msg.role === 'user'
+                      ? 'border-brand-blue/30 bg-brand-surface/60 text-slate-700'
+                      : 'border-slate-100 bg-white text-slate-600'
+                  }`}
+                >
+                  {msg.content}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div class="border-t border-slate-100 px-5 py-4">
+            <div class="rounded-lg border border-slate-100 bg-white px-4 py-3 text-sm text-slate-400">
+              点击正文标注或在右侧 AI 助手中继续追问
             </div>
           </div>
-        ))}
-      </div>
-
-      <div class="p-4 bg-white/50">
-        <div class="relative">
-          <input 
-            type="text" 
-            placeholder="点击气泡提问或输入内容..." 
-            class="w-full pl-4 pr-10 py-3 rounded-xl border-none focus:ring-2 focus:ring-brand-blue bg-white"
-          />
-          <button class="absolute right-3 top-3 text-brand-blue font-bold">↑</button>
         </div>
-      </div>
-    </section>
-
+      </section>
+    </div>
   </body>
 </html>

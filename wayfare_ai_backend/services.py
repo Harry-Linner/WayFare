@@ -13,7 +13,7 @@ from database import (
 )
 from llm_provider import llm_client
 from embedding_provider import embed_client
-from document_parser import _extract_and_chunk_pdf_sync
+from document_parser import _extract_and_chunk_pdf_sync, get_document_metadata_sync
 from context_builder import build_annotate_prompt
 
 page_dwell_state: Dict[str, float] = {}
@@ -72,8 +72,9 @@ async def handle_parse(params: Dict[str, Any]) -> Dict[str, Any]:
     if not path:
         raise ValueError("path is required for parse")
     doc_hash = hashlib.md5(path.encode('utf-8')).hexdigest()
+    metadata = get_document_metadata_sync(path)
     asyncio.create_task(_background_parse(path, doc_hash))
-    return {"docHash": doc_hash, "status": "processing"}
+    return {"docHash": doc_hash, "status": "processing", "pageCount": metadata.get("pageCount", 0)}
 
 
 # ----------------- 真实的 ANNOTATE (RAG + 强制 JSON 输出) -----------------

@@ -4,6 +4,19 @@ from loguru import logger
 from typing import List, Dict, Any
 
 
+def get_document_metadata_sync(path: str) -> Dict[str, Any]:
+    try:
+        doc = fitz.open(path)
+        meta = {
+            "pageCount": len(doc),
+        }
+        doc.close()
+        return meta
+    except Exception as e:
+        logger.error(f"PyMuPDF failed to read metadata for {path}: {e}")
+        return {"pageCount": 0}
+
+
 def _extract_and_chunk_pdf_sync(path: str) -> List[Dict[str, Any]]:
     """
     同步的 PDF 解析与切块逻辑（供 run_in_executor 调用，防止阻塞 asyncio）

@@ -1,26 +1,74 @@
+---
+const options = [
+  {
+    action: 'annotate',
+    title: '自动生成批注',
+    description: '适合论文、教材与讲义，优先形成可读的知识点提示。'
+  },
+  {
+    action: 'summary',
+    title: '生成学习摘要',
+    description: '先提炼结构和提纲，再决定是否进入逐页阅读。'
+  },
+  {
+    action: 'nothing',
+    title: '仅导入文件',
+    description: '先保留原始文档，不立刻执行 AI 处理。'
+  }
+];
+---
 
----
-// 配色：背景 #E1FCF6, 按钮 #A3D1CC
----
-<dialog id="upload-modal" class="backdrop:bg-black/50 p-0 rounded-2xl shadow-2xl border-none">
-  <div class="bg-brand-surface w-[400px] p-6 flex flex-col gap-4">
-    <h3 class="text-xl font-bold text-gray-800">检测到新文件</h3>
-    <p class="text-sm text-gray-600">你希望如何处理这个文件？</p>
-    
-    <div class="space-y-2">
-      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="annotate">
-        ✨ 自动添加 AI 批注
-      </button>
-      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="summary">
-        📝 生成学习笔记
-      </button>
-      <button class="w-full py-3 bg-white hover:bg-brand-blue/10 text-left px-4 rounded-xl border border-brand-blue/20 transition-colors" data-action="nothing">
-        📂 仅复制文件，不做处理
-      </button>
+<dialog id="upload-modal" class="rounded-lg border-none bg-transparent p-0 backdrop:bg-slate-900/10">
+  <div class="w-[440px] max-w-[calc(100vw-2rem)] rounded-lg border border-slate-100 bg-white p-6">
+    <div class="mb-5">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Import File</p>
+      <h3 class="mt-2 text-xl font-semibold tracking-tight text-slate-800">检测到新的学习材料</h3>
+      <p class="mt-2 text-sm leading-6 text-slate-500">
+        选择一种更贴近当前阅读目标的处理方式。整个界面会尽量保持轻量，不打断你的阅读节奏。
+      </p>
     </div>
 
-    <button onclick="this.closest('dialog').close()" class="mt-2 text-center text-gray-400 text-sm hover:underline">
-      取消
-    </button>
+    <div class="space-y-3">
+      {options.map((option) => (
+        <button
+          type="button"
+          class="group flex w-full items-start gap-3 rounded-md border border-slate-100 bg-white px-4 py-4 text-left transition hover:border-brand-blue/40 hover:bg-brand-surface/30"
+          data-action={option.action}
+        >
+          <span class="mt-0.5 flex h-8 w-8 items-center justify-center rounded-md border border-slate-100 bg-brand-cream/60 text-slate-500 transition group-hover:border-brand-blue/40 group-hover:text-slate-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+              {
+                option.action === 'annotate' ? (
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                ) : option.action === 'summary' ? (
+                  <>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5h10.5M6.75 12h10.5M6.75 16.5h6.75" />
+                  </>
+                ) : (
+                  <>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 4.5h6l3 3V19.5H7.5z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5v3h3" />
+                  </>
+                )
+              }
+            </svg>
+          </span>
+          <span class="flex-1">
+            <span class="block text-sm font-medium tracking-tight text-slate-700">{option.title}</span>
+            <span class="mt-1 block text-sm leading-6 text-slate-500">{option.description}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <div class="mt-5 flex items-center justify-end border-t border-slate-100 pt-4">
+      <button
+        type="button"
+        onclick="this.closest('dialog').close()"
+        class="rounded-md border border-slate-100 px-4 py-2 text-sm tracking-tight text-slate-500 transition hover:border-slate-200 hover:bg-slate-50 hover:text-slate-700"
+      >
+        取消
+      </button>
+    </div>
   </div>
 </dialog>

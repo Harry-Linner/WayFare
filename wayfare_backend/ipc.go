@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type IpcRequest struct {
@@ -23,29 +24,31 @@ type IpcResponse struct {
 	Success bool                   `json:"success"`
 	Data    map[string]interface{} `json:"data"`
 	Error   string                 `json:"error"`
-	Type    string                 `json:"type"` // 用于识别 notification
+	Type    string                 `json:"type"`
 }
 
 var (
 	pythonStdin  io.WriteCloser
 	responseChan sync.Map
+	appDB        *gorm.DB
 )
 
-func InitPythonSidecar() {
-	pythonExe := `C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\.venv\Scripts\python.exe`
-	scriptPath := `C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend\ipc_main.py`
+func InitPythonSidecar(db *gorm.DB) {
+	appDB = db
 
+	pythonExe := `..\wayfare_ai_backend\.venv\Scripts\python.exe`
+	scriptPath := `..\wayfare_ai_backend\ipc_main.py`
 	cmd := exec.Command(pythonExe, scriptPath)
+	cmd.Dir = `..\wayfare_ai_backend`
 
-	// 🚀 【关键修复】：强行指定 Python 的工作目录！让它能找到自己的 .env 文件！
-	cmd.Dir = `C:\Users\fjt\Desktop\wayfare\wayfare_ai_backend`
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		panic("无法连接 Python Stdin: " + err.Error())
+		panic("无法连接 Python stdin: " + err.Error())
 	}
+
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		panic("无法连接 Python Stdout: " + err.Error())
+		panic("无法连接 Python stdout: " + err.Error())
 	}
 
 	pythonStdin = stdin
@@ -53,27 +56,48 @@ func InitPythonSidecar() {
 		panic("无法启动 Python 进程: " + err.Error())
 	}
 
-	fmt.Println("🚀 Python AI 侧车已成功挂载！")
+	fmt.Println("Python AI sidecar 已启动")
 
-	// 持续监听 Python 的标准输出
 	go func() {
 		scanner := bufio.NewScanner(stdout)
 		for scanner.Scan() {
 			line := scanner.Text()
 			var resp IpcResponse
-			if err := json.Unmarshal([]byte(line), &resp); err == nil {
-				if resp.Type == "notification" {
-					fmt.Println("🔔 收到 Python 主动通知:", resp.Data)
-					// TODO: 如果是 parse_completed，可以去更新数据库文档状态
-					continue
-				}
-				if ch, ok := responseChan.Load(resp.ID); ok {
-					ch.(chan IpcResponse) <- resp
-					responseChan.Delete(resp.ID)
-				}
+			if err := json.Unmarshal([]byte(line), &resp); err != nil {
+				continue
+			}
+
+			if resp.Type == "notification" {
+				handlePythonNotification(resp.Data)
+				continue
+			}
+
+			if ch, ok := responseChan.Load(resp.ID); ok {
+				ch.(chan IpcResponse) <- resp
+				responseChan.Delete(resp.ID)
 			}
 		}
 	}()
+}
+
+func handlePythonNotification(data map[string]interface{}) {
+	fmt.Println("收到 Python 通知:", data)
+	if appDB == nil {
+		return
+	}
+
+	eventType, _ := data["type"].(string)
+	docHash, _ := data["docHash"].(string)
+	if docHash == "" {
+		return
+	}
+
+	switch eventType {
+	case "parse_completed":
+		appDB.Model(&Document{}).Where("doc_hash = ?", docHash).Update("status", "completed")
+	case "parse_failed":
+		appDB.Model(&Document{}).Where("doc_hash = ?", docHash).Update("status", "failed")
+	}
 }
 
 func CallPython(method string, params map[string]interface{}) (IpcResponse, error) {

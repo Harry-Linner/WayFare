@@ -1,40 +1,38 @@
----
-// 此组件将在 ThreePaneLayout 中被调用
----
-<div class="flex flex-col h-full bg-brand-surface">
-  <div class="p-4 border-b border-brand-blue/20 bg-white/50 backdrop-blur-md">
-    <h3 class="font-bold text-gray-700 flex items-center gap-2">
-      <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-      AI 学习助手
-    </h3>
+<div class="flex h-full flex-col bg-white/85">
+  <div class="border-b border-slate-100 px-5 py-4">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Context Chat</p>
+    <h3 class="mt-1 text-sm font-medium tracking-tight text-slate-700">阅读侧栏</h3>
   </div>
 
-  <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+  <div id="chat-messages" class="flex-1 space-y-4 overflow-y-auto px-5 py-5">
     <div class="flex justify-start">
-      <div class="max-w-[85%] p-3 rounded-2xl bg-white shadow-sm border border-brand-blue/10 text-sm leading-relaxed">
-        你好！我是你的学习伙伴。点击页面上的气泡，我们可以针对具体的考点进行讨论。
+      <div class="max-w-[88%] rounded-lg border border-slate-100 bg-white px-4 py-3 text-sm leading-7 tracking-tight text-slate-600">
+        你好，我会跟随你当前选中的知识点继续解释、整理与追问，而不是抢占页面的注意力。
       </div>
     </div>
   </div>
 
-  <div id="active-context-preview" class="hidden px-4 py-2 bg-brand-sand/30 border-t border-brand-accent/20">
-    <div class="text-[10px] text-brand-accent font-bold uppercase tracking-wider">当前引用内容</div>
-    <p id="context-text" class="text-xs text-gray-600 line-clamp-2 italic"></p>
+  <div id="active-context-preview" class="hidden border-t border-slate-100 bg-brand-surface/20 px-5 py-3">
+    <div class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Current Context</div>
+    <p id="context-text" class="mt-2 text-sm leading-6 text-slate-500 italic"></p>
   </div>
 
-  <div class="p-4 bg-white border-t border-brand-blue/10">
-    <div class="relative group">
-      <textarea 
+  <div class="border-t border-slate-100 px-5 py-4">
+    <div class="rounded-lg border border-slate-100 bg-white p-3">
+      <textarea
         id="chat-input"
         rows="1"
-        placeholder="输入问题或通过气泡提问..." 
-        class="w-full pl-4 pr-12 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue focus:border-transparent resize-none overflow-hidden text-sm"
+        placeholder="输入问题，或根据标注继续追问..."
+        class="w-full resize-none overflow-hidden border-none bg-transparent p-0 text-sm leading-7 tracking-tight text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0"
       ></textarea>
-      <button id="send-btn" class="absolute right-2 bottom-2 p-2 bg-brand-blue text-white rounded-lg hover:bg-brand-blue/80 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-        </svg>
-      </button>
+      <div class="mt-3 flex justify-end border-t border-slate-100 pt-3">
+        <button id="send-btn" class="inline-flex items-center gap-2 rounded-md border border-slate-100 bg-brand-surface/55 px-3 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface">
+          <span>发送</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h13.5m0 0-4.5-4.5M18 12l-4.5 4.5" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -45,34 +43,36 @@
   const previewArea = document.getElementById('active-context-preview');
   const contextText = document.getElementById('context-text');
   const chatMessages = document.getElementById('chat-messages');
-  const chatInput = document.getElementById('chat-input') as HTMLTextAreaElement;
+  const chatInput = document.getElementById('chat-input');
 
-  // 订阅 Store：当用户点击气泡时，更新 AI 栏的上下文
-  activeAnnotation.subscribe(ann => {
-    if (ann) {
-      previewArea?.classList.remove('hidden');
-      if (contextText) contextText.innerText = `“${ann.contextQuote}”`;
-      
-      // 自动聚焦输入框并给出一个引导
-      if (chatInput) {
-        chatInput.value = `我想深入了解：${ann.knowledgePoint} `;
-        chatInput.focus();
-      }
+  activeAnnotation.subscribe((ann) => {
+    if (!ann) return;
 
-      // 模拟 AI 自动插入一条系统提示
-      renderMessage('system', `已关联考点：${ann.knowledgePoint} (考频: ${ann.frequency}次)`);
+    previewArea?.classList.remove('hidden');
+    if (contextText) {
+      contextText.innerText = `“${ann.contextQuote}”`;
     }
+
+    if (chatInput) {
+      chatInput.value = `我想继续理解：${ann.knowledgePoint} `;
+      chatInput.focus();
+    }
+
+    renderMessage('system', `已关联知识点：${ann.knowledgePoint}（考频：${ann.frequency}）`);
   });
 
-  function renderMessage(role: string, content: string) {
+  function renderMessage(role, content) {
     const div = document.createElement('div');
-    div.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`;
-    
-    const innerClass = role === 'user' 
-      ? 'bg-brand-blue text-white' 
-      : (role === 'system' ? 'bg-gray-100 text-gray-500 text-[10px]' : 'bg-white shadow-sm border border-brand-blue/10');
-    
-    div.innerHTML = `<div class="max-w-[85%] p-3 rounded-2xl text-sm ${innerClass}">${content}</div>`;
+    div.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+
+    const innerClass =
+      role === 'user'
+        ? 'border-brand-blue/30 bg-brand-surface/70 text-slate-700'
+        : role === 'system'
+          ? 'border-slate-100 bg-brand-surface/20 text-slate-500'
+          : 'border-slate-100 bg-white text-slate-600';
+
+    div.innerHTML = `<div class="max-w-[88%] rounded-lg border px-4 py-3 text-sm leading-7 tracking-tight ${innerClass}">${content}</div>`;
     chatMessages?.appendChild(div);
     chatMessages?.scrollTo(0, chatMessages.scrollHeight);
   }

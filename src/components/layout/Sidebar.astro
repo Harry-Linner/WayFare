@@ -1,133 +1,143 @@
----
-// src/components/layout/Sidebar.astro
-// 职责：管理窄边导航导轨 (Rail) 与弹出式抽屉 (Drawer)
----
-
 <div class="relative flex h-full">
-  <nav class="w-16 bg-brand-blue flex flex-col items-center py-6 gap-8 z-30 shadow-xl">
-    <div class="text-white font-black text-2xl mb-4 tracking-tighter">L.</div>
-    
-    <button class="nav-icon-btn group relative" data-drawer="files" title="管理文件夹">
-      <div class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-all text-white active:scale-90">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-        </svg>
+  <nav class="z-30 flex w-[72px] flex-col items-center justify-between border-r border-slate-100 bg-white/88 py-6 backdrop-blur-sm">
+    <div class="flex flex-col items-center gap-4">
+      <div class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-brand-surface/40 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+        WF
       </div>
-      <div class="indicator absolute -right-1 top-1/2 -translate-y-1/2 w-1 h-4 bg-white rounded-l-full opacity-0 transition-opacity"></div>
-    </button>
 
-    <button class="nav-icon-btn group relative" data-drawer="config" title="修改配置">
-      <div class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-all text-white active:scale-90">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        </svg>
-      </div>
-      <div class="indicator absolute -right-1 top-1/2 -translate-y-1/2 w-1 h-4 bg-white rounded-l-full opacity-0 transition-opacity"></div>
-    </button>
+      <button class="nav-icon-btn group relative" data-drawer="files" title="文件与项目">
+        <div class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-brand-blue/40 hover:text-slate-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 7.5h6l1.5 1.5h9v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5z" />
+          </svg>
+        </div>
+        <div class="indicator absolute -right-[13px] top-1/2 hidden h-5 w-px -translate-y-1/2 bg-brand-blue/80"></div>
+      </button>
+
+      <button class="nav-icon-btn group relative" data-drawer="config" title="偏好设置">
+        <div class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-brand-blue/40 hover:text-slate-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9m-9 6h9m-9 6h9M4.5 6h.008v.008H4.5zm0 6h.008v.008H4.5zm0 6h.008v.008H4.5z" />
+          </svg>
+        </div>
+        <div class="indicator absolute -right-[13px] top-1/2 hidden h-5 w-px -translate-y-1/2 bg-brand-blue/80"></div>
+      </button>
+    </div>
+
+    <div class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-brand-sand/35 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+      02
+    </div>
   </nav>
 
-  <aside id="side-drawer" class="absolute left-16 top-0 h-full w-0 overflow-hidden bg-brand-surface border-r border-brand-blue/10 transition-all duration-300 z-20 shadow-2xl">
-    <div class="w-64 p-5 h-full flex flex-col">
-      
-      <div id="drawer-content-files" class="drawer-section hidden h-full flex flex-col">
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="font-bold text-gray-800">知识库</h3>
-          <button id="btn-new-project" class="p-1 hover:bg-brand-blue/10 rounded-full text-brand-blue" title="新建项目">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+  <aside id="side-drawer" class="absolute left-[72px] top-0 z-20 h-full w-0 overflow-hidden border-r border-slate-100 bg-[#fcfcf8]/96 transition-all duration-300">
+    <div class="h-full w-72 px-5 py-5">
+      <div id="drawer-content-files" class="drawer-section hidden h-full flex-col">
+        <div class="mb-6 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Files</p>
+            <h3 class="mt-1 text-base font-medium tracking-tight text-slate-800">知识库目录</h3>
+          </div>
+          <button id="btn-new-project" class="flex h-8 w-8 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-brand-blue/40 hover:text-slate-700" title="新建项目">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
             </svg>
           </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto space-y-4 custom-scrollbar">
-          <!-- 文件夹树形结构 -->
-          <div>
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-2">文件夹结构</p>
-            <div id="folder-tree" class="space-y-1 text-sm">
-              <!-- 根知识库 -->
-              <div class="folder-item" data-path="/">
-                <div class="folder-header flex items-center gap-2 p-2 hover:bg-white/40 rounded-xl cursor-pointer transition-colors">
-                  <svg class="folder-icon w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+        <div class="flex-1 space-y-6 overflow-y-auto">
+          <section>
+            <p class="mb-2 text-[11px] uppercase tracking-[0.22em] text-slate-400">Folder Tree</p>
+            <div id="folder-tree" class="space-y-2 text-sm">
+              <div class="folder-item expanded" data-path="/">
+                <div class="folder-header flex cursor-pointer items-center gap-2 rounded-md border border-slate-100 bg-white px-3 py-2 text-slate-600 transition hover:border-brand-blue/30">
+                  <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 7.5h6l1.5 1.5h9v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5z" />
                   </svg>
-                  <span class="text-gray-700 font-medium">知识库根目录</span>
-                  <button class="add-folder-btn ml-auto p-1 hover:bg-white/60 rounded transition-colors" title="新建文件夹">
-                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                  <span class="flex-1 tracking-tight">知识库根目录</span>
+                  <button class="add-folder-btn flex h-6 w-6 items-center justify-center rounded-md border border-transparent text-slate-400 transition hover:border-slate-100 hover:text-slate-600" title="新建文件夹">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
                     </svg>
                   </button>
                 </div>
-                <div class="folder-children ml-4 space-y-1">
-                  <!-- 子文件夹和文件将在这里动态生成 -->
+                <div class="folder-children ml-4 mt-2 space-y-2">
+                  <div class="folder-item" data-path="/课程笔记">
+                    <div class="folder-header flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-slate-500 transition hover:bg-white">
+                      <svg class="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 7.5h6l1.5 1.5h9v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5z" />
+                      </svg>
+                      <span class="tracking-tight">课程笔记</span>
+                    </div>
+                    <div class="folder-children hidden ml-4 mt-1 space-y-1"></div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <!-- 当前项目文件 -->
-          <div>
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-2">当前项目</p>
-            <ul class="space-y-1 text-sm" id="current-project-files">
-              <li class="file-item p-2 bg-white/60 rounded-xl cursor-pointer text-brand-blue font-bold flex items-center gap-2 shadow-sm border border-brand-blue/5" data-path="/数据结构/第三章.pdf">
-                <span class="text-base">📄</span> 
+          <section>
+            <p class="mb-2 text-[11px] uppercase tracking-[0.22em] text-slate-400">Current Files</p>
+            <ul id="current-project-files" class="space-y-2 text-sm">
+              <li class="file-item flex items-center gap-3 rounded-md border border-slate-100 bg-white px-3 py-2 tracking-tight text-slate-600" data-path="/数据结构/第三章.pdf">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 4.5h6l4.5 4.5V19.5H7.5z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5v4.5H18" />
+                </svg>
                 <span class="flex-1">数据结构_第三章.pdf</span>
-                <button class="file-action-btn p-1 hover:bg-white/60 rounded transition-colors opacity-0 hover:opacity-100" title="更多操作">
-                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                <button class="file-action-btn flex h-6 w-6 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-50 hover:text-slate-600" title="更多操作">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 5.25a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5Zm0 6a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5Zm0 6a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5Z" />
                   </svg>
                 </button>
               </li>
-              <li class="file-item p-2 hover:bg-white/40 rounded-xl cursor-pointer text-gray-600 flex items-center gap-2 transition-colors" data-path="/操作系统/导论.pdf">
-                <span class="text-base">📄</span> 
+              <li class="file-item flex items-center gap-3 rounded-md border border-slate-100 bg-white px-3 py-2 tracking-tight text-slate-600" data-path="/操作系统/导论.pdf">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 4.5h6l4.5 4.5V19.5H7.5z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5v4.5H18" />
+                </svg>
                 <span class="flex-1">操作系统导论.pdf</span>
-                <button class="file-action-btn p-1 hover:bg-white/60 rounded transition-colors opacity-0 hover:opacity-100" title="更多操作">
-                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                <button class="file-action-btn flex h-6 w-6 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-50 hover:text-slate-600" title="更多操作">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 5.25a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5Zm0 6a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5Zm0 6a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5Z" />
                   </svg>
                 </button>
               </li>
             </ul>
-          </div>
+          </section>
 
-          <!-- 配置文件（隐藏/显示） -->
-          <div id="config-files-section" class="hidden">
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-2">配置文件</p>
-            <ul class="space-y-1 text-sm">
-              <li class="config-file-item p-2 opacity-50 hover:opacity-100 hover:bg-white/20 rounded-xl cursor-help flex items-center gap-2 transition-all" data-path="/.kb_config.json">
-                <span class="text-base">⚙️</span> 
-                <span class="text-[10px] font-mono">.kb_config.json</span>
-              </li>
-              <li class="config-file-item p-2 opacity-50 hover:opacity-100 hover:bg-white/20 rounded-xl cursor-help flex items-center gap-2 transition-all" data-path="/.learning_profile.json">
-                <span class="text-base">👤</span> 
-                <span class="text-[10px] font-mono">.learning_profile.json</span>
-              </li>
+          <section id="config-files-section" class="hidden">
+            <p class="mb-2 text-[11px] uppercase tracking-[0.22em] text-slate-400">Config Files</p>
+            <ul class="space-y-2 text-sm">
+              <li class="config-file-item rounded-md border border-slate-100 bg-white px-3 py-2 font-mono text-[12px] tracking-tight text-slate-500" data-path="/.kb_config.json">.kb_config.json</li>
+              <li class="config-file-item rounded-md border border-slate-100 bg-white px-3 py-2 font-mono text-[12px] tracking-tight text-slate-500" data-path="/.learning_profile.json">.learning_profile.json</li>
             </ul>
-          </div>
+          </section>
         </div>
 
-        <button id="toggle-config" class="mt-auto text-[10px] text-center text-gray-400 hover:text-brand-blue py-2 border-t border-brand-blue/5 transition-colors">
+        <button id="toggle-config" class="mt-5 rounded-md border border-slate-100 bg-white px-3 py-2 text-xs tracking-tight text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/25 hover:text-slate-700">
           显示配置文件
         </button>
       </div>
 
       <div id="drawer-content-config" class="drawer-section hidden">
-        <h3 class="font-bold text-gray-800 mb-6">偏好设置</h3>
-        <div class="space-y-6">
-          <div class="space-y-2">
-            <span class="text-[10px] font-bold text-gray-400 uppercase px-1">AI 响应精度</span>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Preferences</p>
+        <h3 class="mt-1 text-base font-medium tracking-tight text-slate-800">阅读与偏好</h3>
+
+        <div class="mt-6 space-y-6">
+          <div>
+            <p class="mb-3 text-sm font-medium tracking-tight text-slate-700">AI 响应密度</p>
             <div class="grid grid-cols-2 gap-2">
-              <button class="text-xs p-2 bg-white rounded-lg border border-brand-blue/20 text-brand-blue font-medium">应试模式</button>
-              <button class="text-xs p-2 bg-brand-surface border border-transparent rounded-lg text-gray-500">博学模式</button>
+              <button class="rounded-md border border-brand-blue/40 bg-brand-surface/30 px-3 py-2 text-sm tracking-tight text-slate-700">简洁模式</button>
+              <button class="rounded-md border border-slate-100 bg-white px-3 py-2 text-sm tracking-tight text-slate-500">展开模式</button>
             </div>
           </div>
-          <div class="p-4 bg-brand-cream/50 rounded-2xl border border-brand-blue/10">
-            <p class="text-[10px] text-gray-500 leading-relaxed">
-              当前画像：<span class="text-brand-blue font-bold">2026 考研 408 专项</span>
-            </p>
+
+          <div class="rounded-md border border-slate-100 bg-brand-surface/20 px-4 py-4">
+            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Profile</p>
+            <p class="mt-2 text-sm leading-6 tracking-tight text-slate-600">当前偏好：考研 408 / 解释优先 / 轻量提示</p>
           </div>
         </div>
       </div>
-
     </div>
   </aside>
 </div>
@@ -136,293 +146,89 @@
   const drawer = document.getElementById('side-drawer');
   const sections = document.querySelectorAll('.drawer-section');
   const buttons = document.querySelectorAll('[data-drawer]');
-  const configItems = document.querySelectorAll('.config-file-item');
+  const configSection = document.getElementById('config-files-section');
   const toggleConfigBtn = document.getElementById('toggle-config');
+  const btnNewProject = document.getElementById('btn-new-project');
 
   let activeDrawer = null;
+  let showConfig = false;
 
-  buttons.forEach(btn => {
+  function closeDrawer() {
+    drawer.style.width = '0';
+    activeDrawer = null;
+    document.querySelectorAll('.indicator').forEach((i) => i.classList.add('hidden'));
+  }
+
+  buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
       const target = btn.getAttribute('data-drawer');
       const indicator = btn.querySelector('.indicator');
-      
-      // 如果点击的是当前已经打开的，则关闭
-      if (activeDrawer === target) {
-        drawer.style.width = '0';
-        activeDrawer = null;
-        indicator?.classList.add('opacity-0');
-      } else {
-        // 切换内容
-        sections.forEach(s => s.classList.add('hidden'));
-        document.getElementById(`drawer-content-${target}`)?.classList.remove('hidden');
-        
-        // 切换指示器视觉状态
-        document.querySelectorAll('.indicator').forEach(i => i.classList.add('opacity-0'));
-        indicator?.classList.remove('opacity-0');
 
-        drawer.style.width = '256px';
-        activeDrawer = target;
+      if (activeDrawer === target) {
+        closeDrawer();
+        return;
       }
+
+      sections.forEach((section) => section.classList.add('hidden'));
+      document.getElementById(`drawer-content-${target}`)?.classList.remove('hidden');
+      document.getElementById(`drawer-content-${target}`)?.classList.add('flex');
+
+      drawer.style.width = '288px';
+      activeDrawer = target;
+
+      document.querySelectorAll('.indicator').forEach((i) => i.classList.add('hidden'));
+      indicator?.classList.remove('hidden');
     });
   });
 
-  // 功能 4：切换隐藏文件夹/配置文件显示
-  let showConfig = false;
   toggleConfigBtn?.addEventListener('click', () => {
     showConfig = !showConfig;
-    configItems.forEach(item => {
-      item.classList.toggle('hidden', !showConfig);
-    });
-    toggleConfigBtn.innerText = showConfig ? "隐藏配置文件" : "显示配置文件";
+    configSection?.classList.toggle('hidden', !showConfig);
+    toggleConfigBtn.textContent = showConfig ? '隐藏配置文件' : '显示配置文件';
   });
 
-  // 功能 5：文件夹树形结构交互
-  const folderHeaders = document.querySelectorAll('.folder-header');
-  const addFolderBtns = document.querySelectorAll('.add-folder-btn');
-  const actionBtns = document.querySelectorAll('.file-action-btn');
+  btnNewProject?.addEventListener('click', () => {
+    alert('新建项目功能开发中...');
+  });
 
-  // 文件夹展开/收起
-  folderHeaders.forEach(header => {
+  document.querySelectorAll('.folder-header').forEach((header) => {
     header.addEventListener('click', (e) => {
-      // 如果点击的是按钮，不触发文件夹展开
       if (e.target.closest('button')) return;
-      
       const folderItem = header.closest('.folder-item');
-      folderItem.classList.toggle('expanded');
-      
-      // 保存状态到本地存储
-      const folderPath = folderItem.getAttribute('data-path');
-      const isExpanded = folderItem.classList.contains('expanded');
-      localStorage.setItem(`folder-expanded-${folderPath}`, isExpanded.toString());
+      const children = folderItem?.querySelector('.folder-children');
+      children?.classList.toggle('hidden');
     });
   });
 
-  // 新建文件夹功能
-  addFolderBtns.forEach(btn => {
+  document.querySelectorAll('.add-folder-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const folderItem = btn.closest('.folder-item');
-      const children = folderItem.querySelector('.folder-children');
-      
-      // 创建新的文件夹输入框
-      const newFolderDiv = document.createElement('div');
-      newFolderDiv.className = 'new-folder-item ml-4';
-      newFolderDiv.innerHTML = `
-        <input type="text" class="new-folder-input" placeholder="文件夹名称" />
+      const children = folderItem?.querySelector('.folder-children');
+      if (!children) return;
+
+      const name = prompt('输入新文件夹名称');
+      if (!name) return;
+
+      const node = document.createElement('div');
+      node.className = 'folder-item';
+      node.innerHTML = `
+        <div class="folder-header flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-slate-500 transition hover:bg-white">
+          <svg class="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 7.5h6l1.5 1.5h9v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5z" />
+          </svg>
+          <span class="tracking-tight">${name}</span>
+        </div>
+        <div class="folder-children hidden ml-4 mt-1 space-y-1"></div>
       `;
-      
-      children.appendChild(newFolderDiv);
-      
-      // 自动展开父文件夹
-      folderItem.classList.add('expanded');
-      
-      // 聚焦到输入框
-      const input = newFolderDiv.querySelector('.new-folder-input');
-      input.focus();
-      
-      // 处理输入完成
-      input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          const folderName = input.value.trim();
-          if (folderName) {
-            // 创建新的文件夹项
-            const newFolderItem = document.createElement('div');
-            newFolderItem.className = 'folder-item';
-            newFolderItem.setAttribute('data-path', `/${folderName}`);
-            newFolderItem.innerHTML = `
-              <div class="folder-header flex items-center gap-2 p-1 hover:bg-white/30 rounded-lg cursor-pointer transition-colors">
-                <svg class="folder-icon w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                </svg>
-                <span class="text-gray-600 text-xs">${folderName}</span>
-                <button class="add-folder-btn ml-auto p-0.5 hover:bg-white/60 rounded transition-colors" title="新建文件夹">
-                  <svg class="w-2 h-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-              </div>
-              <div class="folder-children ml-3 space-y-1"></div>
-            `;
-            
-            // 替换输入框为新的文件夹项
-            newFolderDiv.replaceWith(newFolderItem);
-            
-            // 为新文件夹添加事件监听
-            const newHeader = newFolderItem.querySelector('.folder-header');
-            const newAddBtn = newFolderItem.querySelector('.add-folder-btn');
-            
-            newHeader.addEventListener('click', (e) => {
-              if (e.target.closest('button')) return;
-              newFolderItem.classList.toggle('expanded');
-            });
-            
-            newAddBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              // 触发当前文件夹的新建子文件夹逻辑
-              const parentFolder = newAddBtn.closest('.folder-item');
-              const parentHeader = parentFolder.querySelector('.folder-header');
-              parentHeader.click();
-              
-              // 延迟执行，确保文件夹展开
-              setTimeout(() => {
-                const addBtn = parentFolder.querySelector('.add-folder-btn');
-                if (addBtn) {
-                  addBtn.click();
-                }
-              }, 100);
-            });
-            
-            console.log(`[Folder] 新建文件夹: ${folderName}`);
-          } else {
-            // 名称为空，移除输入框
-            newFolderDiv.remove();
-          }
-        }
-      });
-      
-      // 失去焦点时移除输入框
-      input.addEventListener('blur', () => {
-        setTimeout(() => {
-          if (input.value.trim() === '') {
-            newFolderDiv.remove();
-          }
-        }, 200);
-      });
+      children.appendChild(node);
     });
   });
 
-  // 文件操作功能
-  actionBtns.forEach(btn => {
+  document.querySelectorAll('.file-action-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const action = btn.getAttribute('title');
-      const fileItem = btn.closest('.file-item');
-      const fileName = fileItem.querySelector('span:nth-child(2)').textContent;
-      
-      if (action === '重命名') {
-        // 重命名逻辑
-        const currentName = fileName;
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'rename-input bg-transparent border-none outline-none text-xs';
-        input.value = currentName;
-        
-        const nameSpan = fileItem.querySelector('span:nth-child(2)');
-        nameSpan.replaceWith(input);
-        input.focus();
-        input.select();
-        
-        const saveRename = () => {
-          const newName = input.value.trim() || currentName;
-          const newSpan = document.createElement('span');
-          newSpan.className = 'text-gray-600 text-xs';
-          newSpan.textContent = newName;
-          input.replaceWith(newSpan);
-          console.log(`[File] 重命名文件: ${currentName} -> ${newName}`);
-        };
-        
-        input.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') saveRename();
-        });
-        
-        input.addEventListener('blur', saveRename);
-        
-      } else if (action === '删除') {
-        // 删除确认
-        if (confirm(`确定要删除文件 "${fileName}" 吗？`)) {
-          fileItem.remove();
-          console.log(`[File] 删除文件: ${fileName}`);
-        }
-      }
+      alert('更多文件操作功能开发中...');
     });
-  });
-
-  // 恢复文件夹展开状态
-  const savedExpandedStates = localStorage.getItem('folder-expanded-states');
-  if (savedExpandedStates) {
-    const states = JSON.parse(savedExpandedStates);
-    Object.entries(states).forEach(([path, isExpanded]) => {
-      const folderItem = document.querySelector(`[data-path="${path}"]`);
-      if (folderItem && isExpanded) {
-        folderItem.classList.add('expanded');
-      }
-    });
-  }
-
-  // 保存文件夹展开状态
-  window.addEventListener('beforeunload', () => {
-    const states = {};
-    document.querySelectorAll('.folder-item').forEach(item => {
-      const path = item.getAttribute('data-path');
-      const isExpanded = item.classList.contains('expanded');
-      states[path] = isExpanded;
-    });
-    localStorage.setItem('folder-expanded-states', JSON.stringify(states));
-  });
-
-  // 处理新建项目弹窗触发
-  const newProjectBtn = document.getElementById('btn-new-project');
-  newProjectBtn?.addEventListener('click', () => {
-    const modal = document.getElementById('new-project-modal');
-    modal?.showModal();
   });
 </script>
-
-<style>
-  /* 文件夹树形结构样式 */
-  .folder-children {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-  
-  .folder-item.expanded .folder-children {
-    max-height: 500px;
-  }
-  
-  .folder-icon {
-    transition: transform 0.2s ease;
-  }
-  
-  .folder-item.expanded .folder-icon {
-    transform: rotate(90deg);
-  }
-  
-  .file-actions {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  
-  .file-header:hover .file-actions {
-    opacity: 1;
-  }
-  
-  .action-btn {
-    opacity: 0.6;
-  }
-  
-  .action-btn:hover {
-    opacity: 1;
-  }
-  
-  /* 新建文件夹输入框 */
-  .new-folder-input {
-    background: transparent;
-    border: 1px dashed #A3D1CC;
-    outline: none;
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    width: 120px;
-  }
-  
-  .new-folder-input:focus {
-    border-style: solid;
-    background: white;
-  }
-  
-  /* 隐藏滚动条但保留滚动功能 */
-  .custom-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-</style>

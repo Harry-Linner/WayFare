@@ -3,32 +3,41 @@
 @tailwind utilities;
 
 :root {
-  /* 基础背景色 [cite: 17] */
-  --bg-app: #F7F7EA;
-  
-  /* 动态映射：根据不同的优先级显示不同的颜色 */
-  --color-critical: #E9A254; 
-  --color-important: #EEBF79; 
-  --color-normal: #A3D1CC;
-
   --brand-blue: #A3D1CC;
   --brand-surface: #E1FCF6;
   --brand-cream: #F7F7EA;
+  --brand-sand: #FAEDCD;
+}
+
+html {
+  background: var(--brand-cream);
 }
 
 body {
-  @apply bg-brand-cream text-gray-800;
-  font-family: 'Inter', sans-serif; /* 建议学习类应用使用清晰的无衬线字体 */
+  @apply bg-brand-cream text-slate-700 antialiased tracking-tight;
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
-/* 针对中间阅读栏的自定义滚动条，使其更符合 "#E1FCF6" 的色调 [cite: 8] */
+::selection {
+  background: rgba(163, 209, 204, 0.45);
+  color: #1e293b;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
-::-webkit-scrollbar-thumb {
-  background: #A3D1CC; 
-  border-radius: 4px;
-}
+
 ::-webkit-scrollbar-track {
-  background: #F7F7EA;
-}   
+  background: rgba(247, 247, 234, 0.85);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(163, 209, 204, 0.75);
+  border-radius: 999px;
+  border: 2px solid rgba(247, 247, 234, 0.85);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(163, 209, 204, 1);
+}
