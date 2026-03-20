@@ -1,0 +1,26 @@
+{
+  "knowledgeBases": [
+    {
+      "id": "kb-bb2e525d-ca48-4458-8fd0-441f47bbb288",
+      "name": "Smoke Test KB",
+      "description": "Created by scripts/smoke_test_portable.ps1",
+      "createdAt": "2026-03-19T15:57:51.9876637Z",
+      "updatedAt": "2026-03-19T15:57:52.0778812Z"
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-8ef51068-1972-4561-8102-2976e31e4b6b",
+      "knowledgeBaseId": "kb-bb2e525d-ca48-4458-8fd0-441f47bbb288",
+      "fileName": "sample.pdf",
+      "storedName": "574bd087-3893-45fe-ab8c-d39f94a2a140.pdf",
+      "fileType": "pdf",
+      "sizeBytes": 192,
+      "pageCount": 0,
+      "docHash": "",
+      "status": "completed",
+      "createdAt": "2026-03-19T15:57:52.0778812Z",
+      "updatedAt": "2026-03-19T15:57:52.0778812Z"
+    }
+  ]
+}

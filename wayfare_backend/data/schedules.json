@@ -1,0 +1,20 @@
+{
+  "nextId": 2,
+  "schedules": [
+    {
+      "ID": 1,
+      "ProjectID": 1,
+      "Title": "123123",
+      "Description": "123123",
+      "ScheduledFor": "2026-03-19T13:13:00Z",
+      "ReminderOffsetMinutes": 0,
+      "RepeatRule": "none",
+      "Status": "completed",
+      "SnoozedUntil": null,
+      "LastNotifiedAt": null,
+      "LastCompletedAt": "2026-03-19T13:13:08.0352409Z",
+      "CreatedAt": "2026-03-19T13:12:02.4397597Z",
+      "UpdatedAt": "2026-03-19T13:13:08.0352409Z"
+    }
+  ]
+}
