@@ -1,0 +1,22 @@
+---
+export interface Props {
+  next?: string;
+}
+
+const { next = '/login' } = Astro.props;
+const authEnabled = process.env.BETA_AUTH_ENABLED === '1';
+---
+
+{
+  authEnabled ? (
+    <form method="post" action="/api/auth/logout" class="inline-flex">
+      <input type="hidden" name="next" value={next} />
+      <button
+        type="submit"
+        class="inline-flex items-center gap-2 rounded-md border border-slate-100 bg-white px-4 py-2 text-sm tracking-tight text-slate-500 transition hover:border-slate-200 hover:bg-slate-50 hover:text-slate-700"
+      >
+        退出内测
+      </button>
+    </form>
+  ) : null
+}

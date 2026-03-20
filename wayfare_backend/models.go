@@ -9,7 +9,7 @@ type User struct {
 }
 
 type Project struct {
-	ID        uint   `gorm:"primaryKey"`
+	ID        uint `gorm:"primaryKey"`
 	UserID    uint
 	Name      string
 	CreatedAt time.Time
@@ -34,4 +34,20 @@ type ChatMessage struct {
 	Role      string `gorm:"type:varchar(20)"`
 	Content   string
 	CreatedAt time.Time
+}
+
+type Schedule struct {
+	ID                    uint   `gorm:"primaryKey"`
+	ProjectID             uint   `gorm:"index"`
+	Title                 string `gorm:"size:255"`
+	Description           string `gorm:"type:text"`
+	ScheduledFor          time.Time
+	ReminderOffsetMinutes int
+	RepeatRule            string `gorm:"type:varchar(32);default:'none'"`
+	Status                string `gorm:"type:varchar(32);default:'pending';index"`
+	SnoozedUntil          *time.Time
+	LastNotifiedAt        *time.Time
+	LastCompletedAt       *time.Time
+	CreatedAt             time.Time
+	UpdatedAt             time.Time
 }

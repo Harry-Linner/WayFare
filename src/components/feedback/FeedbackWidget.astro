@@ -1,0 +1,209 @@
+---
+export interface Props {
+  defaultPage?: string;
+  defaultScope?: string;
+  title?: string;
+  description?: string;
+  buttonLabel?: string;
+  compact?: boolean;
+}
+
+const {
+  defaultPage = 'unknown',
+  defaultScope = 'general',
+  title = '内测反馈',
+  description = '把 Bug、建议或回答质量问题直接留在这里，便于后续迭代。',
+  buttonLabel = '提交反馈',
+  compact = false,
+} = Astro.props;
+---
+
+<section
+  data-feedback-widget
+  data-default-page={defaultPage}
+  data-default-scope={defaultScope}
+  data-compact={compact ? '1' : '0'}
+  class={`rounded-lg border border-slate-100 bg-white/80 ${
+    compact ? 'px-3 py-3' : 'px-5 py-5'
+  }`}
+>
+  <div class={`flex ${compact ? 'flex-col gap-2' : 'flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'}`}>
+    <div class="min-w-0">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">{compact ? 'Feedback' : 'Inner Test Feedback'}</p>
+      <h3 class={`mt-1 tracking-tight text-slate-800 ${compact ? 'text-sm font-medium' : 'text-lg font-medium'}`}>{title}</h3>
+      <p class={`mt-2 text-slate-500 ${compact ? 'text-xs leading-6' : 'text-sm leading-7'}`}>{description}</p>
+    </div>
+    <button
+      type="button"
+      data-feedback-toggle
+      class={`inline-flex items-center justify-center rounded-md border border-slate-100 bg-brand-surface/40 px-3 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface ${
+        compact ? 'self-start' : 'sm:self-start'
+      }`}
+    >
+      {buttonLabel}
+    </button>
+  </div>
+
+  <form data-feedback-form class="mt-4 hidden space-y-4 border-t border-slate-100 pt-4">
+    <div class={`grid gap-4 ${compact ? 'grid-cols-1' : 'md:grid-cols-2'}`}>
+      <label class="block text-sm tracking-tight text-slate-600">
+        <span class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">类型</span>
+        <select
+          name="category"
+          class="w-full rounded-md border border-slate-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-brand-blue/40"
+        >
+          <option value="bug">Bug / 报错</option>
+          <option value="suggestion">体验建议</option>
+          <option value="ai_quality">AI 回答质量</option>
+          <option value="personalization">个性化问题</option>
+        </select>
+      </label>
+
+      <label class="block text-sm tracking-tight text-slate-600">
+        <span class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">感受</span>
+        <select
+          name="sentiment"
+          class="w-full rounded-md border border-slate-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-brand-blue/40"
+        >
+          <option value="frustrated">卡住了 / 影响使用</option>
+          <option value="neutral">一般 / 可继续使用</option>
+          <option value="positive">不错 / 建议保留</option>
+        </select>
+      </label>
+    </div>
+
+    <label class="block text-sm tracking-tight text-slate-600">
+      <span class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">详细描述</span>
+      <textarea
+        name="message"
+        rows={compact ? 3 : 5}
+        required
+        placeholder="例如：上传成功了，但解析一直停留在 processing；或 AI 回答没有结合当前知识库。"
+        class="min-h-[96px] w-full rounded-md border border-slate-100 bg-white px-3 py-3 text-sm leading-7 text-slate-700 outline-none transition placeholder:text-slate-300 focus:border-brand-blue/40"
+      ></textarea>
+    </label>
+
+    <label class="block text-sm tracking-tight text-slate-600">
+      <span class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">联系方式（可选）</span>
+      <input
+        name="contact"
+        type="text"
+        placeholder="邮箱 / 微信 / 备注"
+        class="w-full rounded-md border border-slate-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition placeholder:text-slate-300 focus:border-brand-blue/40"
+      />
+    </label>
+
+    <div data-feedback-status class="hidden rounded-md border px-3 py-2 text-sm leading-6"></div>
+
+    <div class="flex flex-wrap items-center gap-2">
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center rounded-md border border-slate-100 bg-brand-surface/55 px-4 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface"
+      >
+        发送反馈
+      </button>
+      <button
+        type="button"
+        data-feedback-cancel
+        class="inline-flex items-center justify-center rounded-md border border-transparent px-3 py-2 text-sm tracking-tight text-slate-500 transition hover:border-slate-200 hover:bg-slate-50 hover:text-slate-700"
+      >
+        取消
+      </button>
+    </div>
+  </form>
+</section>
+
+<script>
+  import { submitFeedback } from '../../lib/api/client';
+  import { getFeedbackContext, recordAction } from '../../lib/runtime-context';
+
+  const widgets = Array.from(document.querySelectorAll('[data-feedback-widget]'));
+
+  function setStatus(element, message = '', tone = 'info') {
+    if (!element) return;
+    if (!message) {
+      element.className = 'hidden rounded-md border px-3 py-2 text-sm leading-6';
+      element.textContent = '';
+      return;
+    }
+
+    const toneClasses = {
+      info: 'border-slate-100 bg-white text-slate-600',
+      success: 'border-brand-blue/30 bg-brand-surface/35 text-slate-700',
+      error: 'border-brand-sand/60 bg-brand-sand/35 text-slate-700',
+    };
+
+    element.className = `rounded-md border px-3 py-2 text-sm leading-6 ${toneClasses[tone] || toneClasses.info}`;
+    element.textContent = message;
+  }
+
+  widgets.forEach((widget) => {
+    const form = widget.querySelector('[data-feedback-form]');
+    const toggle = widget.querySelector('[data-feedback-toggle]');
+    const cancel = widget.querySelector('[data-feedback-cancel]');
+    const status = widget.querySelector('[data-feedback-status]');
+
+    toggle?.addEventListener('click', () => {
+      form?.classList.toggle('hidden');
+      if (!form?.classList.contains('hidden')) {
+        form.querySelector('textarea[name="message"]')?.focus();
+      }
+    });
+
+    cancel?.addEventListener('click', () => {
+      form?.classList.add('hidden');
+      setStatus(status);
+    });
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const message = String(formData.get('message') || '').trim();
+      if (!message) {
+        setStatus(status, '请先写下具体问题或建议。', 'error');
+        return;
+      }
+
+      const context = getFeedbackContext({
+        page: widget.getAttribute('data-default-page') || 'unknown',
+        scope: widget.getAttribute('data-default-scope') || 'general',
+      });
+
+      try {
+        toggle?.setAttribute('disabled', 'true');
+        setStatus(status, '正在提交反馈...', 'info');
+        await submitFeedback({
+          category: String(formData.get('category') || 'suggestion'),
+          sentiment: String(formData.get('sentiment') || 'neutral'),
+          message,
+          contact: String(formData.get('contact') || '').trim(),
+          page: context.page,
+          scope: context.scope,
+          recentAction: context.recentAction,
+          recentActionAt: context.recentActionAt,
+          knowledgeBaseId: context.knowledgeBaseId,
+          knowledgeBaseName: context.knowledgeBaseName,
+          documentId: context.documentId,
+          documentName: context.documentName,
+          metadata: context.metadata,
+        });
+        recordAction('feedback_submitted', {
+          feedbackCategory: String(formData.get('category') || 'suggestion'),
+          feedbackScope: context.scope,
+        });
+        form.reset();
+        form.classList.add('hidden');
+        setStatus(status, '已收到你的反馈，谢谢。后续会结合上下文一起排查。', 'success');
+      } catch (error) {
+        console.error('Failed to submit feedback:', error);
+        setStatus(
+          status,
+          error instanceof Error ? error.message : '反馈提交失败，请稍后重试。',
+          'error'
+        );
+      } finally {
+        toggle?.removeAttribute('disabled');
+      }
+    });
+  });
+</script>

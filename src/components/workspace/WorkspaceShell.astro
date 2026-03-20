@@ -1,7 +1,9 @@
----
+﻿---
 import FileUploadModal from '../common/FileUploadModal.astro';
 import AIAssistant from '../ai/AIAssistant.astro';
 import AIToggleButton from '../ai/AIToggleButton.astro';
+import FeedbackWidget from '../feedback/FeedbackWidget.astro';
+import ProfileEditorPanel from '../profile/ProfileEditorPanel.astro';
 
 export interface Props {
   kbId: string;
@@ -21,36 +23,33 @@ const { kbId } = Astro.props;
       <div id="workspace-drop-overlay" class="pointer-events-none absolute inset-0 z-40 hidden bg-brand-surface/35">
         <div class="flex h-full items-center justify-center p-8">
           <div class="rounded-lg border border-dashed border-brand-blue/50 bg-white/90 px-8 py-8 text-center backdrop-blur-sm">
-            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Drop to Upload</p>
+            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">拖拽上传</p>
             <h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">松开即可导入文档</h3>
-            <p class="mt-2 text-sm leading-7 text-slate-500">支持 PDF、图片等常见学习材料，导入后会自动进入文档列表。</p>
+            <p class="mt-2 text-sm leading-7 text-slate-500">支持 PDF、图片等常见材料，导入后会自动进入当前知识库。</p>
           </div>
         </div>
       </div>
 
-      <aside class="hidden md:flex w-[72px] border-r border-slate-100 bg-white/85 backdrop-blur-sm">
-        <div class="flex w-full flex-col items-center justify-between py-6">
-          <div class="flex flex-col items-center gap-4">
-            <a href="/dashboard" class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-brand-surface/40 text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface/70" title="返回仪表盘">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.75 12 3l8.25 6.75V20.25H3.75z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 20.25v-6h6v6" />
-              </svg>
-            </a>
-            <div class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-brand-sand/35 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">WF</div>
-          </div>
-          <div class="h-10 w-10"></div>
+      <aside class="pointer-events-none fixed left-4 top-6 z-30 hidden w-[72px] md:flex">
+        <div class="pointer-events-auto flex w-full flex-col items-center gap-4 rounded-2xl border border-slate-100 bg-white/88 px-3 py-3 shadow-sm backdrop-blur-sm">
+          <a href="/dashboard" class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-brand-surface/40 text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface/70" title="返回知识库总览">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.75 12 3l8.25 6.75V20.25H3.75z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 20.25v-6h6v6" />
+            </svg>
+          </a>
+          <div class="flex h-10 w-10 items-center justify-center rounded-md border border-slate-100 bg-brand-sand/35 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">WF</div>
         </div>
       </aside>
 
-      <main class="flex-1 overflow-visible">
+      <main class="flex-1 overflow-visible md:pl-[92px]">
         <div class="mx-auto max-w-[1440px] px-6 py-6 md:px-8">
           <header class="border-b border-slate-100 pb-5">
             <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
               <div>
-                <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">Knowledge Base</p>
-                <h1 class="mt-2 text-2xl font-semibold tracking-tight text-slate-800">{kbId}</h1>
-                <p class="mt-2 text-sm leading-7 text-slate-500">先管理文档，再进入阅读。当前 MVP 使用稳定的原生 PDF 预览，便于快速试用并收集真实反馈。</p>
+                <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">知识库</p>
+                <h1 id="workspace-kb-title" class="mt-2 text-2xl font-semibold tracking-tight text-slate-800">{kbId}</h1>
+                <p id="workspace-kb-description" class="mt-2 text-sm leading-7 text-slate-500">先管理文档，再进入阅读与 AI 对话。当前页面会直接读取后端中的知识库与文档数据。</p>
               </div>
               <div class="flex flex-wrap items-center gap-2">
                 <button id="workspace-upload-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-slate-100 bg-brand-surface/55 px-4 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface">
@@ -69,35 +68,76 @@ const { kbId } = Astro.props;
             </div>
           </header>
 
-          <div class="mt-6 grid items-start gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-            <aside class="flex flex-col rounded-lg border border-slate-100 bg-white xl:sticky xl:top-6">
-              <div class="border-b border-slate-100 px-5 py-4">
-                <div class="flex items-center justify-between gap-3">
-                  <div>
-                    <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Files</p>
-                    <h2 class="mt-1 text-base font-medium tracking-tight text-slate-800">文档管理</h2>
+          <div class="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+            <ProfileEditorPanel
+              scope="knowledge-base"
+              knowledgeBaseId={kbId}
+              title="本知识库画像"
+              description="写下这个知识库的目标、已有背景、输出偏好和严格程度，让 AI 回答更贴近当前任务。"
+            />
+            <FeedbackWidget
+              defaultPage="workspace"
+              defaultScope="workspace"
+              title="工作区反馈入口"
+              description="如果上传、解析、阅读器或 AI 联动哪里不顺，统一从这里提交反馈。"
+              buttonLabel="反馈联调问题"
+            />
+          </div>
+
+          <div
+            id="workspace-content-grid"
+            class="mt-6 grid items-start gap-6 transition-[grid-template-columns] duration-300 ease-in-out xl:[grid-template-columns:var(--workspace-grid-columns)]"
+            style="--workspace-grid-columns: 320px minmax(0, 1fr); transition: grid-template-columns 260ms ease;"
+          >
+            <aside id="workspace-doc-panel" class="flex flex-col overflow-hidden rounded-lg border border-slate-100 bg-white transition-all duration-300 ease-in-out xl:sticky xl:top-6">
+              <div id="workspace-doc-panel-expanded" class="flex flex-col">
+                <div class="border-b border-slate-100 px-5 py-4">
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">文档区</p>
+                      <h2 class="mt-1 text-base font-medium tracking-tight text-slate-800">当前资料</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span id="workspace-doc-count" class="rounded-md border border-slate-100 px-2 py-1 text-[11px] tracking-[0.18em] text-slate-400 uppercase">0 份</span>
+                      <button id="workspace-doc-panel-toggle" type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700" title="收起文档栏" aria-expanded="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                  <span id="workspace-doc-count" class="rounded-md border border-slate-100 px-2 py-1 text-[11px] tracking-[0.18em] text-slate-400 uppercase">0 docs</span>
+                </div>
+
+                <button id="workspace-drop-zone" type="button" class="border-b border-slate-100 px-5 py-4 text-left text-sm leading-7 text-slate-500 transition hover:bg-brand-surface/20">
+                  <div class="text-[11px] uppercase tracking-[0.22em] text-slate-400">快速导入</div>
+                  <div class="mt-2">把 PDF 拖到这里，或点击后选择文件。</div>
+                </button>
+
+                <div id="workspace-doc-list" class="max-h-[70vh] overflow-y-auto px-3 py-3">
+                  <div class="rounded-md border border-dashed border-slate-200 px-4 py-8 text-center text-sm leading-7 text-slate-400">还没有文档，先导入一份 PDF 开始阅读。</div>
                 </div>
               </div>
 
-              <button id="workspace-drop-zone" type="button" class="border-b border-slate-100 px-5 py-4 text-left text-sm leading-7 text-slate-500 transition hover:bg-brand-surface/20">
-                <div class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Quick Import</div>
-                <div class="mt-2">拖拽 PDF 到这里，或点击此区域选择文件。</div>
-              </button>
-
-              <div id="workspace-doc-list" class="max-h-[70vh] overflow-y-auto px-3 py-3">
-                <div class="rounded-md border border-dashed border-slate-200 px-4 py-8 text-center text-sm leading-7 text-slate-400">还没有文档，先导入一份 PDF 开始阅读。</div>
+              <div id="workspace-doc-panel-collapsed" class="hidden min-h-[220px] flex-col items-center gap-4 px-3 py-4">
+                <button id="workspace-doc-panel-expand-btn" type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700" title="展开文档栏" aria-expanded="false">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 19.5 15.75 12l-7.5-7.5" />
+                  </svg>
+                </button>
+                <div class="rounded-md border border-slate-100 bg-brand-surface/30 px-2 py-3 text-[11px] uppercase tracking-[0.24em] text-slate-400 [writing-mode:vertical-rl]">
+                  文档
+                </div>
+                <span id="workspace-doc-count-collapsed" class="rounded-md border border-slate-100 px-2 py-1 text-[11px] tracking-[0.18em] text-slate-400 uppercase">0</span>
               </div>
             </aside>
 
-            <section class="flex flex-col rounded-lg border border-slate-100 bg-white">
+            <section id="workspace-reader-panel" class="flex flex-col rounded-lg border border-slate-100 bg-white">
               <div id="workspace-reader-toolbar" class="border-b border-slate-100 px-5 py-4">
                 <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div>
-                    <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Reader</p>
+                    <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">阅读区</p>
                     <h2 id="workspace-reader-title" class="mt-1 text-base font-medium tracking-tight text-slate-800">请选择左侧文档</h2>
-                    <p id="workspace-reader-meta" class="mt-1 text-sm leading-6 text-slate-500">导入后可在此直接阅读 PDF，AI 助手会保留在右侧待命。</p>
+                    <p id="workspace-reader-meta" class="mt-1 text-sm leading-6 text-slate-500">导入后可在此直接阅读 PDF，AI 助手会保持在右侧待命。</p>
                   </div>
                   <div class="flex items-center gap-2">
                     <span id="workspace-reader-status" class="hidden rounded-md border border-slate-100 px-3 py-2 text-xs tracking-[0.18em] text-slate-400 uppercase"></span>
@@ -108,7 +148,7 @@ const { kbId } = Astro.props;
               <div id="workspace-reader-body" class="min-h-[78vh] overflow-visible bg-[#fcfcf8]">
                 <div class="flex min-h-[78vh] items-center justify-center px-6 text-center">
                   <div class="max-w-md">
-                    <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">No Document Selected</p>
+                    <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">尚未选择文档</p>
                     <h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">先从左侧选择一份文档</h3>
                     <p class="mt-3 text-sm leading-7 text-slate-500">当前 MVP 优先提供稳定的文件管理与 PDF 阅读闭环。后续再继续叠加标注、页内交互和更深的阅读分析。</p>
                   </div>
@@ -118,15 +158,16 @@ const { kbId } = Astro.props;
           </div>
 
           <div id="selection-toolbar" class="fixed z-50 hidden rounded-md border border-slate-100 bg-white/95 px-2 py-2 backdrop-blur-sm">
-            <div class="mb-2 px-2 text-[11px] tracking-tight text-slate-400" id="selection-toolbar-label">Selected text</div>
+            <div class="mb-2 px-2 text-[11px] tracking-tight text-slate-400" id="selection-toolbar-label">已选文本</div>
             <div class="flex items-center gap-2">
-              <button type="button" data-selection-action="explain" class="rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-600 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">Explain</button>
-              <button type="button" data-selection-action="summary" class="rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-600 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">Summarize</button>
-              <button type="button" data-selection-action="ask" class="rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-600 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">Ask</button>
+              <button type="button" data-selection-action="explain" class="rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-600 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">讲透这段</button>
+              <button type="button" data-selection-action="summary" class="rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-600 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">提炼重点</button>
+              <button type="button" data-selection-action="ask" class="rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-600 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">延伸答疑</button>
             </div>
           </div>
-        <input id="workspace-file-input" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp" class="hidden" />
-        <FileUploadModal />
+          <input id="workspace-file-input" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp" class="hidden" />
+          <FileUploadModal />
+        </div>
       </main>
 
       <AIAssistant isOpen={false} />
@@ -136,8 +177,9 @@ const { kbId } = Astro.props;
 </html>
 
 <script>
-  import { API_BASE_URL, deleteDocument, listDocuments, uploadFile } from '../../lib/api';
+  import { API_BASE_URL, deleteDocument, getKnowledgeBase, listDocuments, uploadFile } from '../../lib/api';
   import { renderPdfDocument } from '../../lib/pdf-reader';
+  import { recordAction, setPageContext } from '../../lib/runtime-context';
 
   const shell = document.getElementById('workspace-shell');
   const kbId = shell?.dataset.kbId || 'default';
@@ -146,9 +188,18 @@ const { kbId } = Astro.props;
   const uploadBtn = document.getElementById('workspace-upload-btn');
   const refreshBtn = document.getElementById('workspace-refresh-btn');
   const dropZone = document.getElementById('workspace-drop-zone');
+  const contentGrid = document.getElementById('workspace-content-grid');
+  const docPanel = document.getElementById('workspace-doc-panel');
+  const docPanelExpanded = document.getElementById('workspace-doc-panel-expanded');
+  const docPanelCollapsed = document.getElementById('workspace-doc-panel-collapsed');
+  const docPanelToggleBtn = document.getElementById('workspace-doc-panel-toggle');
+  const docPanelExpandBtn = document.getElementById('workspace-doc-panel-expand-btn');
   const docList = document.getElementById('workspace-doc-list');
   const docCount = document.getElementById('workspace-doc-count');
+  const collapsedDocCount = document.getElementById('workspace-doc-count-collapsed');
   const modal = document.getElementById('upload-modal');
+  const kbTitle = document.getElementById('workspace-kb-title');
+  const kbDescription = document.getElementById('workspace-kb-description');
   const readerTitle = document.getElementById('workspace-reader-title');
   const readerMeta = document.getElementById('workspace-reader-meta');
   const readerStatus = document.getElementById('workspace-reader-status');
@@ -156,6 +207,7 @@ const { kbId } = Astro.props;
   const openNewTabLink = document.getElementById('workspace-open-new-tab');
   const selectionToolbar = document.getElementById('selection-toolbar');
   const selectionToolbarLabel = document.getElementById('selection-toolbar-label');
+  const DOC_PANEL_COLLAPSE_STORAGE_KEY = 'wayfare:workspace-doc-panel-collapsed';
 
   const state = {
     pendingFile: null,
@@ -165,10 +217,12 @@ const { kbId } = Astro.props;
     dragDepth: 0,
     selectionText: '',
     selectionPage: null,
+    isDocPanelCollapsed: false,
+    knowledgeBase: null,
   };
 
   function escapeHtml(text) {
-    return String(text)
+    return String(text ?? '')
       .replaceAll('&', '&amp;')
       .replaceAll('<', '&lt;')
       .replaceAll('>', '&gt;')
@@ -176,10 +230,71 @@ const { kbId } = Astro.props;
       .replaceAll("'", '&#39;');
   }
 
-  function showDropOverlay() { dropOverlay?.classList.remove('hidden'); }
-  function hideDropOverlay() { state.dragDepth = 0; dropOverlay?.classList.add('hidden'); }
-  function setPendingFile(file) { if (!file) return; state.pendingFile = file; modal?.showModal(); }
+  function setDocPanelCollapsed(collapsed) {
+    state.isDocPanelCollapsed = collapsed;
+    contentGrid?.style.setProperty('--workspace-grid-columns', collapsed ? '72px minmax(0, 1fr)' : '320px minmax(0, 1fr)');
+    docPanelExpanded?.classList.toggle('hidden', collapsed);
+    docPanelCollapsed?.classList.toggle('hidden', !collapsed);
+    docPanelCollapsed?.classList.toggle('flex', collapsed);
+    docPanel?.classList.toggle('items-center', collapsed);
+    docPanelToggleBtn?.setAttribute('aria-expanded', String(!collapsed));
+    docPanelExpandBtn?.setAttribute('aria-expanded', String(!collapsed));
 
+    try {
+      window.localStorage.setItem(DOC_PANEL_COLLAPSE_STORAGE_KEY, collapsed ? '1' : '0');
+    } catch (error) {
+      console.warn('Failed to persist document panel state', error);
+    }
+  }
+
+  function initDocPanelCollapsedState() {
+    let collapsed = false;
+    try {
+      collapsed = window.localStorage.getItem(DOC_PANEL_COLLAPSE_STORAGE_KEY) === '1';
+    } catch (error) {
+      console.warn('Failed to read document panel state', error);
+    }
+    setDocPanelCollapsed(collapsed);
+  }
+
+  function showDropOverlay() {
+    dropOverlay?.classList.remove('hidden');
+  }
+
+  function hideDropOverlay() {
+    state.dragDepth = 0;
+    dropOverlay?.classList.add('hidden');
+  }
+
+  function setPendingFile(file) {
+    if (!file) return;
+    state.pendingFile = file;
+    modal?.showModal();
+  }
+
+  async function loadKnowledgeBase() {
+    try {
+      const knowledgeBase = await getKnowledgeBase(kbId);
+      state.knowledgeBase = knowledgeBase;
+      window.activeKnowledgeBaseId = knowledgeBase.id;
+      window.activeKnowledgeBaseProfile = knowledgeBase;
+      recordAction('knowledge_base_opened', {
+        knowledgeBaseId: knowledgeBase.id,
+        knowledgeBaseName: knowledgeBase.name,
+      });
+      if (kbTitle) kbTitle.textContent = knowledgeBase.name;
+      if (kbDescription) {
+        kbDescription.textContent =
+          knowledgeBase.description || '这个知识库还没有填写描述。你可以先上传文档，再结合 AI 助手继续完善。';
+      }
+    } catch (error) {
+      console.error('Failed to load knowledge base:', error);
+      if (kbTitle) kbTitle.textContent = kbId;
+      if (kbDescription) {
+        kbDescription.textContent = '知识库元数据加载失败，但仍会尝试读取这个知识库下的文档。';
+      }
+    }
+  }
 
   function clearSelectionToolbar() {
     state.selectionText = '';
@@ -191,7 +306,7 @@ const { kbId } = Astro.props;
     if (!selectionToolbar || !selectionToolbarLabel) return;
     state.selectionText = text;
     state.selectionPage = pageNumber;
-    selectionToolbarLabel.textContent = `Selected text ? page ${pageNumber}`;
+    selectionToolbarLabel.textContent = `已选文本 · 第 ${pageNumber} 页`;
 
     const maxLeft = window.innerWidth - selectionToolbar.offsetWidth - 16;
     const left = Math.max(16, Math.min(rect.left + rect.width / 2 - 110, maxLeft));
@@ -209,62 +324,63 @@ const { kbId } = Astro.props;
     if (!text) return null;
 
     const range = selection.getRangeAt(0);
-    const container = range.commonAncestorContainer.nodeType === 1
-      ? range.commonAncestorContainer
-      : range.commonAncestorContainer.parentElement;
-    const textLayer = container?.closest?.('.textLayer');
-    if (!textLayer || !readerBody?.contains(textLayer)) return null;
+    const startContainer = range.startContainer.nodeType === 1 ? range.startContainer : range.startContainer.parentElement;
+    const endContainer = range.endContainer.nodeType === 1 ? range.endContainer : range.endContainer.parentElement;
+    const startTextLayer = startContainer?.closest?.('.textLayer');
+    const endTextLayer = endContainer?.closest?.('.textLayer');
+    if (!startTextLayer || startTextLayer !== endTextLayer || !readerBody?.contains(startTextLayer)) return null;
 
     const rect = range.getBoundingClientRect();
     if (!rect.width && !rect.height) return null;
-
-    const layerRect = textLayer.getBoundingClientRect();
-    const tooWide = rect.width > layerRect.width * 0.92;
-    const tooTall = rect.height > layerRect.height * 0.5;
-    const tooLong = text.length > 420;
-    if (tooWide || tooTall || tooLong) return null;
+    if (text.length > 2000) return null;
 
     return {
       text,
-      pageNumber: Number(textLayer.getAttribute('data-page-number') || 1),
+      pageNumber: Number(startTextLayer.getAttribute('data-page-number') || 1),
       rect,
     };
   }
 
   function handleSelectionToolbarAction(action) {
-    const currentDoc = state.documents.find((doc) => doc.id === state.selectedId);
+    const currentDoc = state.documents.find((doc) => String(doc.id) === String(state.selectedId));
     if (!state.selectionText || !currentDoc) return;
-
-    const prefix = `Current document: ${currentDoc.fileName}
-Page: ${state.selectionPage || 1}
-Selected text:
-${state.selectionText}
-
-`;
-    let prompt = prefix;
-
-    if (action === 'explain') {
-      prompt += 'Please explain this passage and relate it to the current document context.';
-    } else if (action === 'summary') {
-      prompt += 'Please summarize the key point of this passage as concisely as possible.';
-    } else {
-      prompt += 'Please answer questions around this passage and add any necessary background.';
-    }
+    const actionLabels = {
+      explain: '讲透这段',
+      summary: '提炼重点',
+      ask: '延伸答疑',
+    };
+    const selectionText = state.selectionText;
+    const selectionPage = state.selectionPage || 1;
+    const visibleMessage = selectionText.length > 80 ? `${selectionText.slice(0, 80)}...` : selectionText;
 
     clearSelectionToolbar();
     window.getSelection()?.removeAllRanges();
+    recordAction('selection_action_requested', {
+      knowledgeBaseId: kbId,
+      documentId: String(currentDoc.id),
+      documentName: currentDoc.fileName,
+      selectionAction: action,
+      selectionPage,
+    });
     window.askAIAssistant?.({
-      visibleMessage: state.selectionText.length > 80 ? `${state.selectionText.slice(0, 80)}...` : state.selectionText,
-      actualPrompt: prompt,
-      metaLabel: `${action} ? page ${state.selectionPage || 1}`
+      visibleMessage,
+      historyMessage: selectionText,
+      metaLabel: `${actionLabels[action] || action} · 第 ${selectionPage} 页`,
+      request: {
+        requestType: 'selection_action',
+        action,
+        selectedText: selectionText,
+        page: selectionPage,
+        documentName: currentDoc.fileName,
+      },
     });
   }
 
   function getStatusText(status) {
-    if (status === 'completed') return '已解析';
+    if (status === 'completed') return '已完成';
     if (status === 'failed') return '解析失败';
     if (status === 'processing') return '解析中';
-    return status || '未知状态';
+    return status || '状态未知';
   }
 
   function getStatusClasses(status) {
@@ -274,18 +390,19 @@ ${state.selectionText}
   }
 
   function renderDocumentList() {
-    if (docCount) docCount.textContent = `${state.documents.length} docs`;
+    if (docCount) docCount.textContent = `${state.documents.length} 份`;
+    if (collapsedDocCount) collapsedDocCount.textContent = `${state.documents.length}`;
     if (!docList) return;
     if (!state.documents.length) {
       docList.innerHTML = `<div class="rounded-md border border-dashed border-slate-200 px-4 py-8 text-center text-sm leading-7 text-slate-400">还没有文档，先导入一份 PDF 开始阅读。</div>`;
       return;
     }
     docList.innerHTML = state.documents.map((doc) => {
-      const isActive = doc.id === state.selectedId;
+      const isActive = String(doc.id) === String(state.selectedId);
       return `
-        <div class="group mb-2 rounded-md border ${isActive ? 'border-brand-blue/40 bg-brand-surface/25' : 'border-slate-100 bg-white'} px-4 py-4 transition hover:border-brand-blue/30" data-doc-id="${doc.id}">
+        <div class="group mb-2 rounded-md border ${isActive ? 'border-brand-blue/40 bg-brand-surface/25' : 'border-slate-100 bg-white'} px-4 py-4 transition hover:border-brand-blue/30" data-doc-id="${escapeHtml(doc.id)}">
           <div class="flex items-start justify-between gap-3">
-            <button type="button" class="doc-select-btn flex-1 text-left" data-doc-id="${doc.id}">
+            <button type="button" class="doc-select-btn flex-1 text-left" data-doc-id="${escapeHtml(doc.id)}">
               <div class="text-sm font-medium tracking-tight text-slate-700">${escapeHtml(doc.fileName)}</div>
               <div class="mt-2 flex flex-wrap items-center gap-2 text-[12px] tracking-tight text-slate-400">
                 <span>${escapeHtml((doc.fileType || 'file').toUpperCase())}</span>
@@ -295,7 +412,7 @@ ${state.selectionText}
                 <span>${escapeHtml(doc.createdAt)}</span>
               </div>
             </button>
-            <button type="button" class="delete-doc-btn flex h-7 w-7 items-center justify-center rounded-md border border-transparent text-slate-300 transition hover:border-slate-100 hover:bg-slate-50 hover:text-[#B98839]" data-doc-id="${doc.id}" title="删除文档">
+            <button type="button" class="delete-doc-btn flex h-7 w-7 items-center justify-center rounded-md border border-transparent text-slate-300 transition hover:border-slate-100 hover:bg-slate-50 hover:text-[#B98839]" data-doc-id="${escapeHtml(doc.id)}" title="删除文档">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 7.5h12M9.75 7.5v9m4.5-9v9M9 4.5h6l.75 1.5H8.25L9 4.5Z" />
               </svg>
@@ -311,18 +428,20 @@ ${state.selectionText}
 
   function renderReader() {
     if (!readerTitle || !readerMeta || !readerStatus || !readerBody || !openNewTabLink) return;
-    const doc = state.documents.find((item) => item.id === state.selectedId);
+    const doc = state.documents.find((item) => String(item.id) === String(state.selectedId));
     if (!doc) {
       readerTitle.textContent = '请选择左侧文档';
-      readerMeta.textContent = '导入后可在此直接阅读 PDF，AI 助手会保留在右侧待命。';
+      readerMeta.textContent = '导入后可在此直接阅读 PDF，AI 助手会保持在右侧待命。';
       readerStatus.classList.add('hidden');
       openNewTabLink.classList.add('hidden');
-      readerBody.innerHTML = `<div class="flex min-h-[78vh] items-center justify-center px-6 text-center"><div class="max-w-md"><p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">No Document Selected</p><h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">先从左侧选择一份文档</h3><p class="mt-3 text-sm leading-7 text-slate-500">当前 MVP 优先提供稳定的文件管理与 PDF 阅读闭环。后续再继续叠加标注、页内交互和更深的阅读分析。</p></div></div>`;
+      readerBody.innerHTML = `<div class="flex min-h-[78vh] items-center justify-center px-6 text-center"><div class="max-w-md"><p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">尚未选择文档</p><h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">先从左侧选择一份文档</h3><p class="mt-3 text-sm leading-7 text-slate-500">当前 MVP 优先提供稳定的文件管理与 PDF 阅读闭环。后续再继续叠加标注、页内交互和更深的阅读分析。</p></div></div>`;
       return;
     }
     const fileUrl = `${API_BASE_URL}${doc.fileUrl}`;
+    window.activeDocumentId = String(doc.id);
+    window.activeDocumentName = doc.fileName;
     readerTitle.textContent = doc.fileName;
-    readerMeta.textContent = `${doc.pageCount || 0} 页 · ${doc.createdAt} · 当前知识库：${kbId}`;
+    readerMeta.textContent = `${doc.pageCount || 0} 页 · ${doc.createdAt} · 当前知识库：${state.knowledgeBase?.name || kbId}`;
     readerStatus.textContent = getStatusText(doc.status);
     readerStatus.className = `rounded-md border px-3 py-2 text-xs tracking-[0.18em] uppercase ${getStatusClasses(doc.status)}`;
     readerStatus.classList.remove('hidden');
@@ -331,25 +450,28 @@ ${state.selectionText}
 
     const fileType = (doc.fileType || '').toLowerCase();
     if (fileType === 'pdf') {
-      void renderPdfDocument(readerBody, fileUrl).catch((error) => {
-        readerBody.innerHTML = `<div class="flex min-h-[72vh] items-center justify-center px-6 text-center"><div class="max-w-md"><p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Render Failed</p><h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">??????</h3><p class="mt-3 text-sm leading-7 text-slate-500">?????????????????? PDF?</p></div></div>`;
-        readerBody.innerHTML = `<div class="flex min-h-[72vh] items-center justify-center px-6 text-center"><div class="max-w-md"><p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Render Failed</p><h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">??????</h3><p class="mt-3 text-sm leading-7 text-slate-500">?????????????????? PDF?</p></div></div>`;
+      void renderPdfDocument(readerBody, fileUrl).catch(() => {
+        readerBody.innerHTML = `<div class="flex min-h-[72vh] items-center justify-center px-6 text-center"><div class="max-w-md"><p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">渲染失败</p><h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">当前 PDF 暂时无法渲染</h3><p class="mt-3 text-sm leading-7 text-slate-500">请刷新页面，或改用“新窗口打开”查看原文件。</p></div></div>`;
       });
       return;
     }
-    if (['png','jpg','jpeg','webp'].includes(fileType)) {
+    if (['png', 'jpg', 'jpeg', 'webp'].includes(fileType)) {
       readerBody.innerHTML = `<div class="flex h-full items-center justify-center overflow-auto p-6"><img src="${fileUrl}" alt="${escapeHtml(doc.fileName)}" class="max-h-full max-w-full rounded-md border border-slate-100 bg-white" /></div>`;
       return;
     }
-    readerBody.innerHTML = `<div class="flex min-h-[78vh] items-center justify-center px-6 text-center"><div class="max-w-md"><p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Preview Unavailable</p><h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">当前文件类型暂不支持内嵌预览</h3><p class="mt-3 text-sm leading-7 text-slate-500">你仍然可以使用“新窗口打开”查看原始文件。</p></div></div>`;
+    readerBody.innerHTML = `<div class="flex min-h-[78vh] items-center justify-center px-6 text-center"><div class="max-w-md"><p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">暂不支持预览</p><h3 class="mt-3 text-xl font-medium tracking-tight text-slate-800">当前文件类型暂不支持内嵌预览</h3><p class="mt-3 text-sm leading-7 text-slate-500">你仍然可以使用“新窗口打开”查看原始文件。</p></div></div>`;
   }
 
   async function loadDocuments(selectLatest = false) {
     try {
       const docs = await listDocuments(kbId);
       state.documents = docs;
-      if (selectLatest && docs.length) state.selectedId = docs[0].id;
-      else if (!docs.find((doc) => doc.id === state.selectedId)) state.selectedId = docs[0]?.id ?? null;
+      recordAction('documents_loaded', {
+        knowledgeBaseId: kbId,
+        documentCount: docs.length,
+      });
+      if (selectLatest && docs.length) state.selectedId = String(docs[0].id);
+      else if (!docs.find((doc) => String(doc.id) === String(state.selectedId))) state.selectedId = docs[0] ? String(docs[0].id) : null;
       renderDocumentList();
       renderReader();
       ensurePolling();
@@ -373,24 +495,38 @@ ${state.selectionText}
   function bindDocumentActions() {
     docList?.querySelectorAll('.doc-select-btn').forEach((button) => {
       button.addEventListener('click', () => {
-        const id = Number(button.getAttribute('data-doc-id'));
-        if (!Number.isNaN(id)) {
-          state.selectedId = id;
-          renderDocumentList();
-          renderReader();
+        const id = button.getAttribute('data-doc-id');
+        if (!id) return;
+        state.selectedId = id;
+        const currentDoc = state.documents.find((doc) => String(doc.id) === String(id));
+        if (currentDoc) {
+          window.activeDocumentId = String(currentDoc.id);
+          window.activeDocumentName = currentDoc.fileName;
+          recordAction('document_selected', {
+            knowledgeBaseId: kbId,
+            documentId: String(currentDoc.id),
+            documentName: currentDoc.fileName,
+          });
         }
+        renderDocumentList();
+        renderReader();
       });
     });
     docList?.querySelectorAll('.delete-doc-btn').forEach((button) => {
       button.addEventListener('click', async (event) => {
         event.stopPropagation();
-        const id = Number(button.getAttribute('data-doc-id'));
-        const target = state.documents.find((doc) => doc.id === id);
-        if (!target || Number.isNaN(id)) return;
-        if (!window.confirm(`确认删除文档“${target.fileName}”吗？`)) return;
+        const id = button.getAttribute('data-doc-id');
+        const target = state.documents.find((doc) => String(doc.id) === String(id));
+        if (!target || !id) return;
+        if (!window.confirm(`确认删除文档「${target.fileName}」吗？`)) return;
         try {
           await deleteDocument(id);
-          if (state.selectedId === id) state.selectedId = null;
+          recordAction('document_deleted', {
+            knowledgeBaseId: kbId,
+            documentId: String(target.id),
+            documentName: target.fileName,
+          });
+          if (String(state.selectedId) === String(id)) state.selectedId = null;
           await loadDocuments(false);
         } catch (error) {
           console.error('Failed to delete document:', error);
@@ -400,16 +536,47 @@ ${state.selectionText}
     });
   }
 
-  function promptFileSelection() { fileInput?.click(); }
-  uploadBtn?.addEventListener('click', promptFileSelection);
-  refreshBtn?.addEventListener('click', () => { void loadDocuments(false); });
-  dropZone?.addEventListener('click', promptFileSelection);
-  fileInput?.addEventListener('change', () => { const file = fileInput.files?.[0]; if (file) setPendingFile(file); });
+  docPanelToggleBtn?.addEventListener('click', () => {
+    setDocPanelCollapsed(true);
+  });
+  docPanelExpandBtn?.addEventListener('click', () => {
+    setDocPanelCollapsed(false);
+  });
 
-  function handleDragEnter(event) { event.preventDefault(); state.dragDepth += 1; showDropOverlay(); }
-  function handleDragOver(event) { event.preventDefault(); if (event.dataTransfer) event.dataTransfer.dropEffect = 'copy'; showDropOverlay(); }
-  function handleDragLeave(event) { event.preventDefault(); state.dragDepth -= 1; if (state.dragDepth <= 0) hideDropOverlay(); }
-  function handleDrop(event) { event.preventDefault(); hideDropOverlay(); const file = event.dataTransfer?.files?.[0]; if (file) setPendingFile(file); }
+  function promptFileSelection() {
+    fileInput?.click();
+  }
+  uploadBtn?.addEventListener('click', promptFileSelection);
+  refreshBtn?.addEventListener('click', () => {
+    void loadDocuments(false);
+  });
+  dropZone?.addEventListener('click', promptFileSelection);
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    if (file) setPendingFile(file);
+  });
+
+  function handleDragEnter(event) {
+    event.preventDefault();
+    state.dragDepth += 1;
+    showDropOverlay();
+  }
+  function handleDragOver(event) {
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'copy';
+    showDropOverlay();
+  }
+  function handleDragLeave(event) {
+    event.preventDefault();
+    state.dragDepth -= 1;
+    if (state.dragDepth <= 0) hideDropOverlay();
+  }
+  function handleDrop(event) {
+    event.preventDefault();
+    hideDropOverlay();
+    const file = event.dataTransfer?.files?.[0];
+    if (file) setPendingFile(file);
+  }
 
   shell?.addEventListener('dragenter', handleDragEnter);
   shell?.addEventListener('dragover', handleDragOver);
@@ -419,9 +586,16 @@ ${state.selectionText}
   modal?.querySelectorAll('button[data-action]').forEach((button) => {
     button.addEventListener('click', async (event) => {
       event.preventDefault();
-      if (!state.pendingFile) { modal.close(); return; }
+      if (!state.pendingFile) {
+        modal.close();
+        return;
+      }
       try {
         await uploadFile(state.pendingFile, kbId);
+        recordAction('document_uploaded', {
+          knowledgeBaseId: kbId,
+          documentName: state.pendingFile.name,
+        });
         state.pendingFile = null;
         if (fileInput) fileInput.value = '';
         modal.close();
@@ -432,8 +606,6 @@ ${state.selectionText}
       }
     });
   });
-
-
 
   readerBody?.addEventListener('mouseup', () => {
     requestAnimationFrame(() => {
@@ -457,77 +629,15 @@ ${state.selectionText}
       handleSelectionToolbarAction(button.getAttribute('data-selection-action'));
     });
   });
-  window.addEventListener('beforeunload', () => { if (state.pollTimer) window.clearInterval(state.pollTimer); });
-  document.addEventListener('DOMContentLoaded', () => { window.activeKnowledgeBaseId = kbId; void loadDocuments(true); });
+  window.addEventListener('beforeunload', () => {
+    if (state.pollTimer) window.clearInterval(state.pollTimer);
+  });
+  document.addEventListener('DOMContentLoaded', async () => {
+    window.activeKnowledgeBaseId = kbId;
+    setPageContext('workspace', { knowledgeBaseId: kbId });
+    recordAction('workspace_loaded', { knowledgeBaseId: kbId });
+    initDocPanelCollapsedState();
+    await loadKnowledgeBase();
+    await loadDocuments(true);
+  });
 </script>
-
-
-<style>
-  :global(.pdf-page) {
-    position: relative;
-  }
-
-  :global(.textLayer) {
-    position: absolute;
-    inset: 0;
-    overflow: clip;
-    opacity: 1;
-    line-height: 1;
-    text-size-adjust: none;
-    -webkit-text-size-adjust: none;
-    forced-color-adjust: none;
-    transform-origin: 0 0;
-    caret-color: CanvasText;
-    z-index: 0;
-    user-select: text;
-    -webkit-user-select: text;
-  }
-
-  :global(.textLayer > :not(.markedContent)),
-  :global(.textLayer .markedContent span:not(.markedContent)) {
-    z-index: 1;
-    --scale-x: 1;
-    --rotate: 0deg;
-    transform: rotate(var(--rotate)) scaleX(var(--scale-x));
-  }
-
-  :global(.textLayer .markedContent) {
-    display: contents;
-  }
-
-  :global(.textLayer span),
-  :global(.textLayer br) {
-    position: absolute;
-    color: transparent;
-    white-space: pre;
-    cursor: text;
-    transform-origin: 0 0;
-    margin: 0;
-    padding: 0;
-  }
-
-  :global(.textLayer span[role="img"]) {
-    user-select: none;
-    -webkit-user-select: none;
-    cursor: default;
-  }
-
-  :global(.textLayer ::selection) {
-    background: rgba(163, 209, 204, 0.35);
-    color: transparent;
-  }
-
-  :global(.textLayer br::selection) {
-    background: transparent;
-  }
-
-  :global(.textLayer .endOfContent) {
-    display: block;
-    position: absolute;
-    inset: 100% 0 0;
-    z-index: 0;
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-</style>

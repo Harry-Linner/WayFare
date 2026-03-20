@@ -1,0 +1,278 @@
+---
+import FeedbackWidget from '../feedback/FeedbackWidget.astro';
+---
+
+<main class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:px-10">
+  <header class="border-b border-slate-100 pb-10">
+    <div class="flex flex-col gap-8 xl:flex-row xl:items-start xl:justify-between">
+      <div class="max-w-3xl">
+        <a
+          href="/dashboard"
+          class="inline-flex items-center gap-2 rounded-md border border-transparent px-3 py-2 text-sm tracking-tight text-slate-500 transition hover:border-slate-200 hover:bg-white/70 hover:text-slate-700"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+          返回仪表盘
+        </a>
+
+        <p class="mt-6 text-[11px] uppercase tracking-[0.28em] text-slate-400">ä¸»å¨å¼æ¥ç¨æ¿</p>
+        <h1 class="mt-4 text-4xl font-normal tracking-tight text-slate-800 sm:text-[2.8rem]">主动式日程板</h1>
+        <p class="mt-4 max-w-2xl text-sm font-light leading-relaxed text-slate-500 sm:text-base">
+          让 AI 按用户要求定期执行的任务，以更像学术日历而不是任务卡片的方式出现：时间优先、留白优先、阅读优先。
+        </p>
+      </div>
+
+      <div class="flex flex-col items-start gap-3 xl:items-end">
+        <button
+          id="scroll-to-form"
+          type="button"
+          class="inline-flex items-center gap-2 rounded-md border border-transparent px-3 py-2 text-sm tracking-tight text-slate-600 transition hover:border-slate-200 hover:bg-white/70 hover:text-slate-800"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          新建任务
+        </button>
+        <p class="text-xs font-light leading-relaxed text-slate-400">
+          适合“定时总结知识库最新文件”等周期任务。
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-10 grid gap-8 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start">
+      <section class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <article class="border-l border-slate-100 pl-4">
+          <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">进行中</p>
+          <p id="stat-active" class="mt-3 text-3xl font-normal tracking-tight text-slate-800">0</p>
+          <p class="mt-2 text-sm font-light leading-relaxed text-slate-500">待处理的单次与周期任务</p>
+        </article>
+        <article class="border-l border-slate-100 pl-4">
+          <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">今天</p>
+          <p id="stat-today" class="mt-3 text-3xl font-normal tracking-tight text-slate-800">0</p>
+          <p class="mt-2 text-sm font-light leading-relaxed text-slate-500">今日与已临近触发的安排</p>
+        </article>
+        <article class="border-l border-slate-100 pl-4">
+          <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">已完成</p>
+          <p id="stat-completed" class="mt-3 text-3xl font-normal tracking-tight text-slate-800">0</p>
+          <p class="mt-2 text-sm font-light leading-relaxed text-slate-500">保留下来的执行记录</p>
+        </article>
+        <article class="border-l border-slate-100 pl-4">
+          <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">重复模板</p>
+          <p id="stat-recurring" class="mt-3 text-3xl font-normal tracking-tight text-slate-800">0</p>
+          <p class="mt-2 text-sm font-light leading-relaxed text-slate-500">每天、工作日或每周循环</p>
+        </article>
+      </section>
+
+      <article class="rounded-md border border-slate-100 bg-white/70 px-5 py-5">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">æéæºå¶</p>
+        <h2 class="mt-2 text-lg font-normal tracking-tight text-slate-800">提醒机制</h2>
+        <p class="mt-3 text-sm font-light leading-relaxed text-slate-500">
+          当前版本采用浏览器通知，适合轻量提醒与长驻标签页场景。
+        </p>
+
+        <div class="mt-5 rounded-md border border-slate-100 bg-brand-surface/20 px-4 py-4">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">权限状态</p>
+              <p id="notification-status" class="mt-2 text-sm tracking-tight text-slate-700">检测中...</p>
+            </div>
+            <button
+              id="request-notification"
+              type="button"
+              class="inline-flex items-center justify-center rounded-md border border-transparent px-3 py-2 text-sm tracking-tight text-slate-600 transition hover:border-brand-blue/35 hover:bg-white hover:text-slate-800 disabled:cursor-not-allowed disabled:text-slate-400"
+            >
+              开启提醒
+            </button>
+          </div>
+          <p class="mt-4 text-xs font-light leading-relaxed text-slate-500">
+            建议将页面固定在浏览器标签页中；当前版本暂未接入移动推送。
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <div id="feedback" class="hidden mt-8 rounded-md border px-4 py-3 text-sm font-light leading-relaxed"></div>
+  </header>
+
+  <section class="mt-12 grid gap-14 xl:grid-cols-[minmax(0,1.28fr)_320px]">
+    <div class="space-y-14">
+      <article class="border-t border-slate-100 pt-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">??</p>
+            <h2 class="mt-2 text-xl font-normal tracking-tight text-slate-800">今天的安排</h2>
+            <p class="mt-2 text-sm font-light leading-relaxed text-slate-500">
+              先处理今天与已到期任务，让时间轴像一份简洁的工作底稿。
+            </p>
+          </div>
+          <button
+            id="refresh-schedules"
+            type="button"
+            class="inline-flex items-center gap-2 self-start rounded-md border border-transparent px-3 py-2 text-sm tracking-tight text-slate-500 transition hover:border-slate-200 hover:bg-white/70 hover:text-slate-700 sm:self-auto"
+          >
+            刷新
+          </button>
+        </div>
+        <div class="mt-6 rounded-md border border-slate-100 bg-white/70 px-4 sm:px-6">
+          <div id="today-list"></div>
+        </div>
+      </article>
+
+      <article class="border-t border-slate-100 pt-8">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">æ¥ä¸æ¥</p>
+          <h2 class="mt-2 text-xl font-normal tracking-tight text-slate-800">接下来</h2>
+          <p class="mt-2 text-sm font-light leading-relaxed text-slate-500">
+            未来任务顺序展开，便于浏览周期性任务的节奏与间隔。
+          </p>
+        </div>
+        <div class="mt-6 rounded-md border border-slate-100 bg-white/70 px-4 sm:px-6">
+          <div id="upcoming-list"></div>
+        </div>
+      </article>
+
+      <article class="border-t border-slate-100 pt-8">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">å·²å®æ</p>
+          <h2 class="mt-2 text-xl font-normal tracking-tight text-slate-800">完成记录</h2>
+          <p class="mt-2 text-sm font-light leading-relaxed text-slate-500">
+            已完成任务保留为灰度时间线，方便回顾执行痕迹而不过度打扰视线。
+          </p>
+        </div>
+        <div class="mt-6 rounded-md border border-slate-100 bg-white/70 px-4 sm:px-6">
+          <div id="completed-list"></div>
+        </div>
+      </article>
+    </div>
+
+    <aside class="space-y-8 xl:sticky xl:top-8 xl:self-start">
+      <article id="schedule-form-card" class="rounded-md border border-slate-100 bg-white/80 px-5 py-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">ç¼è¾å¨</p>
+            <h2 id="form-title" class="mt-2 text-xl font-normal tracking-tight text-slate-800">新建任务</h2>
+            <p class="mt-2 text-sm font-light leading-relaxed text-slate-500">
+              用一句动词开头的标题，补充范围、材料与输出要求即可。
+            </p>
+          </div>
+          <span
+            id="form-mode-badge"
+            class="inline-flex items-center rounded-md bg-brand-surface/35 px-2.5 py-1 text-[11px] font-light tracking-tight text-slate-500"
+          >
+            新建
+          </span>
+        </div>
+
+        <form id="schedule-form" class="mt-8 space-y-5">
+          <div class="space-y-2">
+            <label for="schedule-title" class="text-sm font-normal tracking-tight text-slate-700">任务标题</label>
+            <input
+              id="schedule-title"
+              name="title"
+              type="text"
+              placeholder="例如：总结知识库最新文件"
+              class="w-full rounded-md border border-slate-100 bg-white px-3.5 py-3 text-sm tracking-tight text-slate-700 outline-none transition placeholder:text-slate-300 focus:border-brand-blue/40"
+              required
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="schedule-description" class="text-sm font-normal tracking-tight text-slate-700">补充说明</label>
+            <textarea
+              id="schedule-description"
+              name="description"
+              rows="4"
+              placeholder="补充知识库范围、输出形式或完成标准。"
+              class="min-h-[112px] w-full rounded-md border border-slate-100 bg-white px-3.5 py-3 text-sm font-light leading-relaxed text-slate-700 outline-none transition placeholder:text-slate-300 focus:border-brand-blue/40"
+            ></textarea>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="space-y-2">
+              <label for="schedule-datetime" class="text-sm font-normal tracking-tight text-slate-700">执行时间</label>
+              <input
+                id="schedule-datetime"
+                name="scheduledFor"
+                type="datetime-local"
+                class="w-full rounded-md border border-slate-100 bg-white px-3.5 py-3 text-sm tracking-tight text-slate-700 outline-none transition focus:border-brand-blue/40"
+                required
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label for="schedule-reminder" class="text-sm font-normal tracking-tight text-slate-700">提醒提前量</label>
+              <select
+                id="schedule-reminder"
+                name="reminderOffsetMinutes"
+                class="w-full rounded-md border border-slate-100 bg-white px-3.5 py-3 text-sm tracking-tight text-slate-700 outline-none transition focus:border-brand-blue/40"
+              >
+                <option value="0">准时提醒</option>
+                <option value="5">提前 5 分钟</option>
+                <option value="10">提前 10 分钟</option>
+                <option value="30">提前 30 分钟</option>
+                <option value="60">提前 1 小时</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="schedule-repeat" class="text-sm font-normal tracking-tight text-slate-700">重复方式</label>
+            <select
+              id="schedule-repeat"
+              name="repeatRule"
+              class="w-full rounded-md border border-slate-100 bg-white px-3.5 py-3 text-sm tracking-tight text-slate-700 outline-none transition focus:border-brand-blue/40"
+            >
+              <option value="none">不重复</option>
+              <option value="daily">每天</option>
+              <option value="weekdays">工作日</option>
+              <option value="weekly">每周</option>
+            </select>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 pt-2">
+            <button
+              id="submit-button"
+              type="submit"
+              class="inline-flex items-center justify-center rounded-md border border-transparent bg-brand-surface/35 px-4 py-2.5 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/35 hover:bg-brand-surface/55 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
+            >
+              保存任务
+            </button>
+            <button
+              id="cancel-edit"
+              type="button"
+              class="hidden inline-flex items-center justify-center rounded-md border border-transparent px-3 py-2.5 text-sm tracking-tight text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-700"
+            >
+              取消编辑
+            </button>
+          </div>
+        </form>
+      </article>
+
+      <FeedbackWidget
+        defaultPage="schedule-board"
+        defaultScope="schedule-board"
+        title="æ¥ç¨æ¿åé¦"
+        description="å¦ææéãå®æãæ¹æææ¶é´è½´æ¾ç¤ºä¸ç¬¦åé¢æï¼ç»ä¸ä»è¿éæäº¤åé¦ã"
+        buttonLabel="åé¦æ¥ç¨é®é¢"
+      />
+
+      <article class="rounded-md border border-slate-100 bg-white/60 px-5 py-5">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">ä½¿ç¨æç¤º</p>
+        <h2 class="mt-2 text-lg font-normal tracking-tight text-slate-800">轻量使用提示</h2>
+        <ul class="mt-4 space-y-3 text-sm font-light leading-relaxed text-slate-500">
+          <li>· 标题尽量使用“动词 + 对象”，例如“总结本周新上传文档”。</li>
+          <li>· 描述里补充输出格式、关注章节或需要比对的文件。</li>
+          <li>· 若任务周期固定，优先使用“工作日”或“每周”保持节奏。</li>
+        </ul>
+        <div class="mt-5 rounded-md border border-slate-100 bg-brand-sand/35 px-4 py-4 text-sm font-light leading-relaxed text-slate-500">
+          当前日程数据结构尚未暴露独立知识库字段，因此界面中的浅色标签先以默认知识库 / 项目占位呈现。
+        </div>
+      </article>
+    </aside>
+  </section>
+</main>
+
+<script>
+  import '../../lib/schedule-board';
+</script>

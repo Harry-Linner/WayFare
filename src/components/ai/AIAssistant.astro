@@ -1,17 +1,15 @@
 ---
-import { MOCK_CHAT, MOCK_CHAT_DASHBOARD } from '../../constants/mockData';
-
 export interface Props {
   isOpen?: boolean;
   pageType?: 'document' | 'dashboard';
 }
 
 const { isOpen = false, pageType = 'document' } = Astro.props;
-const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
 ---
 
 <div
   id="ai-assistant"
+  data-page-type={pageType}
   class={`fixed right-0 top-0 z-40 flex h-full w-[380px] flex-col border-l border-slate-100 bg-[#fcfcf8]/96 backdrop-blur-sm transition-transform duration-300 ease-in-out ${
     isOpen ? 'translate-x-0' : 'translate-x-full'
   }`}
@@ -19,11 +17,17 @@ const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
   <div class="border-b border-slate-100 px-5 py-4">
     <div class="flex items-start justify-between gap-4">
       <div>
-        <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Study Companion</p>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">学习助手</p>
         <h3 class="mt-1 text-base font-medium tracking-tight text-slate-800">AI 学习助手</h3>
-        <p class="mt-1 text-sm leading-6 text-slate-500">更偏向解释与整理，不打断你的阅读节奏。</p>
+        <p class="mt-1 text-sm leading-6 text-slate-500">
+          围绕当前知识库材料做解释、提炼重点和连续追问。
+        </p>
       </div>
-      <button id="close-ai-assistant" class="flex h-8 w-8 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-slate-200 hover:text-slate-700" title="关闭助手">
+      <button
+        id="close-ai-assistant"
+        class="flex h-8 w-8 items-center justify-center rounded-md border border-slate-100 bg-white text-slate-500 transition hover:border-slate-200 hover:text-slate-700"
+        title="关闭助手"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
@@ -31,28 +35,44 @@ const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
     </div>
   </div>
 
-  <div id="ai-chat-messages" class="flex-1 space-y-4 overflow-y-auto px-5 py-5">
-    {chatData.map((msg) => (
-      <div class={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-        <div class={`max-w-[88%] rounded-lg border px-4 py-3 text-sm leading-7 tracking-tight ${msg.role === 'user' ? 'border-brand-blue/30 bg-brand-surface/70 text-slate-700' : 'border-slate-100 bg-white text-slate-600'}`}>
-          {msg.content}
-        </div>
-      </div>
-    ))}
-  </div>
+  <div id="ai-chat-messages" class="flex-1 space-y-4 overflow-y-auto px-5 py-5"></div>
 
   <div class="border-t border-slate-100 px-5 py-4">
     <div class="mb-3 flex flex-wrap gap-2">
-      <button type="button" class="quick-action-btn rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">总结重点</button>
-      <button type="button" class="quick-action-btn rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">生成练习</button>
-      <button type="button" class="quick-action-btn rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700">解释概念</button>
+      <button
+        type="button"
+        class="quick-action-btn rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700"
+      >
+        提炼重点
+      </button>
+      <button
+        type="button"
+        class="quick-action-btn rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700"
+      >
+        解释概念
+      </button>
+      <button
+        type="button"
+        class="quick-action-btn rounded-md border border-slate-100 bg-white px-3 py-1.5 text-xs tracking-tight text-slate-500 transition hover:border-brand-blue/40 hover:bg-brand-surface/30 hover:text-slate-700"
+      >
+        继续追问
+      </button>
     </div>
 
     <div class="rounded-lg border border-slate-100 bg-white p-3">
-      <textarea id="ai-input" placeholder="输入你的问题..." class="min-h-[72px] w-full resize-none border-none bg-transparent p-0 text-sm leading-7 tracking-tight text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0" rows="2"></textarea>
+      <textarea
+        id="ai-input"
+        placeholder="输入你的问题..."
+        class="min-h-[72px] w-full resize-none border-none bg-transparent p-0 text-sm leading-7 tracking-tight text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+        rows="2"
+      ></textarea>
       <div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
-        <span class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Project 1</span>
-        <button id="ai-send-btn" class="flex items-center gap-2 rounded-md border border-slate-100 bg-brand-surface/60 px-3 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface disabled:cursor-not-allowed disabled:opacity-50" title="发送消息">
+        <span class="text-[11px] uppercase tracking-[0.18em] text-slate-400">对话模式</span>
+        <button
+          id="ai-send-btn"
+          class="flex items-center gap-2 rounded-md border border-slate-100 bg-brand-surface/60 px-3 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface disabled:cursor-not-allowed disabled:opacity-50"
+          title="发送消息"
+        >
           <span>发送</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h13.5m0 0-4.5-4.5M18 12l-4.5 4.5" />
@@ -60,20 +80,48 @@ const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
         </button>
       </div>
     </div>
+
+    <div class="mt-4 rounded-lg border border-slate-100 bg-white/80 px-4 py-3 text-sm leading-7 text-slate-500">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">回答纠错</p>
+          <p class="mt-1">
+            如果回答跑题、格式异常、英文过多，统一通过工作区的「反馈联调问题」入口提交，不在对话框内单独收口。
+          </p>
+        </div>
+        {
+          pageType === 'document' ? (
+            <button
+              type="button"
+              id="ai-feedback-jump"
+              class="inline-flex items-center rounded-md border border-slate-100 bg-white px-3 py-2 text-xs tracking-tight text-slate-600 transition hover:border-brand-blue/40 hover:bg-brand-surface/25 hover:text-slate-700"
+            >
+              去反馈入口
+            </button>
+          ) : null
+        }
+      </div>
+    </div>
   </div>
 </div>
 
-<div id="ai-assistant-overlay" class={`fixed inset-0 z-30 bg-slate-900/5 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}></div>
+<div
+  id="ai-assistant-overlay"
+  class={`fixed inset-0 z-30 bg-slate-900/5 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+></div>
 
 <script>
-  import { chat } from '../../lib/api';
+  import { chat, getKnowledgeBase } from '../../lib/api';
+  import { recordAction, setPageContext } from '../../lib/runtime-context';
 
   const aiAssistant = document.getElementById('ai-assistant');
   const overlay = document.getElementById('ai-assistant-overlay');
   const closeBtn = document.getElementById('close-ai-assistant');
-  const sendBtn = document.getElementById('ai-send-btn') as HTMLButtonElement | null;
-  const input = document.getElementById('ai-input') as HTMLTextAreaElement | null;
+  const sendBtn = document.getElementById('ai-send-btn');
+  const input = document.getElementById('ai-input');
   const messagesContainer = document.getElementById('ai-chat-messages');
+  const feedbackJumpButton = document.getElementById('ai-feedback-jump');
+  const pageType = aiAssistant?.dataset.pageType || 'document';
 
   function closeAIAssistant() {
     aiAssistant?.classList.add('translate-x-full');
@@ -88,15 +136,62 @@ const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
     window.dispatchEvent(new CustomEvent('ai-assistant-opened'));
   }
 
+  function escapeHtml(text) {
+    return String(text ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  function formatStructuredObject(value, depth = 0) {
+    if (Array.isArray(value)) {
+      return value
+        .map((item) => `${depth > 0 ? '- ' : '• '}${formatStructuredObject(item, depth + 1)}`)
+        .join('\n');
+    }
+
+    if (value && typeof value === 'object') {
+      return Object.entries(value)
+        .map(([key, item]) => {
+          const title = key.replaceAll('_', ' ').trim().replace(/^(\d+)\s*/, '$1. ');
+          const body = formatStructuredObject(item, depth + 1);
+          return `${title}\n${body}`;
+        })
+        .join('\n\n');
+    }
+
+    return String(value ?? '').replaceAll('\\n', '\n');
+  }
+
+  function normalizeAssistantContent(content) {
+    if (!content) return '';
+    const source = String(content).trim().replaceAll('```json', '').replaceAll('```', '');
+
+    if ((source.startsWith('{') && source.endsWith('}')) || (source.startsWith('[') && source.endsWith(']'))) {
+      try {
+        const parsed = JSON.parse(source);
+        return formatStructuredObject(parsed);
+      } catch (error) {
+        console.debug('Assistant content is not strict JSON, keep raw text.', error);
+      }
+    }
+
+    return source.replaceAll('\\n', '\n');
+  }
+
   function appendMessage(role, content, metaLabel = '') {
     if (!messagesContainer) return;
+
     const wrapper = document.createElement('div');
     wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'}`;
 
     const bubble = document.createElement('div');
-    bubble.className = role === 'user'
-      ? 'max-w-[88%] rounded-lg border border-brand-blue/30 bg-brand-surface/70 px-4 py-3 text-sm leading-7 tracking-tight text-slate-700'
-      : 'max-w-[88%] rounded-lg border border-slate-100 bg-white px-4 py-3 text-sm leading-7 tracking-tight text-slate-600 whitespace-pre-wrap';
+    bubble.className =
+      role === 'user'
+        ? 'max-w-[88%] rounded-lg border border-brand-blue/30 bg-brand-surface/70 px-4 py-3 text-sm leading-7 tracking-tight text-slate-700'
+        : 'max-w-[88%] rounded-lg border border-slate-100 bg-white px-4 py-3 text-sm leading-7 tracking-tight text-slate-600';
 
     if (metaLabel) {
       const meta = document.createElement('div');
@@ -106,38 +201,137 @@ const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
     }
 
     const body = document.createElement('div');
-    body.textContent = content;
+    body.className = 'whitespace-pre-wrap';
+    const finalContent = role === 'assistant' ? normalizeAssistantContent(content) : String(content ?? '');
+    body.innerHTML = escapeHtml(finalContent).replaceAll('\n', '<br />');
     bubble.appendChild(body);
-
     wrapper.appendChild(bubble);
     messagesContainer.appendChild(wrapper);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
+  function buildDashboardGreeting() {
+    return [
+      '欢迎回来，我是你的 AI 学习助手。',
+      '这里更适合做全局梳理：看看最近哪些知识库正在推进、哪些文档还在解析、下一步该先读什么。',
+      '你可以直接问我：',
+      '1. 今天先看哪个知识库更合适？',
+      '2. 帮我梳理最近上传文档的重点',
+      '3. 帮我为某个知识库生成下一步阅读建议',
+    ].join('\n');
+  }
+
+  async function buildKnowledgeBaseGreeting() {
+    const activeKnowledgeBaseId = window.activeKnowledgeBaseId;
+    if (!activeKnowledgeBaseId) {
+      return '当前还没有选中的知识库。你可以先上传文档，或者直接问我一个泛化问题。';
+    }
+
+    try {
+      const knowledgeBase =
+        window.activeKnowledgeBaseProfile || (await getKnowledgeBase(activeKnowledgeBaseId));
+      window.activeKnowledgeBaseProfile = knowledgeBase;
+
+      const lines = [
+        `现在进入「${knowledgeBase.name}」的阅读与答疑模式。`,
+        knowledgeBase.description
+          ? `知识库描述：${knowledgeBase.description}`
+          : '这个知识库还没有填写描述，但我仍会围绕当前文档和选中文本回答。',
+      ];
+
+      if (knowledgeBase.learningGoals) {
+        lines.push(`学习目标：${knowledgeBase.learningGoals}`);
+      }
+      if (knowledgeBase.purpose) {
+        lines.push(`当前用途：${knowledgeBase.purpose}`);
+      }
+
+      lines.push('你可以直接输入问题，或者在 PDF 中选中文本后让我讲透、提炼和延伸。');
+      return lines.join('\n\n');
+    } catch (error) {
+      console.warn('Failed to load active knowledge base profile:', error);
+      return '我已经进入当前知识库模式。你可以直接输入问题，或选中一段文本让我继续解释。';
+    }
+  }
+
+  async function ensureInitialConversation() {
+    if (!messagesContainer || messagesContainer.children.length > 0) return;
+    const message =
+      pageType === 'dashboard' ? buildDashboardGreeting() : await buildKnowledgeBaseGreeting();
+    appendMessage('assistant', message);
+  }
+
+  function jumpToWorkspaceFeedback() {
+    const widget = document.querySelector('[data-feedback-widget][data-default-page="workspace"]');
+    if (!widget) return;
+    closeAIAssistant();
+    widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.setTimeout(() => {
+      widget.querySelector('[data-feedback-toggle]')?.click();
+    }, 250);
+  }
+
   closeBtn?.addEventListener('click', closeAIAssistant);
   overlay?.addEventListener('click', closeAIAssistant);
+  feedbackJumpButton?.addEventListener('click', jumpToWorkspaceFeedback);
 
   async function submitMessage(payload) {
-    const visibleMessage = typeof payload === 'string' ? payload : payload.visibleMessage;
-    const actualPrompt = typeof payload === 'string' ? payload : payload.actualPrompt;
-    const metaLabel = typeof payload === 'string' ? '' : payload.metaLabel || '';
+    const isPlainText = typeof payload === 'string';
+    const visibleMessage = isPlainText ? payload : payload.visibleMessage;
+    const metaLabel = isPlainText ? '' : payload.metaLabel || '';
+    const historyMessage = isPlainText
+      ? payload
+      : payload.historyMessage ||
+        payload.visibleMessage ||
+        payload.request?.selectedText ||
+        payload.request?.context ||
+        payload.actualPrompt;
+    const requestPayload = isPlainText
+      ? { context: payload }
+      : payload.request || { context: payload.actualPrompt };
+    const messageToDisplay =
+      visibleMessage || requestPayload.selectedText || requestPayload.context;
 
-    if (!actualPrompt || !messagesContainer || !input) return;
+    if ((!requestPayload.context && !requestPayload.selectedText) || !messagesContainer || !input) {
+      return;
+    }
 
-    appendMessage('user', visibleMessage || actualPrompt, metaLabel);
+    appendMessage('user', messageToDisplay, metaLabel);
     input.value = '';
     input.style.height = 'auto';
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
     sendBtn?.setAttribute('disabled', 'true');
 
+    const activeKnowledgeBaseId = window.activeKnowledgeBaseId;
+    recordAction('ai_chat_submit', {
+      pageType,
+      knowledgeBaseId: activeKnowledgeBaseId || '',
+      documentName: requestPayload.documentName || '',
+      requestType: isPlainText ? 'freeform' : requestPayload.requestType || 'freeform',
+    });
+
     try {
-      const activeKnowledgeBaseId = (window as any).activeKnowledgeBaseId;
-      const response = await chat(1, actualPrompt, activeKnowledgeBaseId);
-      appendMessage('assistant', response.content || '模型没有返回内容');
+      const response = await chat({
+        projectId: 1,
+        knowledgeBaseId: activeKnowledgeBaseId,
+        displayMessage: historyMessage,
+        requestType: isPlainText ? 'freeform' : requestPayload.requestType || 'freeform',
+        ...requestPayload,
+      });
+      appendMessage('assistant', response.content || '模型这次没有返回内容。');
+      recordAction('ai_chat_response', {
+        pageType,
+        knowledgeBaseId: activeKnowledgeBaseId || '',
+      });
     } catch (error) {
       console.error('AI chat request failed:', error);
-      const errorMessage = error instanceof Error ? error.message : '请求失败，请稍后重试';
+      const errorMessage = error instanceof Error ? error.message : '请求失败，请稍后重试。';
       appendMessage('assistant', `请求失败：${errorMessage}`);
+      recordAction('ai_chat_error', {
+        pageType,
+        knowledgeBaseId: activeKnowledgeBaseId || '',
+        errorMessage,
+      });
     } finally {
       sendBtn?.removeAttribute('disabled');
     }
@@ -149,22 +343,26 @@ const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
     await submitMessage(message);
   }
 
-  sendBtn?.addEventListener('click', () => { void sendMessage(); });
-  input?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
+  sendBtn?.addEventListener('click', () => {
+    void sendMessage();
+  });
+
+  input?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
       void sendMessage();
     }
   });
+
   input?.addEventListener('input', () => {
     if (!input) return;
     input.style.height = 'auto';
     input.style.height = `${input.scrollHeight}px`;
   });
 
-  document.querySelectorAll('#ai-assistant .quick-action-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const text = btn.textContent?.trim() || '';
+  document.querySelectorAll('#ai-assistant .quick-action-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const text = button.textContent?.trim() || '';
       if (input) {
         input.value = `${text}：`;
         input.focus();
@@ -172,19 +370,34 @@ const chatData = pageType === 'dashboard' ? MOCK_CHAT_DASHBOARD : MOCK_CHAT;
     });
   });
 
-  (window as any).openAIAssistant = openAIAssistant;
-  (window as any).closeAIAssistant = closeAIAssistant;
-  (window as any).askAIAssistant = async (payload) => {
+  document.addEventListener('DOMContentLoaded', () => {
+    setPageContext(pageType === 'dashboard' ? 'dashboard' : 'workspace', { pageType });
+    void ensureInitialConversation();
+  });
+
+  window.openAIAssistant = openAIAssistant;
+  window.closeAIAssistant = closeAIAssistant;
+  window.askAIAssistant = async (payload) => {
     if (!payload) return;
+    await ensureInitialConversation();
     openAIAssistant();
     await submitMessage(payload);
   };
 </script>
 
 <style>
-  #ai-chat-messages > div { animation: messageSlideIn 0.24s ease-out; }
+  #ai-chat-messages > div {
+    animation: messageSlideIn 0.24s ease-out;
+  }
+
   @keyframes messageSlideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>

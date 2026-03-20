@@ -13,6 +13,12 @@ type ChatRequest struct {
 	ProjectID       uint   `json:"projectId"`
 	KnowledgeBaseID string `json:"knowledgeBaseId"`
 	Context         string `json:"context"`
+	DisplayMessage  string `json:"displayMessage"`
+	RequestType     string `json:"requestType"`
+	Action          string `json:"action"`
+	SelectedText    string `json:"selectedText"`
+	Page            int    `json:"page"`
+	DocumentName    string `json:"documentName"`
 }
 
 func looksEncodingCorrupted(s string) bool {
@@ -44,15 +50,63 @@ func shouldKeepHistoryMessage(content string) bool {
 	return true
 }
 
+func resolveChatContext(req ChatRequest) string {
+	if selected := strings.TrimSpace(req.SelectedText); selected != "" {
+		return selected
+	}
+	return strings.TrimSpace(req.Context)
+}
+
+func resolveHistoryUserMessage(req ChatRequest) string {
+	if display := strings.TrimSpace(req.DisplayMessage); display != "" {
+		return display
+	}
+	if selected := strings.TrimSpace(req.SelectedText); selected != "" {
+		return selected
+	}
+	return strings.TrimSpace(req.Context)
+}
+
+func normalizeSelectionAction(action string) string {
+	switch strings.ToLower(strings.TrimSpace(action)) {
+	case "summary":
+		return "summary"
+	case "ask":
+		return "ask"
+	default:
+		return "explanation"
+	}
+}
+
+func resolvePreferredResponseLanguage(req ChatRequest) string {
+	combined := strings.ToLower(strings.TrimSpace(resolveHistoryUserMessage(req) + " " + resolveChatContext(req)))
+
+	if strings.Contains(combined, "please answer in english") ||
+		strings.Contains(combined, "answer in english") ||
+		strings.Contains(combined, "respond in english") ||
+		strings.Contains(combined, "用英文") ||
+		strings.Contains(combined, "英文回答") {
+		return "English"
+	}
+
+	return "简体中文"
+}
+
 func ChatAPI(c *gin.Context, db *gorm.DB) {
 	var req ChatRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "参数错误"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request payload"})
 		return
 	}
-	if looksEncodingCorrupted(req.Context) {
+
+	chatContext := resolveChatContext(req)
+	if chatContext == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "message content is required"})
+		return
+	}
+	if looksEncodingCorrupted(chatContext) {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "检测到输入内容疑似被错误编码成 '?'，请使用 UTF-8 重新发送请求",
+			"error": "input appears to be mis-encoded as question marks; please resend using UTF-8",
 		})
 		return
 	}
@@ -95,16 +149,31 @@ func ChatAPI(c *gin.Context, db *gorm.DB) {
 		})
 	}
 
-	db.Create(&ChatMessage{ProjectID: req.ProjectID, Role: "user", Content: req.Context})
+	userMessageForHistory := resolveHistoryUserMessage(req)
+	db.Create(&ChatMessage{ProjectID: req.ProjectID, Role: "user", Content: userMessageForHistory})
+
+	annotateType := "explanation"
+	meta := map[string]interface{}{}
+	if strings.EqualFold(strings.TrimSpace(req.RequestType), "selection_action") {
+		annotateType = normalizeSelectionAction(req.Action)
+		if req.Page > 0 {
+			meta["page"] = req.Page
+		}
+		if docName := strings.TrimSpace(req.DocumentName); docName != "" {
+			meta["documentName"] = docName
+		}
+	}
 
 	resp, err := CallPython("annotate", map[string]interface{}{
-		"docHashes": docHashes,
-		"type":      "explanation",
-		"context":   req.Context,
-		"history":   history,
+		"docHashes":        docHashes,
+		"type":             annotateType,
+		"context":          chatContext,
+		"history":          history,
+		"meta":             meta,
+		"responseLanguage": resolvePreferredResponseLanguage(req),
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "详细报错: " + err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "AI request failed: " + err.Error()})
 		return
 	}
 

@@ -4,210 +4,293 @@ import '../styles/global.css';
 
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>定制你的学习画像</title>
-</head>
-<body class="min-h-screen bg-brand-cream px-4 py-8 text-slate-700">
-  <div class="mx-auto max-w-3xl">
-    <div class="rounded-lg border border-slate-100 bg-white px-6 py-8 md:px-10 md:py-10">
-      <div class="border-b border-slate-100 pb-8">
-        <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div class="max-w-xl">
-            <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">Onboarding</p>
-            <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-800">定制你的学习画像</h1>
-            <p class="mt-4 text-base leading-8 text-slate-500">
-              告诉系统你更偏向哪种学习方式。设置不会很重，只是帮助 AI 在合适的时候给出更恰当的解释与提示。
-            </p>
-          </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WayFare · 生成你的学习画像</title>
+  </head>
+  <body class="min-h-screen bg-brand-cream px-4 py-8 text-slate-700">
+    <div class="mx-auto max-w-3xl">
+      <div class="rounded-lg border border-slate-100 bg-white px-6 py-8 md:px-10 md:py-10">
+        <div class="border-b border-slate-100 pb-8">
+          <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div class="max-w-xl">
+              <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">Onboarding</p>
+              <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-800">三步生成你的学习画像</h1>
+              <p class="mt-4 text-base leading-8 text-slate-500">
+                这份问卷不会追求“全面测评”，而是先帮你生成一份可编辑的全局 Prompt 初稿。
+                后续你仍然可以回到仪表盘手动修改。
+              </p>
+            </div>
 
-          <div class="flex items-center gap-3" id="progress-bar">
-            <div class="progress-dot active h-px w-16 bg-brand-blue" data-step="1"></div>
-            <div class="progress-dot h-px w-16 bg-slate-100" data-step="2"></div>
-            <div class="progress-dot h-px w-16 bg-slate-100" data-step="3"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-8 space-y-8">
-        <div class="question-step active" data-question="1">
-          <p class="mb-4 text-sm font-medium tracking-tight text-slate-700">你的学习主目标是？</p>
-          <div class="space-y-3">
-            <label class="goal-option block cursor-pointer">
-              <input type="radio" name="goal" value="exam" class="peer sr-only" />
-              <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
-                <div class="text-sm font-medium tracking-tight text-slate-700">应试冲刺</div>
-                <div class="mt-1 text-xs leading-6 text-slate-500">重点生成考点、练习和高频回顾。</div>
-              </div>
-            </label>
-
-            <label class="goal-option block cursor-pointer">
-              <input type="radio" name="goal" value="explore" class="peer sr-only" />
-              <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
-                <div class="text-sm font-medium tracking-tight text-slate-700">系统构建</div>
-                <div class="mt-1 text-xs leading-6 text-slate-500">更重视知识结构、推导关系和整体脉络。</div>
-              </div>
-            </label>
+            <div class="flex items-center gap-3" id="progress-bar">
+              <div class="progress-dot active h-px w-16 bg-brand-blue" data-step="1"></div>
+              <div class="progress-dot h-px w-16 bg-slate-100" data-step="2"></div>
+              <div class="progress-dot h-px w-16 bg-slate-100" data-step="3"></div>
+            </div>
           </div>
         </div>
 
-        <div class="question-step hidden" data-question="2">
-          <p class="mb-4 text-sm font-medium tracking-tight text-slate-700">你每天的学习时长是？</p>
-          <div class="space-y-3">
-            <label class="block cursor-pointer">
-              <input type="radio" name="duration" value="short" class="peer sr-only" />
-              <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
-                <div class="text-sm font-medium tracking-tight text-slate-700">1–2 小时</div>
-                <div class="mt-1 text-xs leading-6 text-slate-500">偏向碎片时间学习与轻量整理。</div>
-              </div>
-            </label>
-            <label class="block cursor-pointer">
-              <input type="radio" name="duration" value="medium" class="peer sr-only" />
-              <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
-                <div class="text-sm font-medium tracking-tight text-slate-700">3–4 小时</div>
-                <div class="mt-1 text-xs leading-6 text-slate-500">适合持续阅读、笔记与阶段复盘。</div>
-              </div>
-            </label>
-            <label class="block cursor-pointer">
-              <input type="radio" name="duration" value="long" class="peer sr-only" />
-              <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
-                <div class="text-sm font-medium tracking-tight text-slate-700">5 小时以上</div>
-                <div class="mt-1 text-xs leading-6 text-slate-500">更适合深度学习、整章整理和高强度训练。</div>
-              </div>
-            </label>
+        <div class="mt-8 space-y-8">
+          <div class="question-step active" data-question="1">
+            <p class="mb-4 text-sm font-medium tracking-tight text-slate-700">你现在最主要的学习目标是？</p>
+            <div class="space-y-3">
+              <label class="block cursor-pointer">
+                <input type="radio" name="goal" value="exam" class="peer sr-only" />
+                <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
+                  <div class="text-sm font-medium tracking-tight text-slate-700">考试冲刺</div>
+                  <div class="mt-1 text-xs leading-6 text-slate-500">更需要重点提炼、题型感和快速复盘。</div>
+                </div>
+              </label>
+
+              <label class="block cursor-pointer">
+                <input type="radio" name="goal" value="systematic" class="peer sr-only" />
+                <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
+                  <div class="text-sm font-medium tracking-tight text-slate-700">系统建立知识框架</div>
+                  <div class="mt-1 text-xs leading-6 text-slate-500">更需要结构感、概念关系和长线积累。</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="question-step hidden" data-question="2">
+            <p class="mb-4 text-sm font-medium tracking-tight text-slate-700">你更常用哪种学习节奏？</p>
+            <div class="space-y-3">
+              <label class="block cursor-pointer">
+                <input type="radio" name="duration" value="short" class="peer sr-only" />
+                <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
+                  <div class="text-sm font-medium tracking-tight text-slate-700">碎片推进</div>
+                  <div class="mt-1 text-xs leading-6 text-slate-500">1 小时左右，适合快速总结和轻量提醒。</div>
+                </div>
+              </label>
+              <label class="block cursor-pointer">
+                <input type="radio" name="duration" value="medium" class="peer sr-only" />
+                <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
+                  <div class="text-sm font-medium tracking-tight text-slate-700">持续阅读</div>
+                  <div class="mt-1 text-xs leading-6 text-slate-500">2-3 小时，适合配合 PDF 阅读器和阶段性复盘。</div>
+                </div>
+              </label>
+              <label class="block cursor-pointer">
+                <input type="radio" name="duration" value="long" class="peer sr-only" />
+                <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
+                  <div class="text-sm font-medium tracking-tight text-slate-700">深度浸入</div>
+                  <div class="mt-1 text-xs leading-6 text-slate-500">更长时间的集中学习，适合高密度整理和推演。</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="question-step hidden" data-question="3">
+            <p class="mb-4 text-sm font-medium tracking-tight text-slate-700">你希望 AI 更像哪种搭子？</p>
+            <div class="space-y-3">
+              <label class="block cursor-pointer">
+                <input type="radio" name="style" value="visual" class="peer sr-only" />
+                <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
+                  <div class="text-sm font-medium tracking-tight text-slate-700">结构派助教</div>
+                  <div class="mt-1 text-xs leading-6 text-slate-500">先给框架，再拆概念关系和重点。</div>
+                </div>
+              </label>
+              <label class="block cursor-pointer">
+                <input type="radio" name="style" value="text" class="peer sr-only" />
+                <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
+                  <div class="text-sm font-medium tracking-tight text-slate-700">耐心讲解型</div>
+                  <div class="mt-1 text-xs leading-6 text-slate-500">更偏清晰解释、逐步推进和中文表达稳定。</div>
+                </div>
+              </label>
+              <label class="block cursor-pointer">
+                <input type="radio" name="style" value="practice" class="peer sr-only" />
+                <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
+                  <div class="text-sm font-medium tracking-tight text-slate-700">复盘督促型</div>
+                  <div class="mt-1 text-xs leading-6 text-slate-500">更偏任务驱动、练习导向和及时提醒。</div>
+                </div>
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="question-step hidden" data-question="3">
-          <p class="mb-4 text-sm font-medium tracking-tight text-slate-700">你偏好的学习方式是？</p>
-          <div class="space-y-3">
-            <label class="block cursor-pointer">
-              <input type="radio" name="style" value="visual" class="peer sr-only" />
-              <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
-                <div class="text-sm font-medium tracking-tight text-slate-700">视觉学习</div>
-                <div class="mt-1 text-xs leading-6 text-slate-500">图示、结构和空间布局会更重要。</div>
-              </div>
-            </label>
-            <label class="block cursor-pointer">
-              <input type="radio" name="style" value="text" class="peer sr-only" />
-              <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
-                <div class="text-sm font-medium tracking-tight text-slate-700">文本学习</div>
-                <div class="mt-1 text-xs leading-6 text-slate-500">更偏爱清晰的段落总结、概念解释与提纲。</div>
-              </div>
-            </label>
-            <label class="block cursor-pointer">
-              <input type="radio" name="style" value="practice" class="peer sr-only" />
-              <div class="rounded-md border border-slate-100 bg-white px-4 py-4 transition peer-checked:border-brand-blue/40 peer-checked:bg-brand-surface/25 hover:border-brand-blue/30">
-                <div class="text-sm font-medium tracking-tight text-slate-700">实践学习</div>
-                <div class="mt-1 text-xs leading-6 text-slate-500">更看重练习、任务驱动和即时反馈。</div>
-              </div>
-            </label>
-          </div>
-        </div>
-      </div>
+        <div id="onboarding-feedback" class="hidden mt-8 rounded-md border px-4 py-3 text-sm leading-7"></div>
 
-      <div class="mt-10 flex items-center justify-between border-t border-slate-100 pt-6">
-        <button id="prev-btn" class="hidden rounded-md border border-slate-100 bg-white px-4 py-2 text-sm tracking-tight text-slate-600 transition hover:border-slate-200 hover:bg-slate-50 hover:text-slate-700">
-          上一步
-        </button>
-        <div id="prev-placeholder" class="h-10"></div>
-
-        <div class="flex items-center gap-3">
-          <button id="next-btn" class="rounded-md border border-slate-100 bg-brand-surface/55 px-4 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface disabled:cursor-not-allowed disabled:bg-brand-surface/30 disabled:text-slate-400">
-            下一步
+        <div class="mt-10 flex items-center justify-between border-t border-slate-100 pt-6">
+          <button
+            id="prev-btn"
+            class="hidden rounded-md border border-slate-100 bg-white px-4 py-2 text-sm tracking-tight text-slate-600 transition hover:border-slate-200 hover:bg-slate-50 hover:text-slate-700"
+          >
+            上一步
           </button>
-          <button id="start-btn" class="hidden rounded-md border border-brand-blue/60 bg-brand-blue px-4 py-2 text-sm tracking-tight text-slate-800 transition hover:opacity-95 disabled:cursor-not-allowed disabled:border-slate-100 disabled:bg-brand-surface/30 disabled:text-slate-400">
-            开启学习之旅
-          </button>
+          <div id="prev-placeholder" class="h-10"></div>
+
+          <div class="flex items-center gap-3">
+            <a
+              href="/dashboard"
+              class="rounded-md border border-slate-100 bg-white px-4 py-2 text-sm tracking-tight text-slate-500 transition hover:border-slate-200 hover:bg-slate-50 hover:text-slate-700"
+            >
+              稍后再说
+            </a>
+            <button
+              id="next-btn"
+              class="rounded-md border border-slate-100 bg-brand-surface/55 px-4 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface disabled:cursor-not-allowed disabled:bg-brand-surface/30 disabled:text-slate-400"
+            >
+              下一步
+            </button>
+            <button
+              id="start-btn"
+              class="hidden rounded-md border border-brand-blue/60 bg-brand-blue px-4 py-2 text-sm tracking-tight text-slate-800 transition hover:opacity-95 disabled:cursor-not-allowed disabled:border-slate-100 disabled:bg-brand-surface/30 disabled:text-slate-400"
+            >
+              生成画像
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    let currentStep = 1;
-    const totalSteps = 3;
-    const answers = {};
+    <script>
+      import { updateGlobalProfile } from '../lib/api';
+      import { recordAction, setPageContext } from '../lib/runtime-context';
 
-    const progressDots = document.querySelectorAll('.progress-dot');
-    const questionSteps = document.querySelectorAll('.question-step');
-    const prevBtn = document.getElementById('prev-btn');
-    const prevPlaceholder = document.getElementById('prev-placeholder');
-    const nextBtn = document.getElementById('next-btn');
-    const startBtn = document.getElementById('start-btn');
+      let currentStep = 1;
+      const totalSteps = 3;
+      const answers = {};
 
-    function updateProgress() {
-      progressDots.forEach((dot, index) => {
-        dot.classList.toggle('bg-brand-blue', index < currentStep);
-        dot.classList.toggle('bg-slate-100', index >= currentStep);
-      });
-    }
+      const progressDots = document.querySelectorAll('.progress-dot');
+      const questionSteps = document.querySelectorAll('.question-step');
+      const prevBtn = document.getElementById('prev-btn');
+      const prevPlaceholder = document.getElementById('prev-placeholder');
+      const nextBtn = document.getElementById('next-btn');
+      const startBtn = document.getElementById('start-btn');
+      const feedback = document.getElementById('onboarding-feedback');
 
-    function showCurrentQuestion() {
-      questionSteps.forEach((step, index) => {
-        step.classList.toggle('hidden', index !== currentStep - 1);
-        step.classList.toggle('active', index === currentStep - 1);
-      });
+      function setFeedback(message, tone = 'info') {
+        if (!feedback) return;
+        if (!message) {
+          feedback.className = 'hidden mt-8 rounded-md border px-4 py-3 text-sm leading-7';
+          feedback.textContent = '';
+          return;
+        }
 
-      prevBtn.classList.toggle('hidden', currentStep === 1);
-      prevPlaceholder.classList.toggle('hidden', currentStep !== 1);
-      nextBtn.classList.toggle('hidden', currentStep === totalSteps);
-      startBtn.classList.toggle('hidden', currentStep !== totalSteps);
-      checkCurrentAnswer();
-    }
+        const toneClasses = {
+          info: 'border-slate-100 bg-white text-slate-600',
+          success: 'border-brand-blue/30 bg-brand-surface/35 text-slate-700',
+          error: 'border-brand-sand/60 bg-brand-sand/35 text-slate-700',
+        };
 
-    function checkCurrentAnswer() {
-      const activeStep = document.querySelector('.question-step.active');
-      const radioInputs = activeStep.querySelectorAll('input[type="radio"]');
-      const hasAnswer = Array.from(radioInputs).some((input) => input.checked);
-
-      if (currentStep === totalSteps) {
-        startBtn.disabled = !hasAnswer;
-      } else {
-        nextBtn.disabled = !hasAnswer;
+        feedback.className = `mt-8 rounded-md border px-4 py-3 text-sm leading-7 ${toneClasses[tone]}`;
+        feedback.textContent = message;
       }
-    }
 
-    function saveAnswer() {
-      const activeStep = document.querySelector('.question-step.active');
-      const checkedInput = activeStep.querySelector('input[type="radio"]:checked');
-      if (checkedInput) {
-        answers[checkedInput.name] = checkedInput.value;
+      function updateProgress() {
+        progressDots.forEach((dot, index) => {
+          dot.classList.toggle('bg-brand-blue', index < currentStep);
+          dot.classList.toggle('bg-slate-100', index >= currentStep);
+        });
       }
-    }
 
-    nextBtn.addEventListener('click', () => {
-      saveAnswer();
-      if (currentStep < totalSteps) {
-        currentStep++;
-        updateProgress();
-        showCurrentQuestion();
-      }
-    });
+      function showCurrentQuestion() {
+        questionSteps.forEach((step, index) => {
+          step.classList.toggle('hidden', index !== currentStep - 1);
+          step.classList.toggle('active', index === currentStep - 1);
+        });
 
-    prevBtn.addEventListener('click', () => {
-      if (currentStep > 1) {
-        currentStep--;
-        updateProgress();
-        showCurrentQuestion();
-      }
-    });
-
-    startBtn.addEventListener('click', () => {
-      saveAnswer();
-      localStorage.setItem('learningProfile', JSON.stringify(answers));
-      window.location.href = '/dashboard';
-    });
-
-    document.addEventListener('change', (e) => {
-      if (e.target.type === 'radio') {
+        prevBtn.classList.toggle('hidden', currentStep === 1);
+        prevPlaceholder.classList.toggle('hidden', currentStep !== 1);
+        nextBtn.classList.toggle('hidden', currentStep === totalSteps);
+        startBtn.classList.toggle('hidden', currentStep !== totalSteps);
         checkCurrentAnswer();
       }
-    });
 
-    updateProgress();
-    showCurrentQuestion();
-  </script>
-</body>
+      function checkCurrentAnswer() {
+        const activeStep = document.querySelector('.question-step.active');
+        const radioInputs = activeStep?.querySelectorAll('input[type="radio"]') || [];
+        const hasAnswer = Array.from(radioInputs).some((input) => input.checked);
+
+        if (currentStep === totalSteps) {
+          startBtn.disabled = !hasAnswer;
+        } else {
+          nextBtn.disabled = !hasAnswer;
+        }
+      }
+
+      function saveAnswer() {
+        const activeStep = document.querySelector('.question-step.active');
+        const checkedInput = activeStep?.querySelector('input[type="radio"]:checked');
+        if (checkedInput) {
+          answers[checkedInput.name] = checkedInput.value;
+        }
+      }
+
+      function buildProfileDraft() {
+        const goalMap = {
+          exam: '当前以考试冲刺为主，优先需要重点提炼、考点判断和快速复盘。',
+          systematic: '当前以系统建立知识框架为主，优先需要结构化解释和概念关系梳理。',
+        };
+        const durationMap = {
+          short: '学习节奏偏碎片推进，适合更短、更直接、更容易执行的建议。',
+          medium: '学习节奏偏持续阅读，适合阅读器联动、阶段总结和中等长度输出。',
+          long: '学习节奏偏深度浸入，适合更完整的框架化解释与高密度整理。',
+        };
+        const styleMap = {
+          visual: '更偏好结构派助教风格：先讲框架，再拆关系和重点。',
+          text: '更偏好耐心讲解型风格：默认使用简体中文，强调清晰解释和逐步推进。',
+          practice: '更偏好复盘督促型风格：强调任务驱动、行动建议和及时提醒。',
+        };
+
+        return [
+          '# 全局学习画像',
+          '',
+          '- 偏好语言：简体中文',
+          `- 当前主目标：${goalMap[answers.goal] || '优先帮助我完成当前知识库里的重点学习任务。'}`,
+          `- 学习节奏：${durationMap[answers.duration] || '请根据我当前任务自动控制回答密度。'}`,
+          `- AI 风格偏好：${styleMap[answers.style] || '请先给出清晰结论，再展开说明。'}`,
+          '- 默认回答方式：优先结合当前知识库和材料，不要脱离上下文泛泛而谈。',
+          '- 遇到证据不足时：先明确说明不确定点，再给出保守建议。',
+        ].join('\\n');
+      }
+
+      nextBtn.addEventListener('click', () => {
+        saveAnswer();
+        if (currentStep < totalSteps) {
+          currentStep += 1;
+          updateProgress();
+          showCurrentQuestion();
+        }
+      });
+
+      prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) {
+          currentStep -= 1;
+          updateProgress();
+          showCurrentQuestion();
+        }
+      });
+
+      startBtn.addEventListener('click', async () => {
+        saveAnswer();
+        startBtn.disabled = true;
+        setFeedback('正在生成全局画像...', 'info');
+
+        try {
+          const draft = buildProfileDraft();
+          await updateGlobalProfile(draft);
+          localStorage.setItem('learningProfile', JSON.stringify(answers));
+          recordAction('global_profile_onboarded');
+          setFeedback('全局画像已生成，正在进入仪表盘。', 'success');
+          window.location.href = '/dashboard';
+        } catch (error) {
+          console.error('Failed to create onboarding draft:', error);
+          setFeedback(error instanceof Error ? error.message : '生成画像失败，请稍后重试。', 'error');
+          startBtn.disabled = false;
+        }
+      });
+
+      document.addEventListener('change', (event) => {
+        if (event.target?.type === 'radio') {
+          checkCurrentAnswer();
+        }
+      });
+
+      setPageContext('onboarding');
+      recordAction('onboarding_loaded');
+      updateProgress();
+      showCurrentQuestion();
+    </script>
+  </body>
 </html>
