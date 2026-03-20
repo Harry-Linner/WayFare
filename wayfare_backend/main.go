@@ -1,6 +1,8 @@
 package main
 
 import (
+        "encoding/base64"
+        "strconv"
 	"fmt"
 	"log"
 	"net/http"
@@ -75,7 +77,37 @@ func runPortableMode(config AppConfig) error {
 			"mode":   "portable",
 		})
 	})
+        router.POST("/api/login", func(c *gin.Context) {
+		var req struct {
+			Username string `json:"username"`
+			Password string `json:"password"`
+		}
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid json"})
+			return
+		}
 
+		authCfg := LoadBetaAuthConfig()
+		// 校验账号密码是否在 BETA_ALLOWED_USERS 里
+		storedPass, ok := authCfg.AllowedUsers[req.Username]
+		if !ok || storedPass != req.Password {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+			return
+		}
+
+		// 严格按照 beta_auth.go 的签名逻辑生成 Token
+		expires := time.Now().Add(7 * 24 * time.Hour).Unix()
+		payload := base64.RawURLEncoding.EncodeToString([]byte(req.Username)) + "." + strconv.FormatInt(expires, 10)
+		signature := signBetaPayload(authCfg.Secret, payload)
+		token := payload + "." + signature
+
+		// 设置 Cookie (注意：这里要根据你的域名调整 Secure/SameSite)
+		c.SetCookie(authCfg.CookieName, token, 7*24*3600, "/", "", false, true)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "login success",
+			"user":    req.Username,
+		})
+	})
 	return serveRouter(router, config, "portable")
 }
 

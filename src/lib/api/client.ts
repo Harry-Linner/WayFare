@@ -1,6 +1,4 @@
-const API_BASE_URL =
-  import.meta.env.PUBLIC_API_BASE_URL?.replace(/\/+$/, '') ||
-  (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8080');
+const API_BASE_URL = '';
 
 export class ApiError extends Error {
   status: number;

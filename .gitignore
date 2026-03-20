@@ -57,3 +57,30 @@ wayfare_backend/uploads/
 .idea/
 .DS_Store
 Thumbs.db
+# 追加到文件末尾
+# =========================
+# WayFare Runtime / Security
+# =========================
+# 排除后端运行时的动态配置文件（如果你有这类文件）
+wayfare_backend/runtime/
+# 排除前端打包后的静态资源目录（确认 dist 已经包含）
+dist/
+# 排除 PM2 运行日志（如果你在项目根目录下生成）
+*.log
+frontend.log
+
+# =========================
+# OS & IDE
+# =========================
+.DS_Store
+.vscode/
+
+# 额外的运行数据和日志 
+wayfare_backend/runtime/
+frontend.log
+*.log
+*.out.log
+*.err.log
+dist/
+.astro/
+node_modules/

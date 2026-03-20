@@ -142,7 +142,7 @@ func verifyBetaSessionToken(config BetaAuthConfig, token string) (string, bool) 
 
 func isPublicAPIRoute(path string) bool {
 	switch path {
-	case "/healthz":
+	case "/healthz", "/api/login":
 		return true
 	default:
 		return false
