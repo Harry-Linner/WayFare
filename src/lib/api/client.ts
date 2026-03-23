@@ -1,6 +1,39 @@
-const API_BASE_URL =
-  import.meta.env.PUBLIC_API_BASE_URL?.replace(/\/+$/, '') ||
-  (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8080');
+const LOCAL_DEV_HOSTS = new Set(['127.0.0.1', 'localhost']);
+const LOCAL_DEV_API_BASE_URL = 'http://127.0.0.1:8080';
+
+function normalizeApiBaseUrl(value: string) {
+  return String(value || '').trim().replace(/\/+$/, '');
+}
+
+function getConfiguredApiBaseUrl() {
+  return normalizeApiBaseUrl(import.meta.env.PUBLIC_API_BASE_URL || '');
+}
+
+function getLocalDevApiBaseUrl() {
+  if (typeof window === 'undefined') {
+    return '';
+  }
+
+  if (!LOCAL_DEV_HOSTS.has(window.location.hostname)) {
+    return '';
+  }
+
+  const configured = getConfiguredApiBaseUrl();
+  if (configured) {
+    try {
+      const parsed = new URL(configured);
+      if (LOCAL_DEV_HOSTS.has(parsed.hostname)) {
+        return configured;
+      }
+    } catch {
+      // Ignore invalid configured URL and fall back to the default local backend target.
+    }
+  }
+
+  return LOCAL_DEV_API_BASE_URL;
+}
+
+const API_BASE_URL = getLocalDevApiBaseUrl() || getConfiguredApiBaseUrl();
 
 export class ApiError extends Error {
   status: number;

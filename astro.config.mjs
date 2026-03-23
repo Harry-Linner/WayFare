@@ -3,9 +3,14 @@ import tailwind from '@astrojs/tailwind';
 import node from '@astrojs/node';
 
 export default defineConfig({
-  output: 'server',            // 2. 开启服务端渲染模式
-  adapter: node({              // 3. 配置适配器
+  output: 'server',
+  adapter: node({
     mode: 'standalone',
   }),
-  integrations: [tailwind()]
+  server: {
+    host: '127.0.0.1',
+    port: 4321,
+    strictPort: true,
+  },
+  integrations: [tailwind()],
 });

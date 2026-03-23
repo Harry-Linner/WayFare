@@ -15,6 +15,10 @@ import (
 )
 
 func main() {
+	if err := LoadBackendEnvFiles(); err != nil {
+		log.Fatalf("failed to load backend env files: %v", err)
+	}
+
 	config, err := LoadAppConfig()
 	if err != nil {
 		log.Fatalf("failed to load config: %v", err)

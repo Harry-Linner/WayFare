@@ -13,6 +13,7 @@ dist/
 !.env.example
 !.env.sample
 !.env.template
+!.env.runtime.example
 
 # =========================
 # Logs & runtime data
@@ -40,6 +41,8 @@ env/
 .mypy_cache/
 .ruff_cache/
 wayfare_ai_backend/logs/
+wayfare_ai_backend/wayfare-beta
+wayfare_ai_backend/wayfare_ai_backend
 
 # =========================
 # Go
@@ -47,8 +50,26 @@ wayfare_ai_backend/logs/
 wayfare_backend/.gocache/
 wayfare_backend/.gomodcache/
 wayfare_backend/logs/
+wayfare_backend/data/
+wayfare_backend/runtime/
 wayfare_backend/uploads/
+wayfare_backend/wayfare_ai_backend
 *.exe
+*.swp
+*.swo
+
+# =========================
+# Local docs / scratch
+# =========================
+WayFare/
+00_MASTER_GUIDE.md
+线下测试+线上测试点与测试方法文档.md
+scripts/LEARN_*.md
+src/LEARN_*.md
+src/LEARN_*.html
+wayfare_ai_backend/LEARN_*.md
+wayfare_backend/LEARN_*.md
+src/pages/ttt.astro
 
 # =========================
 # Editor / OS
