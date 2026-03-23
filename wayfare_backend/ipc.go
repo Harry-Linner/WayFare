@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 
@@ -41,28 +42,47 @@ var (
 	notificationDocStore PortableKnowledgeBaseStore
 )
 
-func resolvePythonExecutable() (string, error) {
+type lookPathFunc func(string) (string, error)
+type pathExistsFunc func(string) bool
+
+func isCommandCandidate(candidate string) bool {
+	return candidate != "" && !strings.ContainsAny(candidate, `/\`)
+}
+
+func resolvePythonExecutableWith(sidecarDir string, lookPath lookPathFunc, pathExists pathExistsFunc) (string, error) {
 	candidates := []string{}
-	if envPath := os.Getenv("WAYFARE_PYTHON"); envPath != "" {
+	if envPath := strings.TrimSpace(os.Getenv("WAYFARE_PYTHON")); envPath != "" {
 		candidates = append(candidates, envPath)
 	}
-	candidates = append(candidates,
-		filepath.Clean(filepath.Join("wayfare_ai_backend", ".venv", "Scripts", "python.exe")),
-		filepath.Clean(filepath.Join("..", "wayfare_ai_backend", ".venv", "Scripts", "python.exe")),
-		"python",
-	)
 
+	if strings.TrimSpace(sidecarDir) != "" {
+		candidates = append(candidates,
+			filepath.Join(sidecarDir, ".venv", "Scripts", "python.exe"),
+			filepath.Join(sidecarDir, ".venv", "bin", "python"),
+		)
+	}
+
+	candidates = append(candidates, "python", "python3")
+
+	seen := map[string]struct{}{}
 	for _, candidate := range candidates {
+		candidate = strings.TrimSpace(candidate)
 		if candidate == "" {
 			continue
 		}
-		if candidate == "python" {
-			if resolved, err := exec.LookPath(candidate); err == nil {
+		if _, ok := seen[candidate]; ok {
+			continue
+		}
+		seen[candidate] = struct{}{}
+
+		if isCommandCandidate(candidate) {
+			if resolved, err := lookPath(candidate); err == nil {
 				return resolved, nil
 			}
 			continue
 		}
-		if _, err := os.Stat(candidate); err == nil {
+
+		if pathExists(candidate) {
 			if absolute, absErr := filepath.Abs(candidate); absErr == nil {
 				return absolute, nil
 			}
@@ -70,7 +90,14 @@ func resolvePythonExecutable() (string, error) {
 		}
 	}
 
-	return "", errors.New("python executable for the WayFare sidecar was not found")
+	return "", errors.New("python executable for the WayFare sidecar was not found; set WAYFARE_PYTHON or create the sidecar .venv first")
+}
+
+func resolvePythonExecutable(sidecarDir string) (string, error) {
+	return resolvePythonExecutableWith(sidecarDir, exec.LookPath, func(path string) bool {
+		_, err := os.Stat(path)
+		return err == nil
+	})
 }
 
 func resolveSidecarScript() (string, string, error) {
@@ -102,12 +129,12 @@ func InitPythonSidecar(db *gorm.DB, store PortableKnowledgeBaseStore) error {
 		return nil
 	}
 
-	pythonExe, err := resolvePythonExecutable()
+	sidecarDir, scriptPath, err := resolveSidecarScript()
 	if err != nil {
 		return err
 	}
 
-	sidecarDir, scriptPath, err := resolveSidecarScript()
+	pythonExe, err := resolvePythonExecutable(sidecarDir)
 	if err != nil {
 		return err
 	}

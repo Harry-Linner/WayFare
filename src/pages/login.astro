@@ -7,7 +7,7 @@ const nextPath = Astro.url.searchParams.get('next') || '/dashboard';
 const error = Astro.url.searchParams.get('error') || '';
 
 const errorMessageMap: Record<string, string> = {
-  invalid: '账号或密码不正确，请检查后重试。',
+  invalid: '用户名或密码不正确，请重试。',
   'beta-auth-not-configured': '内测鉴权已启用，但服务端尚未完成配置。',
 };
 
@@ -19,33 +19,34 @@ const errorMessage = errorMessageMap[error] || '';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WayFare · 内测登录</title>
+    <title>WayFare · 登录</title>
   </head>
   <body class="min-h-screen bg-brand-cream text-slate-700">
     <main class="mx-auto flex min-h-screen max-w-5xl items-center px-6 py-10">
       <div class="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <section class="rounded-2xl border border-slate-100 bg-white px-8 py-10 shadow-sm">
           <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">WayFare Beta</p>
-          <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-800">内测入口</h1>
+          <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-800">登录内测环境</h1>
           <p class="mt-4 text-base leading-8 text-slate-500">
-            当前站点已经启用内测登录。只有被邀请的测试账号才能进入，以便控制试用人数、保护服务器负载，并追踪反馈来源。
+            这里用于进入 WayFare 的内测工作区。登录成功后，你可以继续访问知识库、AI
+            对话、日程板等页面。
           </p>
 
           <div class="mt-8 rounded-xl border border-slate-100 bg-brand-surface/20 px-5 py-5">
-            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">你会得到什么</p>
+            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">使用说明</p>
             <ul class="mt-3 space-y-2 text-sm leading-7 text-slate-600">
-              <li>• 一个专属测试账号，用于控制内测名单数量</li>
-              <li>• 完整的知识库 → AI 学习助手 → 反馈闭环</li>
-              <li>• 反馈日志与画像修改都会保存在同一套测试环境里</li>
+              <li>请使用已配置在 `BETA_ALLOWED_USERS` 中的测试账号。</li>
+              <li>登录成功后会写入同域 Cookie，前端与后端都会复用这份会话。</li>
+              <li>如果你是本地开发，登录后默认会跳转回 `/dashboard`。</li>
             </ul>
           </div>
         </section>
 
         <section class="rounded-2xl border border-slate-100 bg-white px-8 py-10 shadow-sm">
-          <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">登录</p>
-          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-slate-800">输入内测账号</h2>
+          <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">Sign in</p>
+          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-slate-800">输入测试账号</h2>
           <p class="mt-3 text-sm leading-7 text-slate-500">
-            登录成功后会跳转到你原本想访问的页面。
+            此页面会提交到 Astro 的 `/api/auth/login`，由 Astro 写入登录 Cookie，再跳回目标页。
           </p>
 
           {
@@ -59,16 +60,23 @@ const errorMessage = errorMessageMap[error] || '';
           {
             authConfig.enabled && !authConfig.configured ? (
               <div class="mt-6 rounded-lg border border-brand-sand/60 bg-brand-sand/35 px-4 py-3 text-sm leading-7 text-slate-700">
-                当前已启用内测鉴权，但还没有配置 `BETA_ALLOWED_USERS` 或 `BETA_AUTH_SECRET`。
+                当前已启用内测鉴权，但 `BETA_ALLOWED_USERS` 或 `BETA_AUTH_SECRET` 尚未配置完整。
               </div>
             ) : null
           }
 
-          <form id="loginForm" class="mt-8 space-y-5">
+          <form
+            id="loginForm"
+            method="POST"
+            action="/api/auth/login"
+            class="mt-8 space-y-5"
+          >
             <input type="hidden" name="next" value={nextPath} />
 
             <label class="block text-sm tracking-tight text-slate-600">
-              <span class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">用户名</span>
+              <span class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">
+                用户名
+              </span>
               <input
                 type="text"
                 name="username"
@@ -79,7 +87,9 @@ const errorMessage = errorMessageMap[error] || '';
             </label>
 
             <label class="block text-sm tracking-tight text-slate-600">
-              <span class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">密码</span>
+              <span class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">
+                密码
+              </span>
               <input
                 type="password"
                 name="password"
@@ -93,58 +103,15 @@ const errorMessage = errorMessageMap[error] || '';
               type="submit"
               class="inline-flex w-full items-center justify-center rounded-md border border-brand-blue/60 bg-brand-blue px-4 py-3 text-sm tracking-tight text-slate-800 transition hover:opacity-95"
             >
-              进入 WayFare 内测
+              登录 WayFare
             </button>
           </form>
 
           <p class="mt-5 text-xs leading-6 text-slate-400">
-            如果你还没有测试账号，请不要公开传播地址，直接联系项目方领取邀请信息。
+            如果登录后又被跳回登录页，通常是因为 Cookie、域名或环境变量不一致。
           </p>
         </section>
       </div>
     </main>
   </body>
 </html>
-
-<script>
-  import { API_BASE_URL } from '../lib/api/client';
-
-  // 获取页面上的表单元素
-  const loginForm = document.querySelector('form');
-  
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault(); // 阻止原生表单刷新跳转
-
-      const formData = new FormData(loginForm);
-      const username = formData.get('username');
-      const password = formData.get('password');
-      const nextPath = new URLSearchParams(window.location.search).get('next') || '/dashboard';
-
-      try {
-        // 1. 发送请求到你的 Go 后端 (/api/login)
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            // 这里的 username 和 password 确保是从表单里拿到的变量
-            body: JSON.stringify({ username, password }),
-        });
-
-        if (response.ok) {
-          // 2. 登录成功：后端已经通过 Set-Cookie 下发了通行证
-          // 直接跳转到目标页面
-          window.location.href = nextPath.toString();
-        } else {
-          // 3. 登录失败：处理错误
-          const data = await response.json();
-          alert('登录失败: ' + (data.error || '账号或密码错误'));
-        }
-      } catch (err) {
-        console.error('Login error:', err);
-        alert('无法连接到后端服务器，请检查 Go 服务是否在运行。');
-      }
-    });
-  }
-</script>
