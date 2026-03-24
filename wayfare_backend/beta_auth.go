@@ -47,7 +47,6 @@ func parseAllowedOrigins(raw string) map[string]struct{} {
 	origins := map[string]struct{}{}
 	defaults := []string{
 		"http://127.0.0.1:4321",
-		"http://localhost:4321",
 	}
 
 	entries := defaults

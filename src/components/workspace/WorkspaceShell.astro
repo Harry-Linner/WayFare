@@ -10,16 +10,59 @@ export interface Props {
 }
 
 const { kbId } = Astro.props;
+const apiBaseUrl = String(import.meta.env.PUBLIC_API_BASE_URL || process.env.PUBLIC_API_BASE_URL || '')
+  .trim()
+  .replace(/\/+$/, '');
+
+let initialKnowledgeBaseName = kbId;
+let initialKnowledgeBaseDescription = '先管理文档，再进入阅读与 AI 对话。当前页面会直接读取后端中的知识库与文档数据。';
+
+if (apiBaseUrl) {
+  try {
+    const response = await fetch(`${apiBaseUrl}/knowledge-bases/${encodeURIComponent(kbId)}`, {
+      headers: {
+        cookie: Astro.request.headers.get('cookie') || '',
+      },
+    });
+
+    if (response.ok) {
+      const payload = await response.json();
+      const knowledgeBase = payload?.knowledgeBase;
+
+      if (knowledgeBase && typeof knowledgeBase.name === 'string' && knowledgeBase.name.trim()) {
+        initialKnowledgeBaseName = knowledgeBase.name.trim();
+      }
+
+      if (
+        knowledgeBase &&
+        typeof knowledgeBase.description === 'string' &&
+        knowledgeBase.description.trim()
+      ) {
+        initialKnowledgeBaseDescription = knowledgeBase.description.trim();
+      } else {
+        initialKnowledgeBaseDescription =
+          '这个知识库还没有填写描述。你可以先上传文档，再结合 AI 助手继续完善。';
+      }
+    }
+  } catch {
+    // Ignore SSR knowledge base lookup failures and fall back to kbId.
+  }
+}
 ---
 
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>知识库 · {kbId}</title>
+    <title>知识库 · {initialKnowledgeBaseName}</title>
   </head>
   <body class="min-h-screen bg-brand-cream text-slate-700">
-    <div id="workspace-shell" data-kb-id={kbId} class="relative flex min-h-screen">
+    <div
+      id="workspace-shell"
+      data-kb-id={kbId}
+      data-kb-name={initialKnowledgeBaseName}
+      class="relative flex min-h-screen"
+    >
       <div id="workspace-drop-overlay" class="pointer-events-none absolute inset-0 z-40 hidden bg-brand-surface/35">
         <div class="flex h-full items-center justify-center p-8">
           <div class="rounded-lg border border-dashed border-brand-blue/50 bg-white/90 px-8 py-8 text-center backdrop-blur-sm">
@@ -48,8 +91,8 @@ const { kbId } = Astro.props;
             <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
               <div>
                 <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">知识库</p>
-                <h1 id="workspace-kb-title" class="mt-2 text-2xl font-semibold tracking-tight text-slate-800">{kbId}</h1>
-                <p id="workspace-kb-description" class="mt-2 text-sm leading-7 text-slate-500">先管理文档，再进入阅读与 AI 对话。当前页面会直接读取后端中的知识库与文档数据。</p>
+                <h1 id="workspace-kb-title" class="mt-2 text-2xl font-semibold tracking-tight text-slate-800">{initialKnowledgeBaseName}</h1>
+                <p id="workspace-kb-description" class="mt-2 text-sm leading-7 text-slate-500">{initialKnowledgeBaseDescription}</p>
               </div>
               <div class="flex flex-wrap items-center gap-2">
                 <button id="workspace-upload-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-slate-100 bg-brand-surface/55 px-4 py-2 text-sm tracking-tight text-slate-700 transition hover:border-brand-blue/40 hover:bg-brand-surface">
@@ -183,6 +226,7 @@ const { kbId } = Astro.props;
 
   const shell = document.getElementById('workspace-shell');
   const kbId = shell?.dataset.kbId || 'default';
+  const initialKbName = shell?.dataset.kbName || kbId;
   const dropOverlay = document.getElementById('workspace-drop-overlay');
   const fileInput = document.getElementById('workspace-file-input');
   const uploadBtn = document.getElementById('workspace-upload-btn');
@@ -278,6 +322,7 @@ const { kbId } = Astro.props;
       state.knowledgeBase = knowledgeBase;
       window.activeKnowledgeBaseId = knowledgeBase.id;
       window.activeKnowledgeBaseProfile = knowledgeBase;
+      document.title = `知识库 · ${knowledgeBase.name}`;
       recordAction('knowledge_base_opened', {
         knowledgeBaseId: knowledgeBase.id,
         knowledgeBaseName: knowledgeBase.name,
@@ -289,10 +334,11 @@ const { kbId } = Astro.props;
       }
     } catch (error) {
       console.error('Failed to load knowledge base:', error);
-      if (kbTitle) kbTitle.textContent = kbId;
+      if (kbTitle) kbTitle.textContent = initialKbName;
       if (kbDescription) {
         kbDescription.textContent = '知识库元数据加载失败，但仍会尝试读取这个知识库下的文档。';
       }
+      document.title = `知识库 · ${initialKbName}`;
     }
   }
 
@@ -634,8 +680,10 @@ const { kbId } = Astro.props;
   });
   document.addEventListener('DOMContentLoaded', async () => {
     window.activeKnowledgeBaseId = kbId;
-    setPageContext('workspace', { knowledgeBaseId: kbId });
-    recordAction('workspace_loaded', { knowledgeBaseId: kbId });
+    window.activeKnowledgeBaseProfile = { id: kbId, name: initialKbName };
+    state.knowledgeBase = { id: kbId, name: initialKbName };
+    setPageContext('workspace', { knowledgeBaseId: kbId, knowledgeBaseName: initialKbName });
+    recordAction('workspace_loaded', { knowledgeBaseId: kbId, knowledgeBaseName: initialKbName });
     initDocPanelCollapsedState();
     await loadKnowledgeBase();
     await loadDocuments(true);

@@ -4,7 +4,8 @@ export interface Props {
 }
 
 const { next = '/login' } = Astro.props;
-const authEnabled = process.env.BETA_AUTH_ENABLED === '1';
+const authEnabled =
+  String(import.meta.env.BETA_AUTH_ENABLED || process.env.BETA_AUTH_ENABLED || '').trim() === '1';
 ---
 
 {

@@ -1,4 +1,4 @@
----
+﻿---
 export interface Props {
   defaultPage?: string;
   defaultScope?: string;
@@ -12,7 +12,7 @@ const {
   defaultPage = 'unknown',
   defaultScope = 'general',
   title = '内测反馈',
-  description = '把 Bug、建议或回答质量问题直接留在这里，便于后续迭代。',
+  description = '把 Bug、体验建议或 AI 回答质量问题直接留在这里，便于我们结合上下文追踪。',
   buttonLabel = '提交反馈',
   compact = false,
 } = Astro.props;
@@ -78,7 +78,7 @@ const {
         name="message"
         rows={compact ? 3 : 5}
         required
-        placeholder="例如：上传成功了，但解析一直停留在 processing；或 AI 回答没有结合当前知识库。"
+        placeholder="例如：上传成功了，但解析一直停在 processing；或者 AI 回答没有结合当前知识库。"
         class="min-h-[96px] w-full rounded-md border border-slate-100 bg-white px-3 py-3 text-sm leading-7 text-slate-700 outline-none transition placeholder:text-slate-300 focus:border-brand-blue/40"
       ></textarea>
     </label>

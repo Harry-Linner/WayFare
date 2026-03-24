@@ -1,3 +1,6 @@
+@import './lxgw-wenkai.css';
+@import './lxgw-wenkai-mono.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,15 +10,26 @@
   --brand-surface: #E1FCF6;
   --brand-cream: #F7F7EA;
   --brand-sand: #FAEDCD;
+  --font-lxgw-wenkai: 'LXGW WenKai', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
 html {
   background: var(--brand-cream);
 }
 
+html,
+body,
+button,
+input,
+textarea,
+select,
+option {
+  font-family: var(--font-lxgw-wenkai);
+}
+
 body {
   @apply bg-brand-cream text-slate-700 antialiased tracking-tight;
-  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: var(--font-lxgw-wenkai);
 }
 
 ::selection {

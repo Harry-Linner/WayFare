@@ -2,7 +2,7 @@ import os
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    DB_DSN: str = os.getenv("DB_DSN", "postgresql://your_db_user:your_db_pwd@localhost:5432/wayfare_db")
+    DB_DSN: str = os.getenv("DB_DSN", "postgresql://your_db_user:your_db_pwd@127.0.0.1:5432/wayfare_db")
     LLM_API_KEY: str = os.getenv("LLM_API_KEY", "your_llm_api_key_here")
     LLM_BASE_URL: str = os.getenv("LLM_BASE_URL", "https://api.siliconflow.cn/v1/chat/completions")
     LLM_MODEL_NAME: str = os.getenv("LLM_MODEL_NAME", "deepseek-ai/DeepSeek-V3")

@@ -8,6 +8,17 @@ import {
 } from './lib/server/beta-auth';
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  const url = new URL(context.request.url);
+  const requestHost = context.request.headers.get('host')?.trim().toLowerCase() || '';
+
+  if (requestHost === 'localhost' || requestHost.startsWith('localhost:')) {
+    const portSuffix = requestHost.slice('localhost'.length);
+    return context.redirect(
+      `${url.protocol}//127.0.0.1${portSuffix}${url.pathname}${url.search}${url.hash}`,
+      302
+    );
+  }
+
   const config = getBetaAuthConfig();
   if (!config.enabled) {
     return next();
@@ -22,7 +33,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     });
   }
 
-  const pathname = new URL(context.request.url).pathname;
+  const pathname = url.pathname;
   const token = context.cookies.get(config.cookieName)?.value;
   const session = verifyBetaSessionToken(token);
 
@@ -39,7 +50,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (!session) {
     const nextPath = sanitizeNextPath(
-      pathname + new URL(context.request.url).search + new URL(context.request.url).hash
+      pathname + url.search + url.hash
     );
     return context.redirect(`/login?next=${encodeURIComponent(nextPath)}`);
   }

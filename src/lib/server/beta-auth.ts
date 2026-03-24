@@ -15,6 +15,22 @@ export type BetaSession = {
   expiresAt: number;
 };
 
+const serverEnv = import.meta.env as Record<string, string | boolean | undefined>;
+
+function readServerEnv(key: string) {
+  const viteValue = serverEnv[key];
+  if (typeof viteValue === 'string' && viteValue.trim() !== '') {
+    return viteValue;
+  }
+
+  const processValue = process.env[key];
+  if (typeof processValue === 'string' && processValue.trim() !== '') {
+    return processValue;
+  }
+
+  return '';
+}
+
 function parseAllowedUsers(raw: string): Map<string, string> {
   const users = new Map<string, string>();
 
@@ -36,13 +52,12 @@ function parseAllowedUsers(raw: string): Map<string, string> {
 }
 
 export function getBetaAuthConfig(): BetaAuthConfig {
-  const enabled = process.env.BETA_AUTH_ENABLED === '1';
-  const cookieName = process.env.BETA_AUTH_COOKIE_NAME?.trim() || 'wayfare_beta_auth';
-  const sessionHours = Number(process.env.BETA_AUTH_SESSION_HOURS || 24) || 24;
-  const secureCookie =
-    process.env.BETA_AUTH_SECURE_COOKIE === '1' || process.env.NODE_ENV === 'production';
-  const allowedUsers = parseAllowedUsers(process.env.BETA_ALLOWED_USERS || '');
-  const secret = process.env.BETA_AUTH_SECRET?.trim() || '';
+  const enabled = readServerEnv('BETA_AUTH_ENABLED') === '1';
+  const cookieName = readServerEnv('BETA_AUTH_COOKIE_NAME') || 'wayfare_beta_auth';
+  const sessionHours = Number(readServerEnv('BETA_AUTH_SESSION_HOURS') || 24) || 24;
+  const secureCookie = readServerEnv('BETA_AUTH_SECURE_COOKIE') === '1' || import.meta.env.PROD;
+  const allowedUsers = parseAllowedUsers(readServerEnv('BETA_ALLOWED_USERS'));
+  const secret = readServerEnv('BETA_AUTH_SECRET');
 
   return {
     enabled,

@@ -1,5 +1,4 @@
-const LOCAL_DEV_HOSTS = new Set(['127.0.0.1', 'localhost']);
-const LOCAL_DEV_API_BASE_URL = 'http://127.0.0.1:8080';
+const LOCAL_DEV_HOSTS = new Set(['127.0.0.1']);
 
 function normalizeApiBaseUrl(value: string) {
   return String(value || '').trim().replace(/\/+$/, '');
@@ -14,7 +13,8 @@ function getLocalDevApiBaseUrl() {
     return '';
   }
 
-  if (!LOCAL_DEV_HOSTS.has(window.location.hostname)) {
+  const currentHost = window.location.hostname;
+  if (!LOCAL_DEV_HOSTS.has(currentHost)) {
     return '';
   }
 
@@ -23,14 +23,17 @@ function getLocalDevApiBaseUrl() {
     try {
       const parsed = new URL(configured);
       if (LOCAL_DEV_HOSTS.has(parsed.hostname)) {
-        return configured;
+        if (parsed.hostname === currentHost) {
+          return configured;
+        }
+        return `${window.location.protocol}//${currentHost}:8080`;
       }
     } catch {
-      // Ignore invalid configured URL and fall back to the default local backend target.
+      // Ignore invalid configured URL and fall back to the current local host.
     }
   }
 
-  return LOCAL_DEV_API_BASE_URL;
+  return `${window.location.protocol}//${currentHost}:8080`;
 }
 
 const API_BASE_URL = getLocalDevApiBaseUrl() || getConfiguredApiBaseUrl();

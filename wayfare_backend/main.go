@@ -86,7 +86,7 @@ func runPortableMode(config AppConfig) error {
 func runFullMode(config AppConfig) error {
 	dsn := strings.TrimSpace(os.Getenv("DB_DSN"))
 	if dsn == "" {
-		dsn = "postgresql://luckdd:123456@localhost:5432/wayfare_dbz"
+		dsn = "postgresql://luckdd:123456@127.0.0.1:5432/wayfare_dbz"
 	}
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
